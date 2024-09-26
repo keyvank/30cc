@@ -1,4 +1,3 @@
-= == == = < <= aaa == = void 
 
 salam 
-for int !a != b
+for int /* !a != ab */ ab

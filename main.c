@@ -55,6 +55,7 @@ char isalnum(char c)
 #define TKN_GTE 69
 #define TKN_NEG 70
 #define TKN_NEQ 71
+#define TKN_COMMENT 128
 
 typed_struct *new_tkn(int tkn_id, void *data)
 {
@@ -69,15 +70,18 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
 {
     char *inp = *inp_ptr;
     char c;
-    if (c = isletter(*inp++))
+    if (c = isletter(*inp))
     {
+        inp++;
         char *val = malloc(128);
         char *val_ptr = val;
         *val_ptr = c;
         val_ptr++;
-        while (c = isalnum((*inp++)))
+        while (*inp && (c = isalnum(*inp)))
         {
-            *val_ptr++ = c;
+            *val_ptr = c;
+            inp++;
+            val_ptr++;
         }
         *val_ptr = '\0';
         *inp_ptr = inp;
@@ -105,48 +109,87 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
     }
 }
 
-typed_struct *next_op(char **inp_ptr) {
+typed_struct *next_op(char **inp_ptr)
+{
     char *inp = *inp_ptr;
-    if(*inp == '=') {
-        if(*(inp + 1) == '=') {
+    if (*inp == '=')
+    {
+        if (*(inp + 1) == '=')
+        {
             *inp_ptr += 2;
             return new_tkn(TKN_EQ, NULL);
         }
-        else {
+        else
+        {
             *inp_ptr += 1;
             return new_tkn(TKN_ASSIGN, NULL);
         }
     }
-    if(*inp == '<') {
-        if(*(inp + 1) == '=') {
+    if (*inp == '<')
+    {
+        if (*(inp + 1) == '=')
+        {
             *inp_ptr += 2;
             return new_tkn(TKN_LTE, NULL);
         }
-        else {
+        else
+        {
             *inp_ptr += 1;
             return new_tkn(TKN_LT, NULL);
         }
     }
-    if(*inp == '>') {
-        if(*(inp + 1) == '=') {
+    if (*inp == '>')
+    {
+        if (*(inp + 1) == '=')
+        {
             *inp_ptr += 2;
             return new_tkn(TKN_GTE, NULL);
         }
-        else {
+        else
+        {
             *inp_ptr += 1;
             return new_tkn(TKN_GT, NULL);
         }
     }
-    if(*inp == '!') {
-        if(*(inp + 1) == '=') {
+    if (*inp == '!')
+    {
+        if (*(inp + 1) == '=')
+        {
             *inp_ptr += 2;
             return new_tkn(TKN_NEQ, NULL);
         }
-        else {
+        else
+        {
             *inp_ptr += 1;
             return new_tkn(TKN_NEG, NULL);
         }
     }
+    if (*inp == '/')
+    {
+        if (*(inp + 1) == '/')
+        {
+            inp += 2;
+            while (*inp != '\n' && *inp != '\0')
+                inp++;
+            *inp_ptr = inp;
+            return new_tkn(TKN_COMMENT, NULL);
+        }
+        else if (*(inp + 1) == '*')
+        {
+            inp += 2;
+            while (*inp)
+            {
+                if (*inp == '*' && *(inp + 1) == '/')
+                {
+                    inp += 2;
+                    *inp_ptr = inp;
+                    return new_tkn(TKN_COMMENT, NULL);
+                }
+                inp++;
+            }
+        }
+    }
+    return NULL;
 }
 
 void skip_whitespaces(char **inp_ptr)
@@ -167,10 +210,11 @@ typed_struct *next_token(char **inp_ptr)
 
     // Return NULL if there is nothing left
     if (!*inp)
-        return NULL;
+        return new_tkn(TKN_EOF, NULL);
 
     typed_struct *tkn = next_keyword_or_identifier(inp_ptr);
-    if(!tkn) tkn = next_op(inp_ptr);
+    if (!tkn)
+        tkn = next_op(inp_ptr);
     if (tkn)
     {
         return tkn;
@@ -189,6 +233,11 @@ typed_struct *tokenize(char *inp)
 
     while (t)
     {
+        if (t->type_id == TKN_EOF)
+        {
+            printf("EOF!");
+            break;
+        }
         if (t->type_id == TKN_ID)
         {
             printf("ID: %s\n", (char *)t->data);
@@ -198,7 +247,6 @@ typed_struct *tokenize(char *inp)
             printf("Other: %d\n", t->type_id);
         }
         t = next_token(ptr);
-        getchar();
     }
     return NULL;
 }
@@ -217,6 +265,7 @@ int main(void)
     }
 
     content = read_source_file(fp);
+
     if (!content)
     {
         fprintf(stderr, "failed to read source file: read_source_file returned NULL\n");
@@ -246,11 +295,12 @@ char *read_source_file(FILE *fp)
     if (fstat(fileno(fp), &st) == -1)
         goto ret;
 
-    data = calloc(st.st_size, sizeof(char));
+    data = calloc(st.st_size + 1, sizeof(char));
     if (!data)
         goto ret;
 
     fread(data, sizeof(char), st.st_size, fp);
+    data[st.st_size] = '\0';
 
 ret:
     return data;
