@@ -1,3 +1,4 @@
-int main () {
-    printf("Hello world!");
-}
+= == == = < <= aaa == = void 
+
+salam 
+for int !a != b

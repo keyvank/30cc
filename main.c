@@ -7,7 +7,12 @@
  * free() ignores NULL pointer by default. set each pointer to NULL
  * after calling free() to avoid double free error.
  */
-#define xfree(p) do { free((p)); (p) = NULL; } while (0)
+#define xfree(p)    \
+    do              \
+    {               \
+        free((p));  \
+        (p) = NULL; \
+    } while (0)
 
 typedef struct typed_struct_
 {
@@ -18,44 +23,182 @@ typedef struct typed_struct_
 
 char *read_source_file(FILE *fp);
 
-typed_struct *next_token(char **inp_ptr)
+char isnum(char c)
+{
+    return (c >= '0' && c <= '9') ? c : 0;
+}
+
+char isletter(char c)
+{
+    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_') ? c : 0;
+}
+
+char isalnum(char c)
+{
+    return (isnum(c) || isletter(c)) ? c : 0;
+}
+
+#define TKN_EOF 0
+#define TKN_VOID 1
+#define TKN_INT 2
+#define TKN_RETURN 3
+#define TKN_FOR 4
+#define TKN_IF 5
+#define TKN_DO 6
+#define TKN_WHILE 7
+#define TKN_ID 32
+#define TKN_ASSIGN 64
+#define TKN_EQ 65
+#define TKN_LT 66
+#define TKN_GT 67
+#define TKN_LTE 68
+#define TKN_GTE 69
+#define TKN_NEG 70
+#define TKN_NEQ 71
+
+typed_struct *new_tkn(int tkn_id, void *data)
+{
+    typed_struct *ret = malloc(sizeof(typed_struct));
+    ret->type_id = tkn_id;
+    ret->data = data;
+    ret->next = NULL;
+    return ret;
+}
+
+typed_struct *next_keyword_or_identifier(char **inp_ptr)
 {
     char *inp = *inp_ptr;
-    // Skip whitespaces
+    char c;
+    if (c = isletter(*inp++))
+    {
+        char *val = malloc(128);
+        char *val_ptr = val;
+        *val_ptr = c;
+        val_ptr++;
+        while (c = isalnum((*inp++)))
+        {
+            *val_ptr++ = c;
+        }
+        *val_ptr = '\0';
+        *inp_ptr = inp;
+
+        if (strcmp(val, "void") == 0)
+            return new_tkn(TKN_VOID, NULL);
+        else if (strcmp(val, "int") == 0)
+            return new_tkn(TKN_INT, NULL);
+        else if (strcmp(val, "return") == 0)
+            return new_tkn(TKN_RETURN, NULL);
+        else if (strcmp(val, "for") == 0)
+            return new_tkn(TKN_FOR, NULL);
+        else if (strcmp(val, "if") == 0)
+            return new_tkn(TKN_IF, NULL);
+        else if (strcmp(val, "do") == 0)
+            return new_tkn(TKN_DO, NULL);
+        else if (strcmp(val, "while") == 0)
+            return new_tkn(TKN_WHILE, NULL);
+        else
+            return new_tkn(TKN_ID, val);
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+typed_struct *next_op(char **inp_ptr) {
+    char *inp = *inp_ptr;
+    if(*inp == '=') {
+        if(*(inp + 1) == '=') {
+            *inp_ptr += 2;
+            return new_tkn(TKN_EQ, NULL);
+        }
+        else {
+            *inp_ptr += 1;
+            return new_tkn(TKN_ASSIGN, NULL);
+        }
+    }
+    if(*inp == '<') {
+        if(*(inp + 1) == '=') {
+            *inp_ptr += 2;
+            return new_tkn(TKN_LTE, NULL);
+        }
+        else {
+            *inp_ptr += 1;
+            return new_tkn(TKN_LT, NULL);
+        }
+    }
+    if(*inp == '>') {
+        if(*(inp + 1) == '=') {
+            *inp_ptr += 2;
+            return new_tkn(TKN_GTE, NULL);
+        }
+        else {
+            *inp_ptr += 1;
+            return new_tkn(TKN_GT, NULL);
+        }
+    }
+    if(*inp == '!') {
+        if(*(inp + 1) == '=') {
+            *inp_ptr += 2;
+            return new_tkn(TKN_NEQ, NULL);
+        }
+        else {
+            *inp_ptr += 1;
+            return new_tkn(TKN_NEG, NULL);
+        }
+    }
+}
+
+void skip_whitespaces(char **inp_ptr)
+{
+    char *inp = *inp_ptr;
     while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
         inp++;
     }
+    *inp_ptr = inp;
+}
+
+typed_struct *next_token(char **inp_ptr)
+{
+    skip_whitespaces(inp_ptr);
+
+    char *inp = *inp_ptr;
+
     // Return NULL if there is nothing left
     if (!*inp)
-    {
-        *inp_ptr = inp;
         return NULL;
-    }
 
-    int cnt = 0;
-    char *tkn_content = malloc(128);
-    tkn_content[0] = '\0';
-    while (*inp != 0 && *inp != ' ' && *inp != '\n' && *inp != '\t')
+    typed_struct *tkn = next_keyword_or_identifier(inp_ptr);
+    if(!tkn) tkn = next_op(inp_ptr);
+    if (tkn)
     {
-        tkn_content[cnt] = *inp;
-        inp++;
-        cnt++;
+        return tkn;
     }
-    tkn_content[cnt] = '\0';
-    typed_struct *ret = malloc(sizeof(typed_struct));
-    ret->data = tkn_content;
-    *inp_ptr = inp;
-    return ret;
+    else
+    {
+        perror("Lexer error!");
+        exit(0);
+    }
 }
 
 typed_struct *tokenize(char *inp)
 {
     char **ptr = &inp;
     typed_struct *t = next_token(ptr);
-    while (t) {
-        printf("%s\n", (char*)t->data);
+
+    while (t)
+    {
+        if (t->type_id == TKN_ID)
+        {
+            printf("ID: %s\n", (char *)t->data);
+        }
+        else
+        {
+            printf("Other: %d\n", t->type_id);
+        }
         t = next_token(ptr);
+        getchar();
     }
     return NULL;
 }
@@ -66,14 +209,16 @@ int main(void)
     char *content = NULL;
 
     FILE *fp = fopen("./inp.c", "rb");
-    if (!fp) {
+    if (!fp)
+    {
         perror("failed to read source file");
         ret = 1;
         goto defer_exit;
     }
 
     content = read_source_file(fp);
-    if (!content) {
+    if (!content)
+    {
         fprintf(stderr, "failed to read source file: read_source_file returned NULL\n");
         ret = 1;
         goto defer_exit;
@@ -93,7 +238,8 @@ defer_exit:
     return ret;
 }
 
-char *read_source_file(FILE *fp) {
+char *read_source_file(FILE *fp)
+{
     char *data = NULL;
     struct stat st;
 
