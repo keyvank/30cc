@@ -70,7 +70,7 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
 {
     char *inp = *inp_ptr;
     char c;
-    if (c = isletter(*inp))
+    if ((c = isletter(*inp)))
     {
         inp++;
         char *val = malloc(128);
