@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct typed_struct_
+typedef struct typed_token_
 {
     unsigned char type_id;
     void *data;
-    void (*debug)(struct typed_struct_ *);
-    struct typed_struct_ *next;
-} typed_struct;
+    void (*debug)(struct typed_token_ *);
+    struct typed_token_ *next;
+} typed_token;
 
 char isnum(char c)
 {
@@ -57,9 +57,9 @@ char isalnum(char c)
 #define TKN_NEQ 71
 #define TKN_COMMENT 128
 
-typed_struct *new_tkn(int tkn_id, void *data, void (*debug)(typed_struct *))
+typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *))
 {
-    typed_struct *ret = (typed_struct *)malloc(sizeof(typed_struct));
+    typed_token *ret = (typed_token *)malloc(sizeof(typed_token));
     ret->type_id = tkn_id;
     ret->data = data;
     ret->debug = debug;
@@ -69,22 +69,22 @@ typed_struct *new_tkn(int tkn_id, void *data, void (*debug)(typed_struct *))
 
 #define STR(x) #x
 
-void simp_tkn_debug(typed_struct *tkn)
+void simp_tkn_debug(typed_token *tkn)
 {
     printf("%s\n", (char *)tkn->data);
 }
-void ident_tkn_debug(typed_struct *tkn)
+void ident_tkn_debug(typed_token *tkn)
 {
     printf("%s(%s)\n", STR(TKN_ID), (char *)tkn->data);
 }
-void str_tkn_debug(typed_struct *tkn)
+void str_tkn_debug(typed_token *tkn)
 {
     printf("%s(%s)\n", STR(TKN_STR), (char *)tkn->data);
 }
 
 #define new_simp_tkn(x) new_tkn(x, (void *)#x, simp_tkn_debug)
 
-typed_struct *next_keyword_or_identifier(char **inp_ptr)
+typed_token *next_keyword_or_identifier(char **inp_ptr)
 {
     char *inp = *inp_ptr;
     char c;
@@ -127,7 +127,7 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
     }
 }
 
-typed_struct *next_op(char **inp_ptr)
+typed_token *next_op(char **inp_ptr)
 {
     char *inp = *inp_ptr;
     if (*inp == '(')
@@ -272,7 +272,7 @@ void skip_whitespaces(char **inp_ptr)
     *inp_ptr = inp;
 }
 
-typed_struct *next_token(char **inp_ptr)
+typed_token *next_token(char **inp_ptr)
 {
     skip_whitespaces(inp_ptr);
 
@@ -282,7 +282,7 @@ typed_struct *next_token(char **inp_ptr)
     if (!*inp)
         return new_simp_tkn(TKN_EOF);
 
-    typed_struct *tkn = next_keyword_or_identifier(inp_ptr);
+    typed_token *tkn = next_keyword_or_identifier(inp_ptr);
     if (!tkn)
         tkn = next_op(inp_ptr);
     if (tkn)
@@ -296,10 +296,10 @@ typed_struct *next_token(char **inp_ptr)
     }
 }
 
-typed_struct *tokenize(char *inp)
+typed_token *tokenize(char *inp)
 {
     char **ptr = &inp;
-    typed_struct *t = next_token(ptr);
+    typed_token *t = next_token(ptr);
 
     while (t)
     {

@@ -38,7 +38,7 @@ int main(void)
         goto defer_exit;
     }
 
-    typed_struct *tkn = tokenize(content);
+    typed_token *tkn = tokenize(content);
     while (tkn)
     {
         tkn = tkn->next;
