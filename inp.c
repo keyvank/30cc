@@ -1,3 +1,5 @@
-
-salam 
-for int /* !a != ab */ ab
+int main()
+{
+    printf("sa\\lam\"");
+    return;
+}

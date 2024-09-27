@@ -18,6 +18,7 @@ typedef struct typed_struct_
 {
     unsigned char type_id;
     void *data;
+    void (*debug)(struct typed_struct_ *);
     struct typed_struct_ *next;
 } typed_struct;
 
@@ -46,7 +47,18 @@ char isalnum(char c)
 #define TKN_IF 5
 #define TKN_DO 6
 #define TKN_WHILE 7
+
+// Single letter symbols
+#define TKN_L_PAREN 16
+#define TKN_R_PAREN 17
+#define TKN_L_BRACE 18
+#define TKN_R_BRACE 19
+#define TKN_SEMICOLON 20
+#define TKN_COMMA 21
+
 #define TKN_ID 32
+#define TKN_STR 33
+
 #define TKN_ASSIGN 64
 #define TKN_EQ 65
 #define TKN_LT 66
@@ -57,14 +69,32 @@ char isalnum(char c)
 #define TKN_NEQ 71
 #define TKN_COMMENT 128
 
-typed_struct *new_tkn(int tkn_id, void *data)
+typed_struct *new_tkn(int tkn_id, void *data, void (*debug)(typed_struct *))
 {
     typed_struct *ret = malloc(sizeof(typed_struct));
     ret->type_id = tkn_id;
     ret->data = data;
+    ret->debug = debug;
     ret->next = NULL;
     return ret;
 }
+
+#define STR(x) #x
+
+void simp_tkn_debug(typed_struct *tkn)
+{
+    printf("%s\n", (char *)tkn->data);
+}
+void ident_tkn_debug(typed_struct *tkn)
+{
+    printf("%s(%s)\n", STR(TKN_ID), (char *)tkn->data);
+}
+void str_tkn_debug(typed_struct *tkn)
+{
+    printf("%s(%s)\n", STR(TKN_STR), (char *)tkn->data);
+}
+
+#define new_simp_tkn(x) new_tkn(x, #x, simp_tkn_debug)
 
 typed_struct *next_keyword_or_identifier(char **inp_ptr)
 {
@@ -87,21 +117,21 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
         *inp_ptr = inp;
 
         if (strcmp(val, "void") == 0)
-            return new_tkn(TKN_VOID, NULL);
+            return new_simp_tkn(TKN_VOID);
         else if (strcmp(val, "int") == 0)
-            return new_tkn(TKN_INT, NULL);
+            return new_simp_tkn(TKN_INT);
         else if (strcmp(val, "return") == 0)
-            return new_tkn(TKN_RETURN, NULL);
+            return new_simp_tkn(TKN_RETURN);
         else if (strcmp(val, "for") == 0)
-            return new_tkn(TKN_FOR, NULL);
+            return new_simp_tkn(TKN_FOR);
         else if (strcmp(val, "if") == 0)
-            return new_tkn(TKN_IF, NULL);
+            return new_simp_tkn(TKN_IF);
         else if (strcmp(val, "do") == 0)
-            return new_tkn(TKN_DO, NULL);
+            return new_simp_tkn(TKN_DO);
         else if (strcmp(val, "while") == 0)
-            return new_tkn(TKN_WHILE, NULL);
+            return new_simp_tkn(TKN_WHILE);
         else
-            return new_tkn(TKN_ID, val);
+            return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
     else
     {
@@ -112,17 +142,68 @@ typed_struct *next_keyword_or_identifier(char **inp_ptr)
 typed_struct *next_op(char **inp_ptr)
 {
     char *inp = *inp_ptr;
+    if (*inp == '(')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_L_PAREN);
+    }
+    if (*inp == ')')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_R_PAREN);
+    }
+    if (*inp == '{')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_L_BRACE);
+    }
+    if (*inp == '}')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_R_BRACE);
+    }
+    if (*inp == ';')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_SEMICOLON);
+    }
+    if (*inp == ',')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_COMMA);
+    }
+    if (*inp == '"')
+    {
+        int sz = 0;
+        char *val = malloc(256);
+        inp++;
+        while (*inp)
+        {
+            if (*inp == '"')
+            {
+                inp += 1;
+                val[sz] = '\0';
+                *inp_ptr = inp;
+                return new_tkn(TKN_STR, val, str_tkn_debug);
+            }
+            if (*inp == '\\')
+                inp++;
+            val[sz] = *inp;
+            sz++;
+            inp++;
+        }
+    }
     if (*inp == '=')
     {
         if (*(inp + 1) == '=')
         {
             *inp_ptr += 2;
-            return new_tkn(TKN_EQ, NULL);
+            return new_simp_tkn(TKN_EQ);
         }
         else
         {
             *inp_ptr += 1;
-            return new_tkn(TKN_ASSIGN, NULL);
+            return new_simp_tkn(TKN_ASSIGN);
         }
     }
     if (*inp == '<')
@@ -130,12 +211,12 @@ typed_struct *next_op(char **inp_ptr)
         if (*(inp + 1) == '=')
         {
             *inp_ptr += 2;
-            return new_tkn(TKN_LTE, NULL);
+            return new_simp_tkn(TKN_LTE);
         }
         else
         {
             *inp_ptr += 1;
-            return new_tkn(TKN_LT, NULL);
+            return new_simp_tkn(TKN_LT);
         }
     }
     if (*inp == '>')
@@ -143,12 +224,12 @@ typed_struct *next_op(char **inp_ptr)
         if (*(inp + 1) == '=')
         {
             *inp_ptr += 2;
-            return new_tkn(TKN_GTE, NULL);
+            return new_simp_tkn(TKN_GTE);
         }
         else
         {
             *inp_ptr += 1;
-            return new_tkn(TKN_GT, NULL);
+            return new_simp_tkn(TKN_GT);
         }
     }
     if (*inp == '!')
@@ -156,12 +237,12 @@ typed_struct *next_op(char **inp_ptr)
         if (*(inp + 1) == '=')
         {
             *inp_ptr += 2;
-            return new_tkn(TKN_NEQ, NULL);
+            return new_simp_tkn(TKN_NEQ);
         }
         else
         {
             *inp_ptr += 1;
-            return new_tkn(TKN_NEG, NULL);
+            return new_simp_tkn(TKN_NEG);
         }
     }
     if (*inp == '/')
@@ -172,7 +253,7 @@ typed_struct *next_op(char **inp_ptr)
             while (*inp != '\n' && *inp != '\0')
                 inp++;
             *inp_ptr = inp;
-            return new_tkn(TKN_COMMENT, NULL);
+            return new_simp_tkn(TKN_COMMENT);
         }
         else if (*(inp + 1) == '*')
         {
@@ -183,7 +264,7 @@ typed_struct *next_op(char **inp_ptr)
                 {
                     inp += 2;
                     *inp_ptr = inp;
-                    return new_tkn(TKN_COMMENT, NULL);
+                    return new_simp_tkn(TKN_COMMENT);
                 }
                 inp++;
             }
@@ -210,7 +291,7 @@ typed_struct *next_token(char **inp_ptr)
 
     // Return NULL if there is nothing left
     if (!*inp)
-        return new_tkn(TKN_EOF, NULL);
+        return new_simp_tkn(TKN_EOF);
 
     typed_struct *tkn = next_keyword_or_identifier(inp_ptr);
     if (!tkn)
@@ -221,7 +302,7 @@ typed_struct *next_token(char **inp_ptr)
     }
     else
     {
-        perror("Lexer error!");
+        perror("Unexpected character: %c");
         exit(0);
     }
 }
@@ -233,18 +314,10 @@ typed_struct *tokenize(char *inp)
 
     while (t)
     {
+        t->debug(t);
         if (t->type_id == TKN_EOF)
         {
-            printf("EOF!");
             break;
-        }
-        if (t->type_id == TKN_ID)
-        {
-            printf("ID: %s\n", (char *)t->data);
-        }
-        else
-        {
-            printf("Other: %d\n", t->type_id);
         }
         t = next_token(ptr);
     }
