@@ -1,5 +1,11 @@
-int main()
+void main(int a, int b)
 {
-    printf("sa\\lam\"");
-    return;
+}
+
+void f(int a, int b, int salam)
+{
+}
+
+int f4(int a, int b)
+{
 }
