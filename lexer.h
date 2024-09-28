@@ -27,6 +27,7 @@ char isalnum(char c)
     return (isnum(c) || isletter(c)) ? c : 0;
 }
 
+#define TKN_EOF 0
 #define TKN_VOID 1
 #define TKN_INT 2
 #define TKN_RETURN 3
@@ -279,7 +280,7 @@ typed_token *next_token(char **inp_ptr)
 
     // Return NULL if there is nothing left
     if (!*inp)
-        return NULL;
+        return new_simp_tkn(TKN_EOF);
 
     typed_token *tkn = next_keyword_or_identifier(inp_ptr);
     if (!tkn)
@@ -303,6 +304,10 @@ typed_token *tokenize(char *inp)
 
     while (t)
     {
+        if (t->type_id == TKN_EOF)
+        {
+            break;
+        }
         typed_token *next = next_token(ptr);
         t->next = next;
         t = next;

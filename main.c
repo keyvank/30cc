@@ -109,7 +109,7 @@ void function_debug(int depth, parser_node *node)
     printtabs(depth + 1);
     printf("Returns:\n");
     func->return_type->debug(depth + 2, func->return_type);
-    
+
     for (int i = 0; i < func->num_params; i++)
     {
         parser_node *node = func->params[i];
@@ -160,27 +160,30 @@ parser_node *parse_program(typed_token **tkn_ptr)
     typed_token *tkn = *tkn_ptr;
     while (tkn)
     {
+        if (tkn->type_id == TKN_EOF)
+        {
+            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+            node->type = NODE_PROGRAM;
+            node->data = (void *)malloc(sizeof(node_program));
+            node->debug = program_debug;
+            node_program *prog = (node_program *)node->data;
+
+            prog->num_functions = func_count;
+            prog->functions = funcs;
+            return node;
+        }
         parser_node *f = parse_function(&tkn);
         if (f)
         {
             funcs[func_count++] = f;
         }
-        else if (tkn)
+        else
         {
             return NULL;
         }
     }
 
-    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-    node->type = NODE_PROGRAM;
-    node->data = (void *)malloc(sizeof(node_program));
-    node->debug = program_debug;
-    node_program *prog = (node_program *)node->data;
-
-    prog->num_functions = func_count;
-    prog->functions = funcs;
-
-    return node;
+    return NULL;
 }
 
 parser_node *parse_type(typed_token **tkns_ptr)
@@ -294,7 +297,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                 node_function *func = (node_function *)node->data;
 
                 func->identity = malloc(128);
-                strcpy(func->identity, (char*)name_tkn->data);
+                strcpy(func->identity, (char *)name_tkn->data);
                 func->return_type = return_type;
                 func->num_params = params_count;
                 func->params = params;
