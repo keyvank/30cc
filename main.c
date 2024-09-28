@@ -103,8 +103,13 @@ void function_debug(int depth, parser_node *node)
     printtabs(depth);
     printf("Function(\n");
     printtabs(depth + 1);
+    printf("Name:\n");
+    printtabs(depth + 2);
+    printf("%s\n", func->identity);
+    printtabs(depth + 1);
     printf("Returns:\n");
     func->return_type->debug(depth + 2, func->return_type);
+    
     for (int i = 0; i < func->num_params; i++)
     {
         parser_node *node = func->params[i];
@@ -236,6 +241,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
         tkn = tkn->next;
         if (tkn->type_id == TKN_ID)
         {
+            typed_token *name_tkn = tkn;
             tkn = tkn->next;
             if (tkn->type_id == TKN_L_PAREN)
             {
@@ -287,6 +293,8 @@ parser_node *parse_function(typed_token **tkns_ptr)
                 node->debug = function_debug;
                 node_function *func = (node_function *)node->data;
 
+                func->identity = malloc(128);
+                strcpy(func->identity, (char*)name_tkn->data);
                 func->return_type = return_type;
                 func->num_params = params_count;
                 func->params = params;
