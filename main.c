@@ -22,7 +22,7 @@ int main(void)
     int ret = 0;
     char *content = NULL;
 
-    FILE *fp = fopen("./inp.c", "rb");
+    FILE *fp = fopen("./examples/inp.c", "rb");
     if (!fp)
     {
         perror("failed to read source file");

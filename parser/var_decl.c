@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "var_decl.h"
 #include "type.h"
+#include "expr.h"
 
 void var_decl_debug(int depth, parser_node *node)
 {
@@ -15,7 +16,8 @@ void var_decl_debug(int depth, parser_node *node)
     if (decl->value)
     {
         printtabs(depth + 1);
-        printf("Init value: %s\n", decl->value);
+        printf("Value:\n", decl->identity);
+        decl->value->debug(depth + 2, decl->value);
     }
 }
 
@@ -32,34 +34,26 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             tkn = tkn->next;
             *tkns_ptr = tkn;
 
-            typed_token *val_tkn = NULL;
+            parser_node *val_expr = NULL;
 
             if (tkn->type_id == TKN_SEMICOLON)
             {
-                val_tkn = NULL;
+                val_expr = NULL;
                 tkn = tkn->next;
             }
             else if (tkn->type_id == TKN_ASSIGN)
             {
                 tkn = tkn->next;
-                // parse_expr() instead
-                if (tkn->type_id == TKN_STR)
-                {
-                    val_tkn = tkn;
-                    tkn = tkn->next;
-                    if (tkn->type_id == TKN_SEMICOLON)
-                    {
-                        tkn = tkn->next;
-                    }
-                    else
-                    {
-                        return NULL;
-                    }
-                }
-                else
+                val_expr = parse_expr(&tkn);
+                if (!val_expr)
                 {
                     return NULL;
                 }
+                if (tkn->type_id != TKN_SEMICOLON)
+                {
+                    return NULL;
+                }
+                tkn = tkn->next;
             }
             else
             {
@@ -75,11 +69,8 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             decl->type = tp;
             decl->identity = malloc(128);
             strcpy(decl->identity, name_tkn->data);
-            if (val_tkn)
-            {
-                decl->value = malloc(128);
-                strcpy(decl->value, val_tkn->data);
-            }
+            decl->value = val_expr;
+
             return node;
         }
     }

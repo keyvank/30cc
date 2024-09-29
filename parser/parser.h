@@ -18,5 +18,6 @@ typedef struct parser_node_
 #define NODE_PARAM 4
 #define NODE_VAR_DECL 5
 #define NODE_ASSIGN 6
+#define NODE_LITERAL 7
 
 #endif

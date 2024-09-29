@@ -1,8 +1,9 @@
 void main(int a, int b)
 {
     int a = "salam";
-    a = "khodafez";
-    a = "helllllo!";
+    a = "123";
+    a = "234";
+    int b = " hello";
 }
 
 void f(int a, int b, int salam)
