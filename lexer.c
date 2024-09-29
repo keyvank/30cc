@@ -222,6 +222,25 @@ typed_token *next_op(char **inp_ptr)
             }
         }
     }
+
+    if (*inp == '+')
+    {
+        if (*(inp + 1) == '+')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_PLUSPLUS);
+        }
+        else if (*(inp + 1) == '=')
+        {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_PLUSEQ);
+        }
+        else
+        {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_PLUS);
+        }
+    }
     return NULL;
 }
 

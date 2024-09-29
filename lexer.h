@@ -39,6 +39,10 @@ typed_token *tokenize(char *inp);
 #define TKN_GTE 69
 #define TKN_NEG 70
 #define TKN_NEQ 71
+#define TKN_PLUS 72
+#define TKN_PLUSPLUS 73
+#define TKN_PLUSEQ 74
 #define TKN_COMMENT 128
+
 
 #endif
