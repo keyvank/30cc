@@ -1,5 +1,6 @@
 void main(int a, int b)
 {
+    int a = "salam";
 }
 
 void f(int a, int b, int salam)
