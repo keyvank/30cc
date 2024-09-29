@@ -22,6 +22,7 @@ char *read_source_file(FILE *fp);
 #define NODE_TYPE 4
 #define NODE_PARAM 5
 #define NODE_VAR_DECL 6
+#define NODE_ASSIGN 7
 
 typedef struct parser_node_
 {
@@ -47,6 +48,12 @@ typedef struct
     char *identity;
     parser_node *value;
 } node_var_decl;
+
+typedef struct
+{
+    char *identity;
+    parser_node *value;
+} node_assign;
 
 typedef struct
 {
@@ -157,12 +164,25 @@ void var_decl_debug(int depth, parser_node *node)
     }
 }
 
+void assign_debug(int depth, parser_node *node)
+{
+    node_assign *assign = (node_assign *)node->data;
+    printtabs(depth);
+    printf("Assign(%s):\n", assign->identity);
+    if (assign->value)
+    {
+        printtabs(depth + 1);
+        printf("Value: %s\n", assign->value);
+    }
+}
+
 parser_node *parse_function(typed_token **tkns_ptr);
 parser_node *parse_type(typed_token **tkns_ptr);
 parser_node *parse_param(typed_token **tkns_ptr);
 parser_node *parse_program(typed_token **tkns_ptr);
 parser_node *parse_statement(typed_token **tkns_ptr);
 parser_node *parse_var_decl(typed_token **tkns_ptr);
+parser_node *parse_assign(typed_token **tkns_ptr);
 
 parser_node *parse_program(typed_token **tkn_ptr)
 {
@@ -421,6 +441,58 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
     return NULL;
 }
 
+parser_node *parse_assign(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+    if (tkn->type_id == TKN_ID)
+    {
+        typed_token *name_tkn = tkn;
+        tkn = tkn->next;
+        *tkns_ptr = tkn;
+
+        if (tkn->type_id == TKN_ASSIGN)
+        {
+            tkn = tkn->next;
+            // parse_expr() instead
+            if (tkn->type_id == TKN_STR)
+            {
+                typed_token *val_tkn = tkn;
+                tkn = tkn->next;
+                if (tkn->type_id == TKN_SEMICOLON)
+                {
+                    tkn = tkn->next;
+
+                    *tkns_ptr = tkn;
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->type = NODE_ASSIGN;
+                    node->data = (void *)malloc(sizeof(node_assign));
+                    node->debug = assign_debug;
+                    node_assign *assign = (node_assign *)node->data;
+                    assign->identity = malloc(128);
+                    strcpy(assign->identity, name_tkn->data);
+                    assign->value = malloc(128);
+                    strcpy(assign->value, val_tkn->data);
+                    return node;
+                }
+                else
+                {
+                    return NULL;
+                }
+            }
+            else
+            {
+                return NULL;
+            }
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    return NULL;
+}
+
 parser_node *parse_statement(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -431,10 +503,15 @@ parser_node *parse_statement(typed_token **tkns_ptr)
         *tkns_ptr = tkn;
         return ret;
     }
-    else
+
+    ret = parse_assign(&tkn);
+    if (ret)
     {
-        return NULL;
+        *tkns_ptr = tkn;
+        return ret;
     }
+
+    return NULL;
 }
 
 int main(void)
