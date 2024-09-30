@@ -19,21 +19,23 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
-parser_node *parse_expr(typed_token **tkns_ptr)
+parser_node *parse_terminal(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
 
-    parser_node *left = NULL;
+    parser_node *curr = NULL;
 
     if (tkn->type_id == TKN_L_PAREN)
     {
         tkn = tkn->next;
-        left = parse_expr(&tkn);
-        if (left)
+        curr = parse_expr(&tkn);
+        if (curr)
         {
             if (tkn->type_id == TKN_R_PAREN)
             {
                 tkn = tkn->next;
+                *tkns_ptr = tkn;
+                return curr;
             }
         }
         else
@@ -42,39 +44,54 @@ parser_node *parse_expr(typed_token **tkns_ptr)
         }
     }
 
-    if (!left)
-        left = parse_literal(&tkn);
-
-    if (left)
+    if (!curr)
     {
-        if (tkn->type_id == TKN_PLUS)
+        curr = parse_literal(&tkn);
+        *tkns_ptr = tkn;
+    }
+
+    return curr;
+}
+
+parser_node *parse_expr(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+
+    parser_node *curr = parse_terminal(&tkn);
+
+    if (curr)
+    {
+        while (1)
         {
-            tkn = tkn->next;
-            parser_node *right = parse_expr(&tkn);
-            if (right)
+            if (tkn->type_id == TKN_PLUS)
             {
-                *tkns_ptr = tkn;
+                tkn = tkn->next;
+                parser_node *right = parse_terminal(&tkn);
+                if (right)
+                {
+                    *tkns_ptr = tkn;
 
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->type = NODE_FUNCTION;
-                node->data = (void *)malloc(sizeof(node_binary_op));
-                node->debug = binary_op_debug;
-                node_binary_op *binop = (node_binary_op *)node->data;
-                binop->left = left;
-                binop->right = right;
-                binop->op = TKN_PLUS;
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->type = NODE_FUNCTION;
+                    node->data = (void *)malloc(sizeof(node_binary_op));
+                    node->debug = binary_op_debug;
+                    node_binary_op *binop = (node_binary_op *)node->data;
+                    binop->left = curr;
+                    binop->right = right;
+                    binop->op = TKN_PLUS;
 
-                return node;
+                    curr = node;
+                }
+                else
+                {
+                    return NULL;
+                }
             }
             else
             {
-                return NULL;
+                *tkns_ptr = tkn;
+                return curr;
             }
-        }
-        else
-        {
-            *tkns_ptr = tkn;
-            return left;
         }
     }
 
