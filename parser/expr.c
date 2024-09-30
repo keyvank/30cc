@@ -63,8 +63,9 @@ parser_node *parse_expr(typed_token **tkns_ptr)
     {
         while (1)
         {
-            if (tkn->type_id == TKN_PLUS)
+            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR)
             {
+                int op_type_id = tkn->type_id;
                 tkn = tkn->next;
                 parser_node *right = parse_terminal(&tkn);
                 if (right)
@@ -78,7 +79,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
                     node_binary_op *binop = (node_binary_op *)node->data;
                     binop->left = curr;
                     binop->right = right;
-                    binop->op = TKN_PLUS;
+                    binop->op = op_type_id;
 
                     curr = node;
                 }

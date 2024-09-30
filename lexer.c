@@ -241,6 +241,19 @@ typed_token *next_op(char **inp_ptr)
             return new_simp_tkn(TKN_PLUS);
         }
     }
+    if (*inp == '*')
+    {
+        if (*(inp + 1) == '=')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_STAREQ);
+        }
+        else
+        {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_STAR);
+        }
+    }
     return NULL;
 }
 
