@@ -1,10 +1,6 @@
 void main(int a, int b)
 {
-    int a = "salam";
-    a = "123";
-    a = "234";
-    int b = " hello";
-    a = "123" + "234";
+    int a = ("1" + "2") + (("3"+"4") + "5");
 }
 
 void f(int a, int b, int salam)
