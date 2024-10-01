@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include "lexer.h"
 #include "parser/program.h"
+#include "linked_list.h"
 
 char *read_source_file(FILE *fp);
 /**
@@ -58,6 +59,17 @@ int main(void)
     {
         printf("Parse failed!\n");
     }
+
+    linked_list *l = new_linked_list();
+    add_to_list(l, "salam\n");
+    add_to_list(l, "khubi\n");
+    add_to_list(l, "chetori\n");
+    list_node *f = l->first;
+    while(f) {
+        printf("%s", f->value);
+        f=f->next;
+    }
+    free_list(l);
 
 defer_exit:
     if (fp)

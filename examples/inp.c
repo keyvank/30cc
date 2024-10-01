@@ -1,5 +1,6 @@
 void f(int a)
 {
+    123 + 234 * 345;
 }
 
 void *main(int *a, int **b)

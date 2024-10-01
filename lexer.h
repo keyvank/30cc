@@ -30,6 +30,7 @@ typed_token *tokenize(char *inp);
 
 #define TKN_ID 32
 #define TKN_STR 33
+#define TKN_LIT_INT 34
 
 #define TKN_ASSIGN 64
 #define TKN_EQ 65
@@ -45,6 +46,5 @@ typed_token *tokenize(char *inp);
 #define TKN_STAR 75
 #define TKN_STAREQ 76
 #define TKN_COMMENT 128
-
 
 #endif

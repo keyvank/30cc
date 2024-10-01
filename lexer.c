@@ -44,6 +44,10 @@ void str_tkn_debug(typed_token *tkn)
 {
     printf("%s(%s)\n", STR(TKN_STR), (char *)tkn->data);
 }
+void int_lit_tkn_debug(typed_token *tkn)
+{
+    printf("%s(%u)\n", STR(TKN_LIT_INT), *((int *)tkn->data));
+}
 
 #define new_simp_tkn(x) new_tkn(x, (void *)#x, simp_tkn_debug)
 
@@ -93,6 +97,22 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
 typed_token *next_op(char **inp_ptr)
 {
     char *inp = *inp_ptr;
+    if (isnum(*inp))
+    {
+        int a = *inp - 48;
+        inp++;
+        while (isnum(*inp))
+        {
+
+            a = a * 10;
+            a += (*inp - 48);
+            inp++;
+        }
+        *inp_ptr = inp;
+        int *val = (int *)malloc(sizeof(int));
+        *val = a;
+        return new_tkn(TKN_LIT_INT, (void *)val, int_lit_tkn_debug);
+    }
     if (*inp == '(')
     {
         *inp_ptr += 1;
