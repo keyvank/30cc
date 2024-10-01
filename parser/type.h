@@ -9,6 +9,7 @@ parser_node *parse_type(typed_token **tkns_ptr);
 typedef struct
 {
     char *name;
+    int num_pointing;
 } node_type;
 
 #endif
