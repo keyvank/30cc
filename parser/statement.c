@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "statement.h"
 #include "var_decl.h"
-#include "assign.h"
+#include "expr.h"
 
 parser_node *parse_statement(typed_token **tkns_ptr)
 {
@@ -18,11 +18,19 @@ parser_node *parse_statement(typed_token **tkns_ptr)
         return ret;
     }
 
-    ret = parse_assign(&tkn);
+    ret = parse_expr(&tkn);
     if (ret)
     {
-        *tkns_ptr = tkn;
-        return ret;
+        if (tkn->type_id == TKN_SEMICOLON)
+        {
+            tkn = tkn->next;
+            *tkns_ptr = tkn;
+            return ret;
+        }
+        else
+        {
+            return NULL;
+        }
     }
 
     return NULL;

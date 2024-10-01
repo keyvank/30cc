@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "expr.h"
 #include "literal.h"
+#include "assign.h"
 
 void binary_op_debug(int depth, parser_node *node)
 {
@@ -47,6 +48,15 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     if (!curr)
     {
         curr = parse_literal(&tkn);
+    }
+
+    if (!curr)
+    {
+        curr = parse_assign(&tkn);
+    }
+
+    if (curr)
+    {
         *tkns_ptr = tkn;
     }
 
@@ -70,8 +80,6 @@ parser_node *parse_expr(typed_token **tkns_ptr)
                 parser_node *right = parse_terminal(&tkn);
                 if (right)
                 {
-                    *tkns_ptr = tkn;
-
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                     node->type = NODE_FUNCTION;
                     node->data = (void *)malloc(sizeof(node_binary_op));

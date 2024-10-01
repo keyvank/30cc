@@ -54,6 +54,8 @@ parser_node *parse_function(typed_token **tkns_ptr)
             {
                 int params_count = 0;
                 parser_node **params = (parser_node **)malloc(sizeof(parser_node *) * 32); // MAX 32 PARAMS
+                for (int i = 0; i < 32; i++)
+                    params[i] = NULL;
 
                 tkn = tkn->next;
                 while (tkn)
@@ -90,6 +92,8 @@ parser_node *parse_function(typed_token **tkns_ptr)
 
                 int stmt_count = 0;
                 parser_node **stmts = (parser_node **)malloc(sizeof(parser_node *) * 128); // MAX 128 STATEMENTS
+                for (int i = 0; i < 128; i++)
+                    stmts[i] = NULL;
 
                 while (tkn)
                 {

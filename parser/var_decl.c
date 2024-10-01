@@ -32,7 +32,6 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
         {
             typed_token *name_tkn = tkn;
             tkn = tkn->next;
-            *tkns_ptr = tkn;
 
             parser_node *val_expr = NULL;
 
