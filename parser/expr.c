@@ -20,6 +20,80 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
+void func_call_debug(int depth, parser_node *node)
+{
+    node_func_call *call = (node_func_call *)node->data;
+    printtabs(depth);
+    printf("FunctionCall(Name: %s)\n", call->func_name);
+    printtabs(depth + 1);
+    printf("Args:\n");
+    for (int i = 0; i < call->num_args; i++)
+    {
+        call->args[i]->debug(depth + 2, call->args[i]);
+    }
+}
+
+parser_node *parse_func_call(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+
+    if (tkn->type_id == TKN_ID)
+    {
+        typed_token *name_tkn = tkn;
+        tkn = tkn->next;
+        if (tkn->type_id == TKN_L_PAREN)
+        {
+            tkn = tkn->next;
+            int num_args = 0;
+            parser_node **args = (parser_node **)malloc(sizeof(parser_node *) * 32);
+            while (tkn)
+            {
+                if (tkn->type_id == TKN_R_PAREN)
+                {
+                    tkn = tkn->next;
+                    *tkns_ptr = tkn;
+
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->type = NODE_FUNCTION;
+                    node->data = (void *)malloc(sizeof(node_func_call));
+                    node->debug = func_call_debug;
+                    node_func_call *call = (node_func_call *)node->data;
+
+                    call->func_name = malloc(128);
+                    strcpy(call->func_name, (char *)name_tkn->data);
+                    call->num_args = num_args;
+                    call->args = args;
+
+                    return node;
+                }
+                parser_node *arg = parse_expr(&tkn);
+                if (arg)
+                {
+                    args[num_args++] = arg;
+                }
+                else
+                {
+                    return NULL;
+                }
+
+                if (tkn->type_id == TKN_COMMA)
+                {
+                    tkn = tkn->next;
+                }
+                else
+                {
+                    if (tkn->type_id != TKN_R_PAREN)
+                    {
+                        return NULL;
+                    }
+                }
+            }
+        }
+    }
+
+    return NULL;
+}
+
 parser_node *parse_terminal(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -53,6 +127,11 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     if (!curr)
     {
         curr = parse_assign(&tkn);
+    }
+
+    if (!curr)
+    {
+        curr = parse_func_call(&tkn);
     }
 
     if (curr)

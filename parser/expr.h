@@ -13,4 +13,11 @@ typedef struct
     parser_node *right;
 } node_binary_op;
 
+typedef struct
+{
+    char *func_name;
+    int num_args;
+    parser_node **args;
+} node_func_call;
+
 #endif

@@ -4,6 +4,9 @@ void main(int a, int b)
     int b = "234" + "2" + ("23" + "1");
 
     b = "2" + "3" + ("4" + "5");
+
+    salam();
+
     {
         a = "salam";
         "khubi";
@@ -13,6 +16,7 @@ void main(int a, int b)
             {
             }
             {
+                salam("a", "b", ggg("d"));
             }
         }
     }
