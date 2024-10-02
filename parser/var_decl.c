@@ -27,7 +27,6 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
     parser_node *tp = parse_type(&tkn);
     if (tp)
     {
-        tkn = tkn->next;
         if (tkn->type_id == TKN_ID)
         {
             typed_token *name_tkn = tkn;

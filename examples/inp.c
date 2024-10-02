@@ -1,3 +1,7 @@
+void haha();
+
+void abc(int, int a, int b, int ***);
+
 void f(int a)
 {
     123 + 234 * 345;

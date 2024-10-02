@@ -24,8 +24,9 @@ parser_node *parse_type(typed_token **tkns_ptr)
     if (tkn->type_id == TKN_INT || tkn->type_id == TKN_VOID)
     {
         typed_token *ret_type_tkn = tkn;
+        tkn = tkn->next;
         int num_pointing = 0;
-        while (tkn->next->type_id == TKN_STAR)
+        while (tkn->type_id == TKN_STAR)
         {
             tkn = tkn->next;
             num_pointing++;
@@ -38,7 +39,6 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node_type *par = (node_type *)node->data;
         par->name = ret_type_tkn->data;
         par->num_pointing = num_pointing;
-        tkn = tkn->next;
         return node;
     }
     return NULL;

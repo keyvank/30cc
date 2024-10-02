@@ -21,7 +21,6 @@ parser_node *parse_param(typed_token **tkns_ptr)
     parser_node *tp = parse_type(&tkn);
     if (tp)
     {
-        tkn = tkn->next;
         if (tkn->type_id == TKN_ID)
         {
             typed_token *name_tkn = tkn;
@@ -36,6 +35,20 @@ parser_node *parse_param(typed_token **tkns_ptr)
 
             par->identity = malloc(128);
             strcpy(par->identity, name_tkn->data);
+            par->type = tp;
+
+            return node;
+        }
+        else
+        {
+            *tkns_ptr = tkn;
+
+            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+            node->type = NODE_PARAM;
+            node->data = (void *)malloc(sizeof(node_param));
+            node->debug = param_debug;
+            node_param *par = (node_param *)node->data;
+            par->identity = NULL;
             par->type = tp;
 
             return node;
