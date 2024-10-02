@@ -31,7 +31,6 @@ parser_node *parse_program(typed_token **tkn_ptr)
         if (tkn->type_id == TKN_EOF)
         {
             parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->type = NODE_PROGRAM;
             node->data = (void *)malloc(sizeof(node_program));
             node->debug = program_debug;
             node_program *prog = (node_program *)node->data;

@@ -54,7 +54,6 @@ parser_node *parse_func_call(typed_token **tkns_ptr)
                     *tkns_ptr = tkn;
 
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->type = NODE_FUNCTION;
                     node->data = (void *)malloc(sizeof(node_func_call));
                     node->debug = func_call_debug;
                     node_func_call *call = (node_func_call *)node->data;
@@ -160,7 +159,6 @@ parser_node *parse_expr(typed_token **tkns_ptr)
                 if (right)
                 {
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->type = NODE_FUNCTION;
                     node->data = (void *)malloc(sizeof(node_binary_op));
                     node->debug = binary_op_debug;
                     node_binary_op *binop = (node_binary_op *)node->data;

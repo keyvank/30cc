@@ -39,7 +39,6 @@ parser_node *parse_assign(typed_token **tkns_ptr)
             {
                 *tkns_ptr = tkn;
                 parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->type = NODE_ASSIGN;
                 node->data = (void *)malloc(sizeof(node_assign));
                 node->debug = assign_debug;
                 node_assign *assign = (node_assign *)node->data;

@@ -28,7 +28,6 @@ parser_node *parse_param(typed_token **tkns_ptr)
             *tkns_ptr = tkn;
 
             parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->type = NODE_PARAM;
             node->data = (void *)malloc(sizeof(node_param));
             node->debug = param_debug;
             node_param *par = (node_param *)node->data;
@@ -44,7 +43,6 @@ parser_node *parse_param(typed_token **tkns_ptr)
             *tkns_ptr = tkn;
 
             parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->type = NODE_PARAM;
             node->data = (void *)malloc(sizeof(node_param));
             node->debug = param_debug;
             node_param *par = (node_param *)node->data;

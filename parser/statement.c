@@ -37,7 +37,6 @@ parser_node *parse_compound_statement(typed_token **tkns_ptr)
                 *tkns_ptr = tkn;
 
                 parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->type = NODE_FUNCTION;
                 node->data = (void *)malloc(sizeof(node_compound_statement));
                 node->debug = compound_statement_debug;
                 node_compound_statement *comp = (node_compound_statement *)node->data;

@@ -33,7 +33,6 @@ parser_node *parse_type(typed_token **tkns_ptr)
         }
         *tkns_ptr = tkn;
         parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-        node->type = NODE_TYPE;
         node->data = (void *)malloc(sizeof(node_type));
         node->debug = type_debug;
         node_type *par = (node_type *)node->data;
