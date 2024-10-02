@@ -1,34 +1,6 @@
-void haha();
+void print_str(char *);
 
-void abc(int, int a, int b, int ***);
-
-void f(int a)
+int main()
 {
-    123 + 234 * 345;
-}
-
-void *main(int *a, int **b)
-{
-    int a = "1" + "2" + "3" * "4" + "5" + "6";
-    int b = "234" + "2" + ("23" + "1");
-
-    b = "2" + "3" + ("4" + "5");
-
-    a = hey() + "ab" + ("cd" + func());
-
-    salam();
-
-    {
-        a = "salam";
-        "khubi";
-        {
-            "chetori";
-            int a = "haha";
-            {
-            }
-            {
-                salam("a", "b", ggg("d"));
-            }
-        }
-    }
+    print_str("Salam donya!");
 }

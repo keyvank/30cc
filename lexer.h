@@ -14,11 +14,12 @@ typed_token *tokenize(char *inp);
 #define TKN_EOF 0
 #define TKN_VOID 1
 #define TKN_INT 2
-#define TKN_RETURN 3
-#define TKN_FOR 4
-#define TKN_IF 5
-#define TKN_DO 6
-#define TKN_WHILE 7
+#define TKN_CHAR 3
+#define TKN_RETURN 4
+#define TKN_FOR 5
+#define TKN_IF 6
+#define TKN_DO 7
+#define TKN_WHILE 8
 
 // Single letter symbols
 #define TKN_L_PAREN 16
