@@ -45,31 +45,37 @@ int main(void)
     typed_token *t = tkn;
     while (t)
     {
-        t->debug(t);
+        // t->debug(t);
         t = t->next;
     }
 
-    printf("========\n");
+    // printf("========\n");
     parser_node *prog = parse_program(&tkn);
     if (prog)
     {
-        prog->debug(0, prog);
+        // prog->debug(0, prog);
     }
     else
     {
         printf("Parse failed!\n");
     }
 
-    linked_list *l = new_linked_list();
-    add_to_list(l, "salam\n");
-    add_to_list(l, "khubi\n");
-    add_to_list(l, "chetori\n");
-    list_node *f = l->first;
-    while(f) {
-        printf("%s", f->value);
-        f=f->next;
+    context ctx = new_context();
+    prog->apply(prog, &ctx);
+    list_node *curr = ctx.data.first;
+    printf("section .data\n");
+    while (curr)
+    {
+        printf("%s\n", curr->value);
+        curr = curr->next;
     }
-    free_list(l);
+    printf("section .text\n");
+    curr = ctx.text.first;
+    while (curr)
+    {
+        printf("%s\n", curr->value);
+        curr = curr->next;
+    }
 
 defer_exit:
     if (fp)

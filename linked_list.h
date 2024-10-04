@@ -1,3 +1,6 @@
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
+
 typedef struct node_
 {
     void *value;
@@ -6,11 +9,13 @@ typedef struct node_
 
 typedef struct
 {
+    int count;
     list_node *first;
     list_node *last;
 } linked_list;
 
-linked_list *new_linked_list();
+linked_list new_linked_list();
 void free_list(linked_list *l);
 
 void add_to_list(linked_list *l, void *value);
+#endif

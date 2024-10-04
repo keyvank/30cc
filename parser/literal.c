@@ -6,6 +6,45 @@
 #include "parser.h"
 #include "literal.h"
 
+char *escape(char *inp)
+{
+    char *ret = malloc(128);
+    int cnt = 0;
+    while (*inp)
+    {
+        char c = *inp;
+        if (c == '\n')
+        {
+            ret[cnt++] = '\\';
+            ret[cnt++] = 'n';
+        }
+        else
+        {
+            ret[cnt++] = c;
+        }
+        inp++;
+    }
+    ret[cnt] = 0;
+    return ret;
+}
+
+char *literal_apply(parser_node *node, context *ctx)
+{
+    node_literal *lit = (node_literal *)node->data;
+    if (lit->type == TKN_STR)
+    {
+        char *varname = malloc(128);
+        sprintf(varname, "__temp_str_%u", ctx->data.count);
+
+        char *str = malloc(128);
+        sprintf(str, "%s db `%s`, 0", varname, escape(lit->value));
+        add_to_list(&ctx->data, str);
+
+        return varname;
+    }
+    return lit->value;
+}
+
 void literal_debug(int depth, parser_node *node)
 {
     node_literal *lit = (node_literal *)node->data;
@@ -34,6 +73,7 @@ parser_node *parse_literal(typed_token **tkns_ptr)
         parser_node *node = (parser_node *)malloc(sizeof(parser_node));
         node->data = (void *)malloc(sizeof(node_literal));
         node->debug = literal_debug;
+        node->apply = literal_apply;
         node_literal *lit = (node_literal *)node->data;
 
         lit->type = val_tkn->type_id;

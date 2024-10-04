@@ -7,6 +7,44 @@
 #include "param.h"
 #include "type.h"
 #include "statement.h"
+#include "../codegen/codegen.h"
+#include "../linked_list.h"
+
+char *func_decl_apply(parser_node *node, context *ctx)
+{
+    node_func_decl *func = (node_func_decl *)node->data;
+    char *ext = malloc(128);
+    sprintf(ext, "extern %s", func->identity);
+    add_to_list(&ctx->text, ext);
+    return NULL;
+}
+
+void func_def_apply(parser_node *node, context *ctx)
+{
+    node_func_def *func = (node_func_def *)node->data;
+
+    char *glob = malloc(128);
+    sprintf(glob, "global %s", func->identity);
+    add_to_list(&ctx->text, glob);
+
+    char *label = malloc(128);
+    sprintf(label, "%s:", func->identity);
+    add_to_list(&ctx->text, label);
+
+    add_to_list(&ctx->text, "push rbp");
+    add_to_list(&ctx->text, "mov rbp, rsp");
+
+    for (int i = 0; i < func->num_statements; i++)
+    {
+        parser_node *node = func->statements[i];
+        node->apply(node, ctx);
+    }
+
+    add_to_list(&ctx->text, "mov rsp, rbp");
+    add_to_list(&ctx->text, "pop rbp");
+    add_to_list(&ctx->text, "ret");
+    return NULL;
+}
 
 void func_def_debug(int depth, parser_node *node)
 {
@@ -120,6 +158,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                     node->data = (void *)malloc(sizeof(node_func_decl));
                     node->debug = func_decl_debug;
+                    node->apply = func_decl_apply;
                     node_func_decl *decl = (node_func_decl *)node->data;
 
                     decl->identity = malloc(128);
@@ -161,6 +200,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                         node->data = (void *)malloc(sizeof(node_func_def));
                         node->debug = func_def_debug;
+                        node->apply = func_def_apply;
                         node_func_def *func = (node_func_def *)node->data;
 
                         func->identity = malloc(128);

@@ -33,6 +33,22 @@ void func_call_debug(int depth, parser_node *node)
     }
 }
 
+char *func_call_apply(parser_node *node, context *ctx)
+{
+    node_func_call *call = (node_func_call *)node->data;
+
+    char *rdi = call->args[0]->apply(call->args[0], ctx);
+    char *set_1st_arg = malloc(128);
+    sprintf(set_1st_arg, "mov rdi, %s", rdi);
+    add_to_list(&ctx->text, set_1st_arg);
+
+    char *code = malloc(128);
+    sprintf(code, "call %s", call->func_name);
+    add_to_list(&ctx->text, code);
+
+    return NULL;
+}
+
 parser_node *parse_func_call(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -56,6 +72,7 @@ parser_node *parse_func_call(typed_token **tkns_ptr)
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                     node->data = (void *)malloc(sizeof(node_func_call));
                     node->debug = func_call_debug;
+                    node->apply = func_call_apply;
                     node_func_call *call = (node_func_call *)node->data;
 
                     call->func_name = malloc(128);

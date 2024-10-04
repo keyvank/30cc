@@ -159,9 +159,16 @@ typed_token *next_op(char **inp_ptr)
                 *inp_ptr = inp;
                 return new_tkn(TKN_STR, val, str_tkn_debug);
             }
+            char c = *inp;
             if (*inp == '\\')
+            {
                 inp++;
-            val[sz] = *inp;
+                if (*inp == 'n')
+                {
+                    c = '\n';
+                }
+            }
+            val[sz] = c;
             sz++;
             inp++;
         }
