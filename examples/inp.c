@@ -7,7 +7,7 @@ void hehe()
 
 int main()
 {
-    printf("Salam donya!\n");
-    hehe("hmm\n");
+    printf("Salam %s! Hello %s!\n", "keyvan", "KEYVAN");
+    hehe();
     printf("Chetori!!!\n");
 }

@@ -37,10 +37,23 @@ char *func_call_apply(parser_node *node, context *ctx)
 {
     node_func_call *call = (node_func_call *)node->data;
 
-    char *rdi = call->args[0]->apply(call->args[0], ctx);
-    char *set_1st_arg = malloc(128);
-    sprintf(set_1st_arg, "mov rdi, %s", rdi);
-    add_to_list(&ctx->text, set_1st_arg);
+    for(int i = 0; i < call->num_args; i++) {
+        char *regname = NULL;
+        if(i == 0) regname = "rdi";
+        else if(i == 1) regname = "rsi";
+        else if(i == 2) regname = "rdx";
+        else if(i == 3) regname = "rcx";
+        else if(i == 4) regname = "r8";
+        else if(i == 5) regname = "r9";
+        else {
+            printf("More than 6 args!");
+            exit(0);
+        }
+        char *regval = call->args[i]->apply(call->args[i], ctx);
+        char *set_arg = malloc(128);
+        sprintf(set_arg, "mov %s, %s", regname, regval);
+        add_to_list(&ctx->text, set_arg);
+    }
 
     char *code = malloc(128);
     sprintf(code, "call %s", call->func_name);
