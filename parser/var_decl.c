@@ -6,6 +6,27 @@
 #include "var_decl.h"
 #include "type.h"
 #include "expr.h"
+#include "../codegen/codegen.h"
+#include "../linked_list.h"
+
+char *var_decl_apply(parser_node *node, context *ctx)
+{
+    node_var_decl *decl = (node_var_decl *)node->data;
+    if (decl->value)
+    {
+        char *val = decl->value->apply(decl->value, ctx);
+
+        char *code = malloc(128);
+        sprintf(code, "mov eax, %s", val);
+        add_to_list(&ctx->text, code);
+
+        code = malloc(128);
+        int off = new_symbol(ctx, decl->identity);
+        sprintf(code, "mov dword [rsp+%u], eax", off);
+        add_to_list(&ctx->text, code);
+    }
+    return NULL;
+}
 
 void var_decl_debug(int depth, parser_node *node)
 {
@@ -62,6 +83,7 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             parser_node *node = (parser_node *)malloc(sizeof(parser_node));
             node->data = (void *)malloc(sizeof(node_var_decl));
             node->debug = var_decl_debug;
+            node->apply = var_decl_apply;
             node_var_decl *decl = (node_var_decl *)node->data;
             decl->type = tp;
             decl->identity = malloc(128);

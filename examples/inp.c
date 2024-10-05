@@ -1,13 +1,10 @@
 void printf(char *);
 
-void hehe()
-{
-    printf("SALAM!\n");
-}
-
 int main()
 {
-    printf("Salam %s! Hello %s!\n", "keyvan", "KEYVAN");
-    hehe();
-    printf("Chetori!!!\n");
+    int a = 10;
+    int b = 20;
+    int c = a + b;
+    int d = c + (c + a);
+    printf("%u\n", c + c + d + (b + a) + a);
 }

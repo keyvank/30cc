@@ -8,6 +8,11 @@ parser_node *parse_expr(typed_token **tkns_ptr);
 
 typedef struct
 {
+    char *var_name;
+} node_var;
+
+typedef struct
+{
     int op;
     parser_node *left;
     parser_node *right;

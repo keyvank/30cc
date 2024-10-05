@@ -6,6 +6,7 @@
 #include "expr.h"
 #include "literal.h"
 #include "assign.h"
+#include "../codegen/codegen.h"
 
 void binary_op_debug(int depth, parser_node *node)
 {
@@ -18,6 +19,64 @@ void binary_op_debug(int depth, parser_node *node)
     printtabs(depth + 1);
     printf("Right:\n");
     binop->right->debug(depth + 2, binop->right);
+}
+
+char *binary_op_apply(parser_node *node, context *ctx)
+{
+    node_binary_op *binop = (node_binary_op *)node->data;
+    char *left = binop->left->apply(binop->left, ctx);
+    char *right = binop->right->apply(binop->right, ctx);
+    if (left != -1 && right != -1)
+    {
+        char *code = malloc(128);
+        sprintf(code, "mov eax, %s", left);
+        add_to_list(&ctx->text, code);
+
+        code = malloc(128);
+        sprintf(code, "mov ebx, %s", right);
+        add_to_list(&ctx->text, code);
+
+        add_to_list(&ctx->text, "add eax, ebx");
+
+        int tmp = new_temp_symbol(ctx);
+
+        code = malloc(128);
+        sprintf(code, "mov [rsp + %u], eax", tmp);
+        add_to_list(&ctx->text, code);
+
+        code = malloc(128);
+        sprintf(code, "[rsp + %u]", tmp);
+
+        return code;
+    }
+    else
+    {
+        printf("ERROR!");
+        exit(1);
+    }
+}
+
+void var_debug(int depth, parser_node *node)
+{
+    node_var *var = (node_var *)node->data;
+    printtabs(depth);
+    printf("Variable(%s)\n", var->var_name);
+}
+
+char *var_apply(parser_node *node, context *ctx)
+{
+    node_var *var = (node_var *)node->data;
+    int off = find_symbol(ctx, var->var_name);
+    if (off == -1)
+    {
+        printf("ERROR!");
+    }
+    else
+    {
+        char *code = malloc(128);
+        sprintf(code, "[rsp + %u]", off);
+        return code;
+    }
 }
 
 void func_call_debug(int depth, parser_node *node)
@@ -37,15 +96,23 @@ char *func_call_apply(parser_node *node, context *ctx)
 {
     node_func_call *call = (node_func_call *)node->data;
 
-    for(int i = 0; i < call->num_args; i++) {
+    for (int i = 0; i < call->num_args; i++)
+    {
         char *regname = NULL;
-        if(i == 0) regname = "rdi";
-        else if(i == 1) regname = "rsi";
-        else if(i == 2) regname = "rdx";
-        else if(i == 3) regname = "rcx";
-        else if(i == 4) regname = "r8";
-        else if(i == 5) regname = "r9";
-        else {
+        if (i == 0)
+            regname = "rdi";
+        else if (i == 1)
+            regname = "rsi";
+        else if (i == 2)
+            regname = "rdx";
+        else if (i == 3)
+            regname = "rcx";
+        else if (i == 4)
+            regname = "r8";
+        else if (i == 5)
+            regname = "r9";
+        else
+        {
             printf("More than 6 args!");
             exit(0);
         }
@@ -163,6 +230,26 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
         curr = parse_func_call(&tkn);
     }
 
+    if (!curr)
+    {
+
+        if (tkn->type_id == TKN_ID)
+        {
+            char *varname = malloc(128);
+            strcpy(varname, tkn->data);
+            tkn = tkn->next;
+
+            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+            node->data = (void *)malloc(sizeof(node_var));
+            node->debug = var_debug;
+            node->apply = var_apply;
+            node_var *var = (node_var *)node->data;
+            var->var_name = varname;
+
+            curr = node;
+        }
+    }
+
     if (curr)
     {
         *tkns_ptr = tkn;
@@ -191,6 +278,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                     node->data = (void *)malloc(sizeof(node_binary_op));
                     node->debug = binary_op_debug;
+                    node->apply = binary_op_apply;
                     node_binary_op *binop = (node_binary_op *)node->data;
                     binop->left = curr;
                     binop->right = right;

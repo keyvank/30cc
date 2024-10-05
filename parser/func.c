@@ -34,6 +34,9 @@ void func_def_apply(parser_node *node, context *ctx)
     add_to_list(&ctx->text, "push rbp");
     add_to_list(&ctx->text, "mov rbp, rsp");
 
+    // TODO
+    add_to_list(&ctx->text, "sub rsp, 128");
+
     for (int i = 0; i < func->num_statements; i++)
     {
         parser_node *node = func->statements[i];

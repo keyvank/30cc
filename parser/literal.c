@@ -42,6 +42,12 @@ char *literal_apply(parser_node *node, context *ctx)
 
         return varname;
     }
+    if (lit->type == TKN_LIT_INT)
+    {
+        char *str = malloc(128);
+        sprintf(str, "%u", *((int *)lit->value));
+        return str;
+    }
     return lit->value;
 }
 
