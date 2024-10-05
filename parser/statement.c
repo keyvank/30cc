@@ -6,6 +6,7 @@
 #include "statement.h"
 #include "var_decl.h"
 #include "expr.h"
+#include "for.h"
 
 void compound_statement_debug(int depth, parser_node *node)
 {
@@ -72,6 +73,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_compound_statement(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_for(&tkn);
     if (ret)
     {
         *tkns_ptr = tkn;
