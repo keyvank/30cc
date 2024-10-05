@@ -145,6 +145,11 @@ typed_token *next_op(char **inp_ptr)
         *inp_ptr += 1;
         return new_simp_tkn(TKN_COMMA);
     }
+    if (*inp == '&')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_AMP);
+    }
     if (*inp == '"')
     {
         int sz = 0;

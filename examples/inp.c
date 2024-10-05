@@ -7,4 +7,8 @@ int main()
     int c = a * b;
     int d = c * (c + a);
     printf("Result: %u\n", c + c + d + ((b + a) * a));
+    int *cc = &a;
+    printf("Addr of a: %u\n", &a);
+    printf("Addr of b: %u\n", &b);
+    printf("Addr of c: %u\n", cc);
 }

@@ -25,4 +25,14 @@ typedef struct
     parser_node **args;
 } node_func_call;
 
+typedef struct
+{
+    parser_node *var;
+} node_ref;
+
+typedef struct
+{
+    parser_node *var;
+} node_deref;
+
 #endif

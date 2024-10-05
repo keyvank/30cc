@@ -17,12 +17,12 @@ char *var_decl_apply(parser_node *node, context *ctx)
         char *val = decl->value->apply(decl->value, ctx);
 
         char *code = malloc(128);
-        sprintf(code, "mov eax, %s", val);
+        sprintf(code, "mov rax, %s", val);
         add_to_list(&ctx->text, code);
 
         code = malloc(128);
         int off = new_symbol(ctx, decl->identity);
-        sprintf(code, "mov dword [rsp+%u], eax", off);
+        sprintf(code, "mov [rsp+%u], rax", off);
         add_to_list(&ctx->text, code);
     }
     return NULL;

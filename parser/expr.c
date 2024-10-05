@@ -29,20 +29,20 @@ char *binary_op_apply(parser_node *node, context *ctx)
     if (left != -1 && right != -1)
     {
         char *code = malloc(128);
-        sprintf(code, "mov eax, %s", left);
+        sprintf(code, "mov rax, %s", left);
         add_to_list(&ctx->text, code);
 
         code = malloc(128);
-        sprintf(code, "mov ebx, %s", right);
+        sprintf(code, "mov rbx, %s", right);
         add_to_list(&ctx->text, code);
 
         switch (binop->op)
         {
         case TKN_PLUS:
-            add_to_list(&ctx->text, "add eax, ebx");
+            add_to_list(&ctx->text, "add rax, rbx");
             break;
         case TKN_STAR:
-            add_to_list(&ctx->text, "mul ebx");
+            add_to_list(&ctx->text, "mul rbx");
             break;
         default:
             printf("Invalid op!\n");
@@ -52,7 +52,7 @@ char *binary_op_apply(parser_node *node, context *ctx)
         int tmp = new_temp_symbol(ctx);
 
         code = malloc(128);
-        sprintf(code, "mov [rsp + %u], eax", tmp);
+        sprintf(code, "mov [rsp + %u], rax", tmp);
         add_to_list(&ctx->text, code);
 
         code = malloc(128);
@@ -138,6 +138,52 @@ char *func_call_apply(parser_node *node, context *ctx)
     add_to_list(&ctx->text, code);
 
     return NULL;
+}
+
+void ref_debug(int depth, parser_node *node)
+{
+    node_ref *ref = (node_ref *)node->data;
+    printtabs(depth);
+    printf("Ref:\n");
+    ref->var->debug(depth + 1, ref->var);
+}
+
+char *ref_apply(parser_node *node, context *ctx)
+{
+    node_ref *ref = (node_ref *)node->data;
+    if (ref->var->apply == var_apply)
+    {
+        node_var *v = (node_var *)ref->var->data;
+        int off = find_symbol(ctx, v->var_name);
+        if (off != -1)
+        {
+            add_to_list(&ctx->text, "mov rax, rsp");
+
+            char *code = malloc(128);
+            sprintf(code, "add rax, %u", off);
+            add_to_list(&ctx->text, code);
+
+            return "rax";
+        }
+        else
+        {
+            printf("Invalid & (Var not found)\n");
+            exit(1);
+        }
+    }
+    else
+    {
+        printf("Invalid &\n");
+        exit(1);
+    }
+}
+
+void deref_debug(int depth, parser_node *node)
+{
+    node_deref *ref = (node_deref *)node->data;
+    printtabs(depth);
+    printf("Deref:\n");
+    ref->var->debug(depth + 1, ref->var);
 }
 
 parser_node *parse_func_call(typed_token **tkns_ptr)
@@ -258,6 +304,53 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
             var->var_name = varname;
 
             curr = node;
+        }
+    }
+
+    if (!curr)
+    {
+        if (tkn->type_id == TKN_AMP)
+        {
+            tkn = tkn->next;
+            parser_node *n = parse_expr(&tkn);
+            if (n)
+            {
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                node->data = (void *)malloc(sizeof(node_ref));
+                node->debug = ref_debug;
+                node->apply = ref_apply;
+                node_ref *ref = (node_ref *)node->data;
+                ref->var = n;
+
+                curr = node;
+            }
+            else
+            {
+                return NULL;
+            }
+        }
+    }
+
+    if (!curr)
+    {
+        if (tkn->type_id == TKN_STAR)
+        {
+            tkn = tkn->next;
+            parser_node *n = parse_expr(&tkn);
+            if (n)
+            {
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                node->data = (void *)malloc(sizeof(node_deref));
+                node->debug = deref_debug;
+                node_deref *ref = (node_deref *)node->data;
+                ref->var = n;
+
+                curr = node;
+            }
+            else
+            {
+                return NULL;
+            }
         }
     }
 

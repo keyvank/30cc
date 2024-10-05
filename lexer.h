@@ -46,6 +46,8 @@ typed_token *tokenize(char *inp);
 #define TKN_PLUSEQ 74
 #define TKN_STAR 75
 #define TKN_STAREQ 76
+#define TKN_AMP 77
+
 #define TKN_COMMENT 128
 
 #endif
