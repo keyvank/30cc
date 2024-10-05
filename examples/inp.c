@@ -1,5 +1,11 @@
 void printf(char *);
 
+struct MyStruct {
+    int a;
+    char b;
+    int c;
+};
+
 int main()
 {
     int a = 10;
@@ -7,8 +13,9 @@ int main()
     int c = a * b;
     int d = c * (c + a);
     printf("Result: %u\n", c + c + d + ((b + a) * a));
-    int *cc = &a;
+    int *cc = &c;
     printf("Addr of a: %u\n", &a);
-    printf("Addr of b: %u\n", *(&a + 8));
-    printf("Addr of a: %u\n", cc);
+    printf("Value of b: %u\n", *(&a + 8));
+    printf("Addr of c: %u\n", cc);
 }
+

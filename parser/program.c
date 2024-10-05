@@ -8,6 +8,7 @@
 #include "func.h"
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
+#include "struct_def.h"
 
 void program_debug(int depth, parser_node *node)
 {
@@ -17,6 +18,11 @@ void program_debug(int depth, parser_node *node)
     for (int i = 0; i < prog->num_functions; i++)
     {
         parser_node *node = prog->functions[i];
+        node->debug(depth + 1, node);
+    }
+    for (int i = 0; i < prog->num_struct_defs; i++)
+    {
+        parser_node *node = prog->struct_defs[i];
         node->debug(depth + 1, node);
     }
     printtabs(depth);
@@ -43,7 +49,9 @@ char *program_apply(parser_node *node, context *ctx)
 parser_node *parse_program(typed_token **tkn_ptr)
 {
     int func_count = 0;
+    int struct_def_count = 0;
     parser_node **funcs = (parser_node **)malloc(sizeof(parser_node *) * 128);
+    parser_node **struct_defs = (parser_node **)malloc(sizeof(parser_node *) * 128);
     typed_token *tkn = *tkn_ptr;
     while (tkn)
     {
@@ -57,12 +65,19 @@ parser_node *parse_program(typed_token **tkn_ptr)
 
             prog->num_functions = func_count;
             prog->functions = funcs;
+            prog->num_struct_defs = struct_def_count;
+            prog->struct_defs = struct_defs;
             return node;
         }
-        parser_node *f = parse_function(&tkn);
-        if (f)
+        parser_node *f = NULL;
+
+        if (f = parse_function(&tkn))
         {
             funcs[func_count++] = f;
+        }
+        else if (f = parse_struct_def(&tkn))
+        {
+            struct_defs[struct_def_count++] = f;
         }
         else
         {
