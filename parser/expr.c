@@ -36,7 +36,18 @@ char *binary_op_apply(parser_node *node, context *ctx)
         sprintf(code, "mov ebx, %s", right);
         add_to_list(&ctx->text, code);
 
-        add_to_list(&ctx->text, "add eax, ebx");
+        switch (binop->op)
+        {
+        case TKN_PLUS:
+            add_to_list(&ctx->text, "add eax, ebx");
+            break;
+        case TKN_STAR:
+            add_to_list(&ctx->text, "mul ebx");
+            break;
+        default:
+            printf("Invalid op!\n");
+            exit(1);
+        }
 
         int tmp = new_temp_symbol(ctx);
 
