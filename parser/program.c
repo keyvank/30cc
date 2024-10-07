@@ -34,6 +34,7 @@ char *program_apply(parser_node *node, context *ctx)
     node_program *prog = (node_program *)node->data;
     for (int i = 0; i < prog->num_functions; i++)
     {
+        ctx->symbol_table = new_linked_list();
         parser_node *node = prog->functions[i];
         node->apply(node, ctx);
     }
