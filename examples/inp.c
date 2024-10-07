@@ -9,7 +9,7 @@ struct MyStruct
 
 int doub(int k)
 {
-    return k * 2;
+    return k * 2 * k;
 }
 
 int main()
@@ -25,4 +25,13 @@ int main()
     printf("Addr of c: %u\n", cc);
     int kk = doub(123);
     printf("Double of 123: %u\n", kk);
+    if (100)
+    {
+        printf("HI\n");
+        if (100)
+        {
+            printf("Hello!\n");
+            printf("Heee\n");
+        }
+    }
 }

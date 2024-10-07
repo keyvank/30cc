@@ -7,6 +7,17 @@
 #include "var_decl.h"
 #include "expr.h"
 #include "for.h"
+#include "if.h"
+
+char *compound_statement_apply(parser_node *node, context *ctx)
+{
+    node_compound_statement *comp = (node_compound_statement *)node->data;
+    for (int i = 0; i < comp->num_statements; i++)
+    {
+        comp->statements[i]->apply(comp->statements[i], ctx);
+    }
+    return NULL;
+}
 
 void compound_statement_debug(int depth, parser_node *node)
 {
@@ -121,6 +132,7 @@ parser_node *parse_compound_statement(typed_token **tkns_ptr)
                 parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                 node->data = (void *)malloc(sizeof(node_compound_statement));
                 node->debug = compound_statement_debug;
+                node->apply = compound_statement_apply;
                 node_compound_statement *comp = (node_compound_statement *)node->data;
                 comp->num_statements = num_stmts;
                 comp->statements = stmts;
@@ -161,6 +173,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_for(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_if(&tkn);
     if (ret)
     {
         *tkns_ptr = tkn;
