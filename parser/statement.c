@@ -19,6 +19,87 @@ void compound_statement_debug(int depth, parser_node *node)
     }
 }
 
+void return_apply(parser_node *node, context *ctx)
+{
+    node_return *func = (node_return *)node->data;
+
+    if (func->exp)
+    {
+        char *val = func->exp->apply(func->exp, ctx);
+        char *code = malloc(128);
+        sprintf(code, "mov rax, %s", val);
+        add_to_list(&ctx->text, code);
+    }
+
+    add_to_list(&ctx->text, "mov rsp, rbp");
+    add_to_list(&ctx->text, "pop rbp");
+    add_to_list(&ctx->text, "ret");
+    return NULL;
+}
+
+void return_debug(int depth, parser_node *node)
+{
+    node_return *ret = (node_return *)node->data;
+    printtabs(depth);
+    printf("Return:");
+    if (ret->exp != NULL)
+    {
+        ret->exp->debug(depth + 1, ret->exp);
+    }
+    else
+    {
+        printtabs(depth + 1);
+        printf("VOID\n");
+    }
+}
+
+parser_node *parse_return(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+
+    if (tkn->type_id == TKN_RETURN)
+    {
+        tkn = tkn->next;
+
+        if (tkn->type_id == TKN_SEMICOLON)
+        {
+            tkn = tkn->next;
+            *tkns_ptr = tkn;
+            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+            node->data = (void *)malloc(sizeof(node_return));
+            node->debug = return_debug;
+            node->apply = return_apply;
+            node_return *ret = (node_return *)node->data;
+            ret->exp = NULL;
+
+            return node;
+        }
+        else
+        {
+            parser_node *exp = parse_expr(&tkn);
+            if (exp)
+            {
+                if (tkn->type_id == TKN_SEMICOLON)
+                {
+                    tkn = tkn->next;
+                    *tkns_ptr = tkn;
+
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->data = (void *)malloc(sizeof(node_return));
+                    node->debug = return_debug;
+                    node->apply = return_apply;
+                    node_return *ret = (node_return *)node->data;
+                    ret->exp = exp;
+
+                    return node;
+                }
+            }
+        }
+    }
+
+    return NULL;
+}
+
 parser_node *parse_compound_statement(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -80,6 +161,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_for(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_return(&tkn);
     if (ret)
     {
         *tkns_ptr = tkn;

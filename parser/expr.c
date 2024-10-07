@@ -137,7 +137,7 @@ char *func_call_apply(parser_node *node, context *ctx)
     sprintf(code, "call %s", call->func_name);
     add_to_list(&ctx->text, code);
 
-    return NULL;
+    return "rax";
 }
 
 void ref_debug(int depth, parser_node *node)

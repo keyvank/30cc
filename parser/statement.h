@@ -12,4 +12,9 @@ typedef struct
     parser_node **statements;
 } node_compound_statement;
 
+typedef struct
+{
+    parser_node *exp;
+} node_return;
+
 #endif
