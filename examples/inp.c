@@ -1,10 +1,16 @@
 void printf(char *);
 
-struct MyStruct {
+struct MyStruct
+{
     int a;
     char b;
     int c;
 };
+
+int doub(int k)
+{
+    return k * 2;
+}
 
 int main()
 {
@@ -17,5 +23,6 @@ int main()
     printf("Addr of a: %u\n", &a);
     printf("Value of b: %u\n", *(&a + 8));
     printf("Addr of c: %u\n", cc);
+    int kk = doub(123);
+    printf("Double of 123: %u\n", kk);
 }
-

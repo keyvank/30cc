@@ -10,6 +10,7 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
+
 char *func_decl_apply(parser_node *node, context *ctx)
 {
     node_func_decl *func = (node_func_decl *)node->data;
@@ -36,6 +37,35 @@ void func_def_apply(parser_node *node, context *ctx)
 
     // TODO
     add_to_list(&ctx->text, "sub rsp, 128");
+
+    for (int i = 0; i < func->num_params; i++)
+    {
+        node_param *par = (node_param*)func->params[i]->data;
+
+        char *regname = NULL;
+        if (i == 0)
+            regname = "rdi";
+        else if (i == 1)
+            regname = "rsi";
+        else if (i == 2)
+            regname = "rdx";
+        else if (i == 3)
+            regname = "rcx";
+        else if (i == 4)
+            regname = "r8";
+        else if (i == 5)
+            regname = "r9";
+        else
+        {
+            printf("More than 6 args!");
+            exit(0);
+        }
+
+        char *code = malloc(128);
+        int off = new_symbol(ctx, par->identity);
+        sprintf(code, "mov [rsp+%u], %s", off,regname);
+        add_to_list(&ctx->text, code);
+    }
 
     for (int i = 0; i < func->num_statements; i++)
     {
