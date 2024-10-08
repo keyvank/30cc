@@ -41,6 +41,9 @@ char *binary_op_apply(parser_node *node, context *ctx)
         case TKN_PLUS:
             add_to_list(&ctx->text, "add rax, rbx");
             break;
+        case TKN_MIN:
+            add_to_list(&ctx->text, "sub rax, rbx");
+            break;
         case TKN_STAR:
             add_to_list(&ctx->text, "mul rbx");
             break;
@@ -407,7 +410,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
     {
         while (1)
         {
-            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR)
+            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN)
             {
                 int op_type_id = tkn->type_id;
                 tkn = tkn->next;
