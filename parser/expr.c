@@ -107,6 +107,26 @@ char *func_call_apply(parser_node *node, context *ctx)
 {
     node_func_call *call = (node_func_call *)node->data;
 
+    char **argvals = (char **)malloc(sizeof(char *) * 6);
+    for (int i = 0; i < call->num_args; i++)
+    {
+        char *regval = call->args[i]->apply(call->args[i], ctx);
+
+        int tmp = new_temp_symbol(ctx);
+
+        char *regname = malloc(128);
+        sprintf(regname, "[rsp + %u]", tmp);
+
+        char *code = malloc(128);
+        sprintf(code, "mov rax, %s", regval);
+        add_to_list(&ctx->text, code);
+
+        code = malloc(128);
+        sprintf(code, "mov %s, rax", regname);
+        add_to_list(&ctx->text, code);
+
+        argvals[i] = regname;
+    }
     for (int i = 0; i < call->num_args; i++)
     {
         char *regname = NULL;
@@ -127,9 +147,8 @@ char *func_call_apply(parser_node *node, context *ctx)
             printf("More than 6 args!");
             exit(0);
         }
-        char *regval = call->args[i]->apply(call->args[i], ctx);
         char *set_arg = malloc(128);
-        sprintf(set_arg, "mov %s, %s", regname, regval);
+        sprintf(set_arg, "mov %s, %s", regname, argvals[i]);
         add_to_list(&ctx->text, set_arg);
     }
 

@@ -36,7 +36,7 @@ void func_def_apply(parser_node *node, context *ctx)
     add_to_list(&ctx->text, "mov rbp, rsp");
 
     // TODO
-    add_to_list(&ctx->text, "sub rsp, 128");
+    add_to_list(&ctx->text, "sub rsp, 1024");
 
     for (int i = 0; i < func->num_params; i++)
     {
