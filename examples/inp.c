@@ -17,8 +17,7 @@ int fact(int a)
     printf("Fact: %u\n", a);
     if (a)
     {
-        int aa = fact(a - 1);
-        return a * aa;
+        return a * fact(a - 1);
     }
     else
     {

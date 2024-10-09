@@ -159,7 +159,16 @@ char *func_call_apply(parser_node *node, context *ctx)
     sprintf(code, "call %s", call->func_name);
     add_to_list(&ctx->text, code);
 
-    return "rax";
+    int tmp = new_temp_symbol(ctx);
+
+    code = malloc(128);
+    sprintf(code, "mov [rsp + %u], rax", tmp);
+    add_to_list(&ctx->text, code);
+
+    code = malloc(128);
+    sprintf(code, "[rsp + %u]", tmp);
+
+    return code;
 }
 
 void ref_debug(int depth, parser_node *node)
