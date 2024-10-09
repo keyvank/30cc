@@ -81,4 +81,10 @@ int main()
     printf("%u ", fibo(6));
     printf("%u ", fibo(7));
     printf("%u\n", fibo(8));
+
+    for (int i = 0; i < 20; i = i + 1)
+    {
+        printf("%u ", fibo(i));
+    }
+    printf("\nDONE!\n");
 }

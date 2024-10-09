@@ -12,6 +12,41 @@
 
 char *for_apply(parser_node *node, context *ctx)
 {
+    node_for *forn = (node_for *)node->data;
+
+    forn->init->apply(forn->init, ctx);
+
+    char *start_for = new_label(ctx);
+    char *end_for = new_label(ctx);
+
+    char *code = malloc(128);
+    sprintf(code, "%s:", start_for);
+    add_to_list(&ctx->text, code);
+
+    char *condv = forn->cond->apply(forn->cond, ctx);
+
+    code = malloc(128);
+    sprintf(code, "mov rax, %s", condv);
+    add_to_list(&ctx->text, code);
+
+    add_to_list(&ctx->text, "cmp rax, 0");
+
+    code = malloc(128);
+    sprintf(code, "je %s", end_for);
+    add_to_list(&ctx->text, code);
+
+    forn->body->apply(forn->body, ctx);
+
+    forn->act->apply(forn->act, ctx);
+
+    code = malloc(128);
+    sprintf(code, "jmp %s", start_for);
+    add_to_list(&ctx->text, code);
+
+    code = malloc(128);
+    sprintf(code, "%s:", end_for);
+    add_to_list(&ctx->text, code);
+
     return NULL;
 }
 
