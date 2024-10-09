@@ -8,6 +8,7 @@ typedef struct
     linked_list data;
     linked_list text;
     linked_list symbol_table;
+    int label_counter;
 } context;
 
 context new_context();
@@ -21,5 +22,5 @@ typedef struct
 int find_symbol(context *tab, char *name);
 int new_symbol(context *ctx, char *name);
 int new_temp_symbol(context *ctx);
-
+char *new_label(context *ctx);
 #endif

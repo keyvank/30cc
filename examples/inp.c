@@ -20,7 +20,10 @@ int fact(int a)
         int aa = fact(a - 1);
         return a * aa;
     }
-    return 1;
+    else
+    {
+        return 1;
+    }
 }
 
 int main()
@@ -36,4 +39,20 @@ int main()
     printf("Addr of c: %u\n", cc);
     printf("Double of 123: %u\n", doub(doub(123 * doub(123)) * 2) + 10);
     printf("Factorial 5: %u\n", fact(5));
+    if (1)
+    {
+        printf("TRUE\n");
+    }
+    else
+    {
+        printf("FALSE\n");
+    }
+    if (1)
+    {
+        printf("TRUE\n");
+    }
+    else
+    {
+        printf("FALSE\n");
+    }
 }

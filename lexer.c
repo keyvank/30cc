@@ -83,6 +83,8 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_FOR);
         else if (strcmp(val, "if") == 0)
             return new_simp_tkn(TKN_IF);
+        else if (strcmp(val, "else") == 0)
+            return new_simp_tkn(TKN_ELSE);
         else if (strcmp(val, "do") == 0)
             return new_simp_tkn(TKN_DO);
         else if (strcmp(val, "while") == 0)

@@ -9,6 +9,7 @@ context new_context()
     ctx.data = new_linked_list();
     ctx.text = new_linked_list();
     ctx.symbol_table = new_linked_list();
+    ctx.label_counter = 0;
     return ctx;
 }
 
@@ -25,6 +26,14 @@ int find_symbol(context *ctx, char *name)
         curr = curr->next;
     }
     return -1;
+}
+
+char *new_label(context *ctx)
+{
+    char *name = malloc(128);
+    sprintf(name, "__tmp_label_%u", ctx->label_counter);
+    ctx->label_counter++;
+    return name;
 }
 
 int new_symbol(context *ctx, char *name)

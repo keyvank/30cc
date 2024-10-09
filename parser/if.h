@@ -10,6 +10,7 @@ typedef struct
 {
     parser_node *cond;
     parser_node *body;
+    parser_node *else_body;
 } node_if;
 
 #endif
