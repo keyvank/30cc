@@ -47,6 +47,49 @@ char *binary_op_apply(parser_node *node, context *ctx)
         case TKN_STAR:
             add_to_list(&ctx->text, "mul rbx");
             break;
+        case TKN_LT:
+        case TKN_LTE:
+        case TKN_GT:
+        case TKN_GTE:
+        case TKN_EQ:
+        case TKN_NEQ:
+            add_to_list(&ctx->text, "cmp rax, rbx");
+            char *l1 = new_label(ctx);
+            char *l2 = new_label(ctx);
+
+            code = malloc(128);
+            char *op = NULL;
+            if (binop->op == TKN_LT)
+                op = "jl";
+            else if (binop->op == TKN_LTE)
+                op = "jle";
+            else if (binop->op == TKN_GT)
+                op = "jg";
+            else if (binop->op == TKN_GTE)
+                op = "jge";
+            else if (binop->op == TKN_EQ)
+                op = "je";
+            else if (binop->op == TKN_NEQ)
+                op = "jne";
+            sprintf(code, "%s %s", op, l1);
+            add_to_list(&ctx->text, code);
+
+            add_to_list(&ctx->text, "mov rax, 0");
+
+            code = malloc(128);
+            sprintf(code, "jmp %s", l2);
+            add_to_list(&ctx->text, code);
+
+            code = malloc(128);
+            sprintf(code, "%s:", l1);
+            add_to_list(&ctx->text, code);
+
+            add_to_list(&ctx->text, "mov rax, 1");
+
+            code = malloc(128);
+            sprintf(code, "%s:", l2);
+            add_to_list(&ctx->text, code);
+            break;
         default:
             printf("Invalid op!\n");
             exit(1);
@@ -419,7 +462,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
     {
         while (1)
         {
-            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN)
+            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN || tkn->type_id == TKN_LT || tkn->type_id == TKN_GT || tkn->type_id == TKN_LTE || tkn->type_id == TKN_GTE || tkn->type_id == TKN_EQ || tkn->type_id == TKN_NEQ)
             {
                 int op_type_id = tkn->type_id;
                 tkn = tkn->next;
