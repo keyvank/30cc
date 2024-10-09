@@ -72,6 +72,8 @@ int main()
     }
     printf("%u\n", 5 != 1);
 
+
+    // Manually printing fibo
     printf("%u ", fibo(0));
     printf("%u ", fibo(1));
     printf("%u ", fibo(2));
@@ -82,9 +84,13 @@ int main()
     printf("%u ", fibo(7));
     printf("%u\n", fibo(8));
 
+    /*
+        Fibo in for loop
+    */
     for (int i = 0; i < 20; i = i + 1)
     {
         printf("%u ", fibo(i));
     }
+    /* Salam donya! */
     printf("\nDONE!\n");
 }

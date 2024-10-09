@@ -360,6 +360,9 @@ typed_token *tokenize(char *inp)
             break;
         }
         typed_token *next = next_token(ptr);
+        if(next->type_id == TKN_COMMENT) {
+            continue;
+        }
         t->next = next;
         t = next;
     }
