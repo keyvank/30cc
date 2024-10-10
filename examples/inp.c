@@ -1,4 +1,4 @@
-void printf(char *);
+void printf(char *, ...);
 
 struct MyStruct
 {
@@ -83,7 +83,7 @@ int main()
     printf("%u ", fibo(6));
     printf("%u ", fibo(7));
     printf("%u\n", fibo(8));
-
+    
     /*
         Fibo in for loop
     */

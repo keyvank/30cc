@@ -153,6 +153,19 @@ parser_node *parse_function(typed_token **tkns_ptr)
                 tkn = tkn->next;
                 while (tkn)
                 {
+                    if (tkn->type_id == TKN_DOTS)
+                    {
+                        tkn = tkn->next;
+                        if (tkn->type_id == TKN_R_PAREN)
+                        {
+                            tkn = tkn->next;
+                            break;
+                        }
+                        else
+                        {
+                            return NULL;
+                        }
+                    }
                     if (tkn->type_id == TKN_R_PAREN)
                     {
                         tkn = tkn->next;

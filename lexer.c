@@ -310,6 +310,14 @@ typed_token *next_op(char **inp_ptr)
             return new_simp_tkn(TKN_STAR);
         }
     }
+    if (*inp == '.')
+    {
+        if (*(inp + 1) == '.' && *(inp + 2) == '.')
+        {
+            *inp_ptr += 3;
+            return new_simp_tkn(TKN_DOTS);
+        }
+    }
     return NULL;
 }
 
