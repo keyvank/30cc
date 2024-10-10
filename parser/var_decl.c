@@ -21,8 +21,8 @@ char *var_decl_apply(parser_node *node, context *ctx)
         add_to_list(&ctx->text, code);
 
         code = malloc(128);
-        int off = new_symbol(ctx, decl->identity);
-        sprintf(code, "mov [rsp+%u], rax", off);
+        symbol *sym = new_symbol(ctx, decl->identity, 8);
+        sprintf(code, "mov [rsp+%u], rax", sym->offset);
         add_to_list(&ctx->text, code);
     }
     return NULL;

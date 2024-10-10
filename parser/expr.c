@@ -95,14 +95,14 @@ char *binary_op_apply(parser_node *node, context *ctx)
             exit(1);
         }
 
-        int tmp = new_temp_symbol(ctx);
+        symbol *tmp = new_temp_symbol(ctx, 8);
 
         code = malloc(128);
-        sprintf(code, "mov [rsp + %u], rax", tmp);
+        sprintf(code, "mov [rsp + %u], rax", tmp->offset);
         add_to_list(&ctx->text, code);
 
         code = malloc(128);
-        sprintf(code, "[rsp + %u]", tmp);
+        sprintf(code, "[rsp + %u]", tmp->offset);
 
         return code;
     }
@@ -123,15 +123,15 @@ void var_debug(int depth, parser_node *node)
 char *var_apply(parser_node *node, context *ctx)
 {
     node_var *var = (node_var *)node->data;
-    int off = find_symbol(ctx, var->var_name);
-    if (off == -1)
+    symbol *sym = find_symbol(ctx, var->var_name);
+    if (!sym)
     {
         printf("ERROR!");
     }
     else
     {
         char *code = malloc(128);
-        sprintf(code, "[rsp + %u]", off);
+        sprintf(code, "[rsp + %u]", sym->offset);
         return code;
     }
 }
@@ -158,10 +158,10 @@ char *func_call_apply(parser_node *node, context *ctx)
     {
         char *regval = call->args[i]->apply(call->args[i], ctx);
 
-        int tmp = new_temp_symbol(ctx);
+        symbol *tmp = new_temp_symbol(ctx, 8);
 
         char *regname = malloc(128);
-        sprintf(regname, "[rsp + %u]", tmp);
+        sprintf(regname, "[rsp + %u]", tmp->offset);
 
         char *code = malloc(128);
         sprintf(code, "mov rax, %s", regval);
@@ -202,14 +202,14 @@ char *func_call_apply(parser_node *node, context *ctx)
     sprintf(code, "call %s", call->func_name);
     add_to_list(&ctx->text, code);
 
-    int tmp = new_temp_symbol(ctx);
+    symbol *tmp = new_temp_symbol(ctx, 8);
 
     code = malloc(128);
-    sprintf(code, "mov [rsp + %u], rax", tmp);
+    sprintf(code, "mov [rsp + %u], rax", tmp->offset);
     add_to_list(&ctx->text, code);
 
     code = malloc(128);
-    sprintf(code, "[rsp + %u]", tmp);
+    sprintf(code, "[rsp + %u]", tmp->offset);
 
     return code;
 }
@@ -228,13 +228,13 @@ char *ref_apply(parser_node *node, context *ctx)
     if (ref->var->apply == var_apply)
     {
         node_var *v = (node_var *)ref->var->data;
-        int off = find_symbol(ctx, v->var_name);
-        if (off != -1)
+        symbol *sym = find_symbol(ctx, v->var_name);
+        if (sym)
         {
             add_to_list(&ctx->text, "mov rax, rsp");
 
             char *code = malloc(128);
-            sprintf(code, "add rax, %u", off);
+            sprintf(code, "add rax, %u", sym->offset);
             add_to_list(&ctx->text, code);
 
             return "rax";

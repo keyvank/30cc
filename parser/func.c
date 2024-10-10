@@ -10,7 +10,6 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-
 char *func_decl_apply(parser_node *node, context *ctx)
 {
     node_func_decl *func = (node_func_decl *)node->data;
@@ -40,7 +39,7 @@ void func_def_apply(parser_node *node, context *ctx)
 
     for (int i = 0; i < func->num_params; i++)
     {
-        node_param *par = (node_param*)func->params[i]->data;
+        node_param *par = (node_param *)func->params[i]->data;
 
         char *regname = NULL;
         if (i == 0)
@@ -62,8 +61,8 @@ void func_def_apply(parser_node *node, context *ctx)
         }
 
         char *code = malloc(128);
-        int off = new_symbol(ctx, par->identity);
-        sprintf(code, "mov [rsp+%u], %s", off,regname);
+        symbol *sym = new_symbol(ctx, par->identity, 8);
+        sprintf(code, "mov [rsp+%u], %s", sym->offset, regname);
         add_to_list(&ctx->text, code);
     }
 

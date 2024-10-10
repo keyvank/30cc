@@ -16,11 +16,12 @@ context new_context();
 typedef struct
 {
     char *name;
+    int size;
     int offset;
 } symbol;
 
-int find_symbol(context *tab, char *name);
-int new_symbol(context *ctx, char *name);
-int new_temp_symbol(context *ctx);
+symbol *find_symbol(context *tab, char *name);
+symbol *new_symbol(context *ctx, char *name, int sz);
+symbol *new_temp_symbol(context *ctx, int sz);
 char *new_label(context *ctx);
 #endif

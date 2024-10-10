@@ -13,7 +13,7 @@ context new_context()
     return ctx;
 }
 
-int find_symbol(context *ctx, char *name)
+symbol *find_symbol(context *ctx, char *name)
 {
     list_node *curr = ctx->symbol_table.first;
     while (curr)
@@ -21,11 +21,11 @@ int find_symbol(context *ctx, char *name)
         symbol *sym = (symbol *)curr->value;
         if (strcmp(sym->name, name) == 0)
         {
-            return sym->offset;
+            return sym;
         }
         curr = curr->next;
     }
-    return -1;
+    return NULL;
 }
 
 char *new_label(context *ctx)
@@ -36,17 +36,18 @@ char *new_label(context *ctx)
     return name;
 }
 
-int new_symbol(context *ctx, char *name)
+symbol *new_symbol(context *ctx, char *name, int sz)
 {
-    list_node *curr = ctx->symbol_table.first;
+    symbol *newsym = (symbol *)malloc(sizeof(symbol));
+    newsym->name = name;
+    newsym->offset = 0;
+    newsym->size = sz;
 
+    list_node *curr = ctx->symbol_table.first;
     if (!curr)
     {
-        symbol *newsym = (symbol *)malloc(sizeof(symbol));
-        newsym->name = name;
-        newsym->offset = 0;
         add_to_list(&ctx->symbol_table, newsym);
-        return 0;
+        return newsym;
     }
     int offset = 0;
     while (curr)
@@ -57,17 +58,15 @@ int new_symbol(context *ctx, char *name)
             printf("Symbol already there!\n");
             exit(1);
         }
-        offset = sym->offset;
+        offset += sym->size;
         curr = curr->next;
     }
-    symbol *newsym = (symbol *)malloc(sizeof(symbol));
-    newsym->name = name;
-    newsym->offset = offset + 8;
+    newsym->offset = offset;
     add_to_list(&ctx->symbol_table, newsym);
-    return newsym->offset;
+    return newsym;
 }
 
-int new_temp_symbol(context *ctx)
+symbol *new_temp_symbol(context *ctx, int sz)
 {
     list_node *curr = ctx->symbol_table.first;
     int cnt = 0;
@@ -78,5 +77,5 @@ int new_temp_symbol(context *ctx)
     }
     char *name = malloc(128);
     sprintf(name, "__tmp_sym_%u", cnt);
-    return new_symbol(ctx, name);
+    return new_symbol(ctx, name, sz);
 }

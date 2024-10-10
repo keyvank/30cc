@@ -31,9 +31,9 @@ char *assign_apply(parser_node *node, context *ctx)
     sprintf(code, "mov rax, %s", val);
     add_to_list(&ctx->text, code);
 
-    int off = find_symbol(ctx, assign->identity);
+    symbol *sym = find_symbol(ctx, assign->identity);
     char *res = malloc(128);
-    sprintf(res, "[rsp+%u]", off);
+    sprintf(res, "[rsp+%u]", sym->offset);
 
     code = malloc(128);
     sprintf(code, "mov %s, rax", res);
