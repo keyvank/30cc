@@ -193,69 +193,118 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     return curr;
 }
 
+int op_prec(int op)
+{
+    switch (op)
+    {
+    case TKN_STAR:
+        return 50;
+    case TKN_PLUS:
+    case TKN_MIN:
+        return 40;
+    case TKN_LT:
+    case TKN_GT:
+    case TKN_LTE:
+    case TKN_GTE:
+    case TKN_EQ:
+    case TKN_NEQ:
+        return 30;
+    case TKN_OROR:
+        return 20;
+    case TKN_ANDAND:
+        return 10;
+    default:
+        return 0;
+    }
+}
+
+parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_prec);
+
 parser_node *parse_expr(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-
-    parser_node *curr = parse_terminal(&tkn);
-
-    if (curr)
+    parser_node *lhs = parse_terminal(&tkn);
+    if (lhs)
     {
-        while (1)
+        parser_node *res = parse_expr_prec(&tkn, lhs, 1);
+        if (res)
         {
-            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN || tkn->type_id == TKN_LT || tkn->type_id == TKN_GT || tkn->type_id == TKN_LTE || tkn->type_id == TKN_GTE || tkn->type_id == TKN_EQ || tkn->type_id == TKN_NEQ || tkn->type_id == TKN_ANDAND || tkn->type_id == TKN_OROR)
+            *tkns_ptr = tkn;
+            return res;
+        }
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_prec)
+{
+    typed_token *tkn = *tkns_ptr;
+
+    while (1)
+    {
+        int prec = op_prec(tkn->type_id);
+        if (prec >= min_prec)
+        {
+            int op_type_id = tkn->type_id;
+            tkn = tkn->next;
+            parser_node *rhs = parse_terminal(&tkn);
+            if (rhs)
             {
-                int op_type_id = tkn->type_id;
-                tkn = tkn->next;
-                parser_node *right = parse_terminal(&tkn);
-                if (right)
-                {
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_binary_op));
-                    node->debug = binary_op_debug;
-                    node->apply = binary_op_apply;
-                    node_binary_op *binop = (node_binary_op *)node->data;
-                    binop->left = curr;
-                    binop->right = right;
-                    binop->op = op_type_id;
-
-                    curr = node;
-                }
-                else
-                {
-                    return NULL;
-                }
-            }
-            else if (tkn->type_id == TKN_QUEST)
-            {
-                tkn = tkn->next;
-                parser_node *yes = parse_expr(&tkn);
-                if (yes && tkn->type_id == TKN_COLON)
-                {
-                    tkn = tkn->next;
-                    parser_node *no = parse_expr(&tkn);
-                    if (no)
-                    {
-
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_cond));
-                        node->debug = cond_debug;
-                        node->apply = cond_apply;
-                        node_cond *binop = (node_cond *)node->data;
-                        binop->cond = curr;
-                        binop->true_val = yes;
-                        binop->false_val = no;
-
-                        *tkns_ptr = tkn;
-                        return node;
+                while(1) {
+                    int look_prec = op_prec(tkn->type_id);
+                    if(look_prec < prec) {
+                        break;
                     }
+                    rhs = parse_expr_prec(&tkn, rhs, look_prec);
                 }
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                node->data = (void *)malloc(sizeof(node_binary_op));
+                node->debug = binary_op_debug;
+                node->apply = binary_op_apply;
+                node_binary_op *binop = (node_binary_op *)node->data;
+                binop->left = lhs;
+                binop->right = rhs;
+                binop->op = op_type_id;
+
+                lhs = node;
             }
             else
             {
-                *tkns_ptr = tkn;
-                return curr;
+                return NULL;
             }
+        }
+        else if (tkn->type_id == TKN_QUEST)
+        {
+            tkn = tkn->next;
+            parser_node *yes = parse_expr(&tkn);
+            if (yes && tkn->type_id == TKN_COLON)
+            {
+                tkn = tkn->next;
+                parser_node *no = parse_expr(&tkn);
+                if (no)
+                {
+
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->data = (void *)malloc(sizeof(node_cond));
+                    node->debug = cond_debug;
+                    node->apply = cond_apply;
+                    node_cond *binop = (node_cond *)node->data;
+                    binop->cond = lhs;
+                    binop->true_val = yes;
+                    binop->false_val = no;
+
+                    *tkns_ptr = tkn;
+                    return node;
+                }
+            }
+        }
+        else
+        {
+            *tkns_ptr = tkn;
+            return lhs;
         }
     }
 
