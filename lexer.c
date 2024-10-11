@@ -123,6 +123,14 @@ typed_token *next_op(char **inp_ptr)
         *val = a;
         return new_tkn(TKN_LIT_INT, (void *)val, int_lit_tkn_debug);
     }
+    if (*inp == '#')
+    {
+        if (inp[1] == 'd' && inp[2] == 'e' && inp[3] == 'f' && inp[4] == 'i' && inp[5] == 'n' && inp[6] == 'e')
+        {
+            *inp_ptr += 7;
+            return new_simp_tkn(TKN_MACRO_DEFINE);
+        }
+    }
     if (*inp == '(')
     {
         *inp_ptr += 1;

@@ -56,7 +56,6 @@ typed_token *tokenize(char *inp);
 #define TKN_DOTS 81
 
 #define TKN_COMMENT 128
-
-#define TKN_MACRO_DEFINE 256
+#define TKN_MACRO_DEFINE 129
 
 #endif
