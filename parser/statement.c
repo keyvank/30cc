@@ -8,6 +8,7 @@
 #include "expr/expr.h"
 #include "for.h"
 #include "if.h"
+#include "while.h"
 
 char *compound_statement_apply(parser_node *node, context *ctx)
 {
@@ -171,6 +172,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_for(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_while(&tkn);
     if (ret)
     {
         *tkns_ptr = tkn;

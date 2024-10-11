@@ -49,6 +49,14 @@ int fibo(int n)
 
 int main()
 {
+
+    int i2 = 0;
+    while (i2 < 10)
+    {
+        printf("I: %u\n", i2);
+        i2 = i2 + 1;
+    }
+
     printf("%c %c %u", 'a', SALAM2, 'c');
     printf("\n");
 
