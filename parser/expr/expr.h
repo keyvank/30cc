@@ -16,6 +16,18 @@ typedef struct
 
 typedef struct
 {
+    int op;
+    parser_node *exp;
+} node_unary_op;
+
+typedef struct
+{
+    parser_node *type;
+    parser_node *val;
+} node_cast;
+
+typedef struct
+{
     parser_node *cond;
     parser_node *true_val;
     parser_node *false_val;

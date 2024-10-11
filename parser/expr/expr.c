@@ -11,6 +11,7 @@
 #include "func_call.h"
 #include "ref.h"
 #include "deref.h"
+#include "../type.h"
 
 void binary_op_debug(int depth, parser_node *node)
 {
@@ -141,6 +142,25 @@ char *cond_apply(parser_node *node, context *ctx)
     return asprintf("[rsp+%u]", sym->offset);
 }
 
+void cast_debug(int depth, parser_node *node)
+{
+    node_cast *cast = (node_cast *)node->data;
+    printtabs(depth);
+    printf("Cast:\n");
+    printtabs(depth + 1);
+    printf("Val:\n");
+    cast->val->debug(depth + 2, cast->val);
+    printtabs(depth + 1);
+    printf("Type:\n");
+    cast->type->debug(depth + 2, cast->type);
+}
+
+char *cast_apply(parser_node *node, context *ctx)
+{
+    node_cast *cast = (node_cast *)node->data;
+    return cast->val->apply(cast->val, ctx);
+}
+
 parser_node *parse_paren(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -167,12 +187,45 @@ parser_node *parse_paren(typed_token **tkns_ptr)
     return NULL;
 }
 
+parser_node *parse_cast(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+    if (tkn->type_id == TKN_L_PAREN)
+    {
+        tkn = tkn->next;
+        parser_node *tp = parse_type(&tkn);
+        if (tp)
+        {
+            if (tkn->type_id == TKN_R_PAREN)
+            {
+                tkn = tkn->next;
+                parser_node *val = parse_terminal(&tkn);
+                if (val)
+                {
+                    *tkns_ptr = tkn;
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->data = (void *)malloc(sizeof(node_cast));
+                    node->debug = cast_debug;
+                    node->apply = cast_apply;
+                    node_cast *cast = (node_cast *)node->data;
+                    cast->type = tp;
+                    cast->val = val;
+                    return node;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
 parser_node *parse_terminal(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
 
     parser_node *curr = NULL;
 
+    if (!curr)
+        curr = parse_cast(&tkn);
     if (!curr)
         curr = parse_paren(&tkn);
     if (!curr)
@@ -253,9 +306,11 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
             parser_node *rhs = parse_terminal(&tkn);
             if (rhs)
             {
-                while(1) {
+                while (1)
+                {
                     int look_prec = op_prec(tkn->type_id);
-                    if(look_prec < prec) {
+                    if (look_prec < prec)
+                    {
                         break;
                     }
                     rhs = parse_expr_prec(&tkn, rhs, look_prec);
