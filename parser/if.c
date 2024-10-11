@@ -14,7 +14,7 @@ char *if_apply(parser_node *node, context *ctx)
     node_if *ifn = (node_if *)node->data;
     char *ife = ifn->cond->apply(ifn->cond, ctx);
 
-    add_to_list(&ctx->text, "mov rax, 0");
+    add_text(ctx, "mov rax, 0");
 
     char *end_of_if = new_label(ctx);
     char *end_of_else = NULL;
@@ -22,34 +22,18 @@ char *if_apply(parser_node *node, context *ctx)
         end_of_else = new_label(ctx);
     }
 
-    char *ifcmp = malloc(128);
-    sprintf(ifcmp, "cmp rax, %s", ife);
-    add_to_list(&ctx->text, ifcmp);
-
-    char *code = malloc(128);
-    sprintf(code, "je %s", end_of_if);
-    add_to_list(&ctx->text, code);
-
+    add_text(ctx, "cmp rax, %s", ife);
+    add_text(ctx, "je %s", end_of_if);
     ifn->body->apply(ifn->body, ctx);
-
     if (ifn->else_body)
     {
-        code = malloc(128);
-        sprintf(code, "jmp %s", end_of_else);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "jmp %s", end_of_else);
     }
-
-    code = malloc(128);
-    sprintf(code, "%s:", end_of_if);
-    add_to_list(&ctx->text, code);
-
+    add_text(ctx, "%s:", end_of_if);
     if (ifn->else_body)
     {
         ifn->else_body->apply(ifn->else_body, ctx);
-
-        code = malloc(128);
-        sprintf(code, "%s:", end_of_else);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "%s:", end_of_else);
     }
 
     return NULL;

@@ -38,12 +38,12 @@ char *program_apply(parser_node *node, context *ctx)
         parser_node *node = prog->functions[i];
         node->apply(node, ctx);
     }
-    add_to_list(&ctx->text, "extern exit");
-    add_to_list(&ctx->text, "global _start");
-    add_to_list(&ctx->text, "_start:");
-    add_to_list(&ctx->text, "call main");
-    add_to_list(&ctx->text, "mov rdi, 0");
-    add_to_list(&ctx->text, "call exit");
+    add_text(ctx, "extern exit");
+    add_text(ctx, "global _start");
+    add_text(ctx, "_start:");
+    add_text(ctx, "call main");
+    add_text(ctx, "mov rdi, 0");
+    add_text(ctx, "call exit");
     return NULL;
 }
 

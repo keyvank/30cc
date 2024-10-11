@@ -37,14 +37,12 @@ void return_apply(parser_node *node, context *ctx)
     if (func->exp)
     {
         char *val = func->exp->apply(func->exp, ctx);
-        char *code = malloc(128);
-        sprintf(code, "mov rax, %s", val);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "mov rax, %s", val);
     }
 
-    add_to_list(&ctx->text, "mov rsp, rbp");
-    add_to_list(&ctx->text, "pop rbp");
-    add_to_list(&ctx->text, "ret");
+    add_text(ctx, "mov rsp, rbp");
+    add_text(ctx, "pop rbp");
+    add_text(ctx, "ret");
     return NULL;
 }
 

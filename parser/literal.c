@@ -33,20 +33,13 @@ char *literal_apply(parser_node *node, context *ctx)
     node_literal *lit = (node_literal *)node->data;
     if (lit->type == TKN_STR)
     {
-        char *varname = malloc(128);
-        sprintf(varname, "__temp_str_%u", ctx->data.count);
-
-        char *str = malloc(128);
-        sprintf(str, "%s db `%s`, 0", varname, escape(lit->value));
-        add_to_list(&ctx->data, str);
-
+        char *varname = asprintf("__temp_str_%u", ctx->data.count);
+        add_data(ctx, "%s db `%s`, 0", varname, escape(lit->value));
         return varname;
     }
     if (lit->type == TKN_LIT_INT)
     {
-        char *str = malloc(128);
-        sprintf(str, "%u", *((int *)lit->value));
-        return str;
+        return asprintf("%u", *((int *)lit->value));;
     }
     return lit->value;
 }
