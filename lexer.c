@@ -151,6 +151,16 @@ typed_token *next_op(char **inp_ptr)
         *inp_ptr += 1;
         return new_simp_tkn(TKN_R_BRACE);
     }
+    if (*inp == '[')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_L_BRACK);
+    }
+    if (*inp == ']')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_R_BRACK);
+    }
     if (*inp == ';')
     {
         *inp_ptr += 1;

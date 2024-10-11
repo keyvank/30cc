@@ -54,6 +54,33 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             typed_token *name_tkn = tkn;
             tkn = tkn->next;
 
+            int dim = 0;
+            int *dims = malloc(sizeof(int) * 32);
+            while (tkn->type_id == TKN_L_BRACK)
+            {
+                tkn = tkn->next;
+                if (tkn->type_id == TKN_LIT_INT)
+                {
+                    int sz = *((int *)tkn->data);
+                    tkn = tkn->next;
+                    if (tkn->type_id == TKN_R_BRACK)
+                    {
+                        tkn = tkn->next;
+                        dims[dim++] = sz;
+                        continue;
+                    } else {
+                        return NULL;
+                    }
+                }
+                else
+                {
+                    return NULL;
+                }
+            }
+
+            ((node_type *)tp->data)->dims = dims;
+            ((node_type *)tp->data)->dim = dim;
+
             parser_node *val_expr = NULL;
 
             if (tkn->type_id == TKN_SEMICOLON)

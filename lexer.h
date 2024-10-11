@@ -28,8 +28,10 @@ typed_token *tokenize(char *inp);
 #define TKN_R_PAREN 17
 #define TKN_L_BRACE 18
 #define TKN_R_BRACE 19
-#define TKN_SEMICOLON 20
-#define TKN_COMMA 21
+#define TKN_L_BRACK 20
+#define TKN_R_BRACK 21
+#define TKN_SEMICOLON 22
+#define TKN_COMMA 23
 
 #define TKN_ID 32
 #define TKN_LIT_STR 33

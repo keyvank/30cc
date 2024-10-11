@@ -16,6 +16,9 @@ void type_debug(int depth, parser_node *node)
     {
         printf("*");
     }
+    for (int i = 0; i < tp->dim; i++) {
+        printf("[%u]", tp->dims[i]);
+    }
     printf(")\n");
 }
 
@@ -39,6 +42,8 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node_type *par = (node_type *)node->data;
         par->name = ret_type_tkn->data;
         par->num_pointing = num_pointing;
+        par->dim = 0;
+        par->dims = NULL;
         return node;
     }
     return NULL;

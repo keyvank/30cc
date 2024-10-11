@@ -10,6 +10,8 @@ typedef struct
 {
     char *name;
     int num_pointing;
+    int dim;
+    int *dims;
 } node_type;
 
 #endif

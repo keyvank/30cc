@@ -6,7 +6,7 @@ void printf(char *, ...);
 
 struct MyStruct
 {
-    int a;
+    int **a[10][SALAM2][30];
     char b;
     int c;
 };
