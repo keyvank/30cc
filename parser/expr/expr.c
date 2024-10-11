@@ -44,6 +44,24 @@ char *binary_op_apply(parser_node *node, context *ctx)
     case TKN_STAR:
         add_text(ctx, "mul rbx");
         break;
+    case TKN_ANDAND:
+    case TKN_OROR:
+        char *ll1 = new_label(ctx);
+        char *ll2 = new_label(ctx);
+        add_text(ctx, "cmp rax, 0");
+        if (binop->op == TKN_ANDAND)
+            add_text(ctx, "je %s", ll1);
+        else
+            add_text(ctx, "jne %s", ll1);
+        add_text(ctx, "mov rax, rbx");
+        add_text(ctx, "jmp %s", ll2);
+        add_text(ctx, "%s:", ll1);
+        if (binop->op == TKN_ANDAND)
+            add_text(ctx, "mov rax, 0");
+        else
+            add_text(ctx, "mov rax, 1");
+        add_text(ctx, "%s:", ll2);
+        break;
     case TKN_LT:
     case TKN_LTE:
     case TKN_GT:
@@ -148,7 +166,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
     {
         while (1)
         {
-            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN || tkn->type_id == TKN_LT || tkn->type_id == TKN_GT || tkn->type_id == TKN_LTE || tkn->type_id == TKN_GTE || tkn->type_id == TKN_EQ || tkn->type_id == TKN_NEQ)
+            if (tkn->type_id == TKN_PLUS || tkn->type_id == TKN_STAR || tkn->type_id == TKN_MIN || tkn->type_id == TKN_LT || tkn->type_id == TKN_GT || tkn->type_id == TKN_LTE || tkn->type_id == TKN_GTE || tkn->type_id == TKN_EQ || tkn->type_id == TKN_NEQ || tkn->type_id == TKN_ANDAND || tkn->type_id == TKN_OROR)
             {
                 int op_type_id = tkn->type_id;
                 tkn = tkn->next;

@@ -49,7 +49,6 @@ int fibo(int n)
 
 int main()
 {
-
     int i2 = 0;
     while (i2 < 10)
     {
@@ -109,4 +108,6 @@ int main()
     }
     /* Salam donya! */
     printf("\nDONE!\n");
+
+    printf("%u\n", (1 && 1) && (1 && 1));
 }

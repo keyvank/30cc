@@ -44,7 +44,7 @@ typed_token *tokenize(char *inp);
 #define TKN_GT 67
 #define TKN_LTE 68
 #define TKN_GTE 69
-#define TKN_NEG 70
+#define TKN_NOT 70
 #define TKN_NEQ 71
 #define TKN_PLUS 72
 #define TKN_PLUSPLUS 73
@@ -54,8 +54,11 @@ typed_token *tokenize(char *inp);
 #define TKN_MINEQ 77
 #define TKN_STAR 78
 #define TKN_STAREQ 79
-#define TKN_AMP 80
-#define TKN_DOTS 81
+#define TKN_DOTS 80
+#define TKN_AND 81
+#define TKN_ANDAND 82
+#define TKN_OR 83
+#define TKN_OROR 84
 
 #define TKN_COMMENT 128
 #define TKN_MACRO_DEFINE 129

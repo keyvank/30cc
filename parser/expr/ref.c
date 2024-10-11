@@ -39,7 +39,7 @@ parser_node *parse_ref(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
 
-    if (tkn->type_id == TKN_AMP)
+    if (tkn->type_id == TKN_AND)
     {
         tkn = tkn->next;
         parser_node *n = parse_terminal(&tkn);
