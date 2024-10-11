@@ -75,15 +75,15 @@ parser_node *parse_program(typed_token **tkn_ptr)
         }
         parser_node *f = NULL;
 
-        if (f = parse_function(&tkn))
+        if ((f = parse_function(&tkn)))
         {
             funcs[func_count++] = f;
         }
-        else if (f = parse_struct_def(&tkn))
+        else if ((f = parse_struct_def(&tkn)))
         {
             struct_defs[struct_def_count++] = f;
         }
-        else if (f = parse_var_decl(&tkn))
+        else if ((f = parse_var_decl(&tkn)))
         {
             var_decls[var_decl_count++] = f;
         }

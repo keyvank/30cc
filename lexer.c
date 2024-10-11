@@ -5,19 +5,19 @@
 #include <stdlib.h>
 #include "lexer.h"
 
-char isnum(char c)
+char is_num(char c)
 {
     return (c >= '0' && c <= '9') ? c : 0;
 }
 
-char isletter(char c)
+char is_letter(char c)
 {
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_') ? c : 0;
 }
 
-char isalnum(char c)
+char is_letter_or_num(char c)
 {
-    return (isnum(c) || isletter(c)) ? c : 0;
+    return (is_num(c) || is_letter(c)) ? c : 0;
 }
 
 typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *))
@@ -55,14 +55,14 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
 {
     char *inp = *inp_ptr;
     char c;
-    if ((c = isletter(*inp)))
+    if ((c = is_letter(*inp)))
     {
         inp++;
         char *val = (char *)malloc(128);
         char *val_ptr = val;
         *val_ptr = c;
         val_ptr++;
-        while (*inp && (c = isalnum(*inp)))
+        while (*inp && (c = is_letter_or_num(*inp)))
         {
             *val_ptr = c;
             inp++;
@@ -103,11 +103,11 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
 typed_token *next_op(char **inp_ptr)
 {
     char *inp = *inp_ptr;
-    if (isnum(*inp))
+    if (is_num(*inp))
     {
         int a = *inp - 48;
         inp++;
-        while (isnum(*inp))
+        while (is_num(*inp))
         {
 
             a = a * 10;

@@ -5,8 +5,8 @@ CFLAGS := -std=gnu99 -Wall -Wextra -pedantic -Og -ggdb
 
 BIN := a.out
 
-$(BIN): *.c parser/*.c codegen/*.c
-	$(CC) $(CFLAGS) *.c parser/*.c codegen/*.c
+$(BIN): *.c parser/*.c parser/expr/*.c codegen/*.c
+	$(CC) $(CFLAGS) *.c parser/*.c codegen/*.c parser/expr/*.c
 
 run:
 	./a.out > out.asm

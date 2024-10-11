@@ -30,68 +30,60 @@ char *binary_op_apply(parser_node *node, context *ctx)
     node_binary_op *binop = (node_binary_op *)node->data;
     char *left = binop->left->apply(binop->left, ctx);
     char *right = binop->right->apply(binop->right, ctx);
-    if (left != -1 && right != -1)
+    add_text(ctx, "mov rax, %s", left);
+    add_text(ctx, "mov rbx, %s", right);
+
+    switch (binop->op)
     {
-        add_text(ctx, "mov rax, %s", left);
-        add_text(ctx, "mov rbx, %s", right);
+    case TKN_PLUS:
+        add_text(ctx, "add rax, rbx");
+        break;
+    case TKN_MIN:
+        add_text(ctx, "sub rax, rbx");
+        break;
+    case TKN_STAR:
+        add_text(ctx, "mul rbx");
+        break;
+    case TKN_LT:
+    case TKN_LTE:
+    case TKN_GT:
+    case TKN_GTE:
+    case TKN_EQ:
+    case TKN_NEQ:
+        add_to_list(&ctx->text, "cmp rax, rbx");
+        char *l1 = new_label(ctx);
+        char *l2 = new_label(ctx);
 
-        switch (binop->op)
-        {
-        case TKN_PLUS:
-            add_text(ctx, "add rax, rbx");
-            break;
-        case TKN_MIN:
-            add_text(ctx, "sub rax, rbx");
-            break;
-        case TKN_STAR:
-            add_text(ctx, "mul rbx");
-            break;
-        case TKN_LT:
-        case TKN_LTE:
-        case TKN_GT:
-        case TKN_GTE:
-        case TKN_EQ:
-        case TKN_NEQ:
-            add_to_list(&ctx->text, "cmp rax, rbx");
-            char *l1 = new_label(ctx);
-            char *l2 = new_label(ctx);
+        char *op = NULL;
+        if (binop->op == TKN_LT)
+            op = "jl";
+        else if (binop->op == TKN_LTE)
+            op = "jle";
+        else if (binop->op == TKN_GT)
+            op = "jg";
+        else if (binop->op == TKN_GTE)
+            op = "jge";
+        else if (binop->op == TKN_EQ)
+            op = "je";
+        else if (binop->op == TKN_NEQ)
+            op = "jne";
 
-            char *op = NULL;
-            if (binop->op == TKN_LT)
-                op = "jl";
-            else if (binop->op == TKN_LTE)
-                op = "jle";
-            else if (binop->op == TKN_GT)
-                op = "jg";
-            else if (binop->op == TKN_GTE)
-                op = "jge";
-            else if (binop->op == TKN_EQ)
-                op = "je";
-            else if (binop->op == TKN_NEQ)
-                op = "jne";
-
-            add_text(ctx, "%s %s", op, l1);
-            add_text(ctx, "mov rax, 0");
-            add_text(ctx, "jmp %s", l2);
-            add_text(ctx, "%s:", l1);
-            add_text(ctx, "mov rax, 1");
-            add_text(ctx, "%s:", l2);
-            break;
-        default:
-            printf("Invalid op!\n");
-            exit(1);
-        }
-
-        symbol *tmp = new_temp_symbol(ctx, 8);
-
-        add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
-        return asprintf("[rsp + %u]", tmp->offset);
-    }
-    else
-    {
-        printf("ERROR!");
+        add_text(ctx, "%s %s", op, l1);
+        add_text(ctx, "mov rax, 0");
+        add_text(ctx, "jmp %s", l2);
+        add_text(ctx, "%s:", l1);
+        add_text(ctx, "mov rax, 1");
+        add_text(ctx, "%s:", l2);
+        break;
+    default:
+        printf("Invalid op!\n");
         exit(1);
     }
+
+    symbol *tmp = new_temp_symbol(ctx, 8);
+
+    add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
+    return asprintf("[rsp + %u]", tmp->offset);
 }
 
 parser_node *parse_paren(typed_token **tkns_ptr)

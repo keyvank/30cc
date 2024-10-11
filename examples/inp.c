@@ -7,6 +7,8 @@ struct MyStruct
     int c;
 };
 
+int salam = 52;
+
 int doub(int k)
 {
     return k * 2;
@@ -72,7 +74,6 @@ int main()
     }
     printf("%u\n", 5 != 1);
 
-
     // Manually printing fibo
     printf("%u ", fibo(0));
     printf("%u ", fibo(1));
@@ -83,7 +84,7 @@ int main()
     printf("%u ", fibo(6));
     printf("%u ", fibo(7));
     printf("%u\n", fibo(8));
-    
+
     /*
         Fibo in for loop
     */

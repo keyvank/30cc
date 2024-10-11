@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "../../lexer.h"
 #include "../parser.h"
@@ -23,6 +24,7 @@ char *var_apply(parser_node *node, context *ctx)
     {
         return asprintf("[rsp + %u]", sym->offset);
     }
+    return NULL;
 }
 
 parser_node *parse_var(typed_token **tkns_ptr)

@@ -30,7 +30,7 @@ void compound_statement_debug(int depth, parser_node *node)
     }
 }
 
-void return_apply(parser_node *node, context *ctx)
+char *return_apply(parser_node *node, context *ctx)
 {
     node_return *func = (node_return *)node->data;
 

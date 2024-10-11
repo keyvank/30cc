@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "codegen.h"
 #include "../linked_list.h"
@@ -16,7 +18,7 @@ context new_context()
 
 char *asprintf(char *fmt, ...)
 {
-    char *txt = malloc(128);
+    char *txt = (char *)malloc(128);
     va_list args;
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
@@ -26,7 +28,7 @@ char *asprintf(char *fmt, ...)
 
 void add_data(context *ctx, char *fmt, ...)
 {
-    char *txt = malloc(128);
+    char *txt = (char*)malloc(128);
     va_list args;
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
@@ -36,7 +38,7 @@ void add_data(context *ctx, char *fmt, ...)
 
 void add_text(context *ctx, char *fmt, ...)
 {
-    char *txt = malloc(128);
+    char *txt = (char*)malloc(128);
     va_list args;
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
@@ -61,7 +63,7 @@ symbol *find_symbol(context *ctx, char *name)
 
 char *new_label(context *ctx)
 {
-    char *name = malloc(128);
+    char *name = (char*)malloc(128);
     sprintf(name, "__tmp_label_%u", ctx->label_counter);
     ctx->label_counter++;
     return name;

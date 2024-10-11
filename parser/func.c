@@ -1,5 +1,6 @@
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../lexer.h"
 #include "parser.h"
@@ -19,7 +20,7 @@ char *func_decl_apply(parser_node *node, context *ctx)
     return NULL;
 }
 
-void func_def_apply(parser_node *node, context *ctx)
+char *func_def_apply(parser_node *node, context *ctx)
 {
     node_func_def *func = (node_func_def *)node->data;
 

@@ -54,6 +54,7 @@ int main(void)
     if (prog)
     {
         // prog->debug(0, prog);
+        // exit(0);
     }
     else
     {
@@ -66,14 +67,14 @@ int main(void)
     printf("section .data\n");
     while (curr)
     {
-        printf("%s\n", curr->value);
+        printf("%s\n", (char*)curr->value);
         curr = curr->next;
     }
     printf("section .text\n");
     curr = ctx.text.first;
     while (curr)
     {
-        printf("%s\n", curr->value);
+        printf("%s\n", (char*)curr->value);
         curr = curr->next;
     }
 
@@ -97,7 +98,11 @@ char *read_source_file(FILE *fp)
     if (!data)
         goto ret;
 
-    fread(data, sizeof(char), st.st_size, fp);
+    int rd = fread(data, sizeof(char), st.st_size, fp);
+    if(rd != st.st_size) {
+        data = NULL;
+        goto ret;
+    }
     data[st.st_size] = '\0';
 
 ret:

@@ -1,5 +1,6 @@
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../lexer.h"
 #include "parser.h"
@@ -37,7 +38,7 @@ void var_decl_debug(int depth, parser_node *node)
     if (decl->value)
     {
         printtabs(depth + 1);
-        printf("Value:\n", decl->identity);
+        printf("Value:\n");
         decl->value->debug(depth + 2, decl->value);
     }
 }
