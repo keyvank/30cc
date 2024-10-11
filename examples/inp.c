@@ -1,3 +1,5 @@
+#define SALAM2 110
+
 char c = '\n';
 
 void printf(char *, ...);
@@ -47,7 +49,7 @@ int fibo(int n)
 
 int main()
 {
-    printf("%c %c %u", 'a', 'b', 'c');
+    printf("%c %c %u", 'a', SALAM2, 'c');
     printf("\n");
 
     int a = 10;

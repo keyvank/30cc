@@ -5,6 +5,7 @@
 #include "lexer.h"
 #include "parser/program.h"
 #include "linked_list.h"
+#include "preprocess.h"
 
 char *read_source_file(FILE *fp);
 /**
@@ -48,6 +49,8 @@ int main(void)
         // t->debug(t);
         t = t->next;
     }
+
+    tkn = preprocess(tkn);
 
     // printf("========\n");
     parser_node *prog = parse_program(&tkn);
