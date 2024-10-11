@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "codegen.h"
 #include "../linked_list.h"
@@ -11,6 +12,26 @@ context new_context()
     ctx.symbol_table = new_linked_list();
     ctx.label_counter = 0;
     return ctx;
+}
+
+char *asprintf(char *fmt, ...)
+{
+    char *txt = malloc(128);
+    va_list args;
+    va_start(args, fmt);
+    vsprintf(txt, fmt, args);
+    va_end(args);
+    return txt;
+}
+
+void add_text(context *ctx, char *fmt, ...)
+{
+    char *txt = malloc(128);
+    va_list args;
+    va_start(args, fmt);
+    vsprintf(txt, fmt, args);
+    va_end(args);
+    add_to_list(&ctx->text, txt);
 }
 
 symbol *find_symbol(context *ctx, char *name)

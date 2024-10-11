@@ -28,24 +28,19 @@ char *binary_op_apply(parser_node *node, context *ctx)
     char *right = binop->right->apply(binop->right, ctx);
     if (left != -1 && right != -1)
     {
-        char *code = malloc(128);
-        sprintf(code, "mov rax, %s", left);
-        add_to_list(&ctx->text, code);
-
-        code = malloc(128);
-        sprintf(code, "mov rbx, %s", right);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "mov rax, %s", left);
+        add_text(ctx, "mov rbx, %s", right);
 
         switch (binop->op)
         {
         case TKN_PLUS:
-            add_to_list(&ctx->text, "add rax, rbx");
+            add_text(ctx, "add rax, rbx");
             break;
         case TKN_MIN:
-            add_to_list(&ctx->text, "sub rax, rbx");
+            add_text(ctx, "sub rax, rbx");
             break;
         case TKN_STAR:
-            add_to_list(&ctx->text, "mul rbx");
+            add_text(ctx, "mul rbx");
             break;
         case TKN_LT:
         case TKN_LTE:
@@ -57,7 +52,6 @@ char *binary_op_apply(parser_node *node, context *ctx)
             char *l1 = new_label(ctx);
             char *l2 = new_label(ctx);
 
-            code = malloc(128);
             char *op = NULL;
             if (binop->op == TKN_LT)
                 op = "jl";
@@ -71,24 +65,13 @@ char *binary_op_apply(parser_node *node, context *ctx)
                 op = "je";
             else if (binop->op == TKN_NEQ)
                 op = "jne";
-            sprintf(code, "%s %s", op, l1);
-            add_to_list(&ctx->text, code);
 
-            add_to_list(&ctx->text, "mov rax, 0");
-
-            code = malloc(128);
-            sprintf(code, "jmp %s", l2);
-            add_to_list(&ctx->text, code);
-
-            code = malloc(128);
-            sprintf(code, "%s:", l1);
-            add_to_list(&ctx->text, code);
-
-            add_to_list(&ctx->text, "mov rax, 1");
-
-            code = malloc(128);
-            sprintf(code, "%s:", l2);
-            add_to_list(&ctx->text, code);
+            add_text(ctx, "%s %s", op, l1);
+            add_text(ctx, "mov rax, 0");
+            add_text(ctx, "jmp %s", l2);
+            add_text(ctx, "%s:", l1);
+            add_text(ctx, "mov rax, 1");
+            add_text(ctx, "%s:", l2);
             break;
         default:
             printf("Invalid op!\n");
@@ -97,14 +80,8 @@ char *binary_op_apply(parser_node *node, context *ctx)
 
         symbol *tmp = new_temp_symbol(ctx, 8);
 
-        code = malloc(128);
-        sprintf(code, "mov [rsp + %u], rax", tmp->offset);
-        add_to_list(&ctx->text, code);
-
-        code = malloc(128);
-        sprintf(code, "[rsp + %u]", tmp->offset);
-
-        return code;
+        add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
+        return asprintf("[rsp + %u]", tmp->offset);
     }
     else
     {
@@ -130,9 +107,7 @@ char *var_apply(parser_node *node, context *ctx)
     }
     else
     {
-        char *code = malloc(128);
-        sprintf(code, "[rsp + %u]", sym->offset);
-        return code;
+        return asprintf("[rsp + %u]", sym->offset);
     }
 }
 
@@ -160,16 +135,10 @@ char *func_call_apply(parser_node *node, context *ctx)
 
         symbol *tmp = new_temp_symbol(ctx, 8);
 
-        char *regname = malloc(128);
-        sprintf(regname, "[rsp + %u]", tmp->offset);
+        char *regname = asprintf("[rsp + %u]", tmp->offset);
 
-        char *code = malloc(128);
-        sprintf(code, "mov rax, %s", regval);
-        add_to_list(&ctx->text, code);
-
-        code = malloc(128);
-        sprintf(code, "mov %s, rax", regname);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "mov rax, %s", regval);
+        add_text(ctx, "mov %s, rax", regname);
 
         argvals[i] = regname;
     }
@@ -193,25 +162,14 @@ char *func_call_apply(parser_node *node, context *ctx)
             printf("More than 6 args!");
             exit(0);
         }
-        char *set_arg = malloc(128);
-        sprintf(set_arg, "mov %s, %s", regname, argvals[i]);
-        add_to_list(&ctx->text, set_arg);
+        add_text(ctx, "mov %s, %s", regname, argvals[i]);
     }
 
-    char *code = malloc(128);
-    sprintf(code, "call %s", call->func_name);
-    add_to_list(&ctx->text, code);
-
+    add_text(ctx, "call %s", call->func_name);
     symbol *tmp = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
 
-    code = malloc(128);
-    sprintf(code, "mov [rsp + %u], rax", tmp->offset);
-    add_to_list(&ctx->text, code);
-
-    code = malloc(128);
-    sprintf(code, "[rsp + %u]", tmp->offset);
-
-    return code;
+    return asprintf("[rsp + %u]", tmp->offset);
 }
 
 void ref_debug(int depth, parser_node *node)
@@ -231,11 +189,8 @@ char *ref_apply(parser_node *node, context *ctx)
         symbol *sym = find_symbol(ctx, v->var_name);
         if (sym)
         {
-            add_to_list(&ctx->text, "mov rax, rsp");
-
-            char *code = malloc(128);
-            sprintf(code, "add rax, %u", sym->offset);
-            add_to_list(&ctx->text, code);
+            add_text(ctx, "mov rax, rsp");
+            add_text(ctx, "add rax, %u", sym->offset);
 
             return "rax";
         }
@@ -266,11 +221,8 @@ char *deref_apply(parser_node *node, context *ctx)
 
     char *loc = deref->var->apply(deref->var, ctx);
 
-    char *code = malloc(128);
-    sprintf(code, "mov rax, %s", loc);
-    add_to_list(&ctx->text, code);
-
-    add_to_list(&ctx->text, "mov rax, [rax]");
+    add_text(ctx, "mov rax, %s", loc);
+    add_text(ctx, "mov rax, [rax]");
 
     return "rax";
 }

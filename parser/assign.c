@@ -25,19 +25,13 @@ void assign_debug(int depth, parser_node *node)
 char *assign_apply(parser_node *node, context *ctx)
 {
     node_assign *assign = (node_assign *)node->data;
+
     char *val = assign->value->apply(assign->value, ctx);
-
-    char *code = malloc(128);
-    sprintf(code, "mov rax, %s", val);
-    add_to_list(&ctx->text, code);
-
     symbol *sym = find_symbol(ctx, assign->identity);
-    char *res = malloc(128);
-    sprintf(res, "[rsp+%u]", sym->offset);
 
-    code = malloc(128);
-    sprintf(code, "mov %s, rax", res);
-    add_to_list(&ctx->text, code);
+    add_text(ctx, "mov rax, %s", val);
+    char *res = asprintf("[rsp+%u]", sym->offset);
+    add_text(ctx, "mov %s, rax", res);
 
     return res;
 }

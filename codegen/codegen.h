@@ -12,6 +12,7 @@ typedef struct
 } context;
 
 context new_context();
+void add_text(context *ctx, char *fmt, ...);
 
 typedef struct
 {
@@ -20,6 +21,7 @@ typedef struct
     int offset;
 } symbol;
 
+char *asprintf(char *fmt, ...);
 symbol *find_symbol(context *tab, char *name);
 symbol *new_symbol(context *ctx, char *name, int sz);
 symbol *new_temp_symbol(context *ctx, int sz);
