@@ -1,3 +1,5 @@
+char c = '\n';
+
 void printf(char *, ...);
 
 struct MyStruct
@@ -45,6 +47,9 @@ int fibo(int n)
 
 int main()
 {
+    printf("%c %c %u", 'a', 'b', 'c');
+    printf("\n");
+
     int a = 10;
     int b = 20;
     int c = a * b;

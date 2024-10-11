@@ -20,7 +20,7 @@ typed_token *tokenize(char *inp);
 #define TKN_IF 6
 #define TKN_DO 7
 #define TKN_WHILE 8
-#define TKN_STRUCT 9
+#define TKN_LIT_STRUCT 9
 #define TKN_ELSE 10
 
 // Single letter symbols
@@ -32,8 +32,9 @@ typed_token *tokenize(char *inp);
 #define TKN_COMMA 21
 
 #define TKN_ID 32
-#define TKN_STR 33
+#define TKN_LIT_STR 33
 #define TKN_LIT_INT 34
+#define TKN_LIT_CHAR 35
 
 #define TKN_ASSIGN 64
 #define TKN_EQ 65
@@ -55,5 +56,7 @@ typed_token *tokenize(char *inp);
 #define TKN_DOTS 81
 
 #define TKN_COMMENT 128
+
+#define TKN_MACRO_DEFINE 256
 
 #endif

@@ -22,7 +22,7 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
 
-    if (tkn->type_id == TKN_STRUCT)
+    if (tkn->type_id == TKN_LIT_STRUCT)
     {
         tkn = tkn->next;
         if (tkn->type_id == TKN_ID)

@@ -32,7 +32,7 @@ char *escape(char *inp)
 char *literal_apply(parser_node *node, context *ctx)
 {
     node_literal *lit = (node_literal *)node->data;
-    if (lit->type == TKN_STR)
+    if (lit->type == TKN_LIT_STR)
     {
         char *varname = asprintf("__temp_str_%u", ctx->data.count);
         add_data(ctx, "%s db `%s`, 0", varname, escape(lit->value));
@@ -41,7 +41,10 @@ char *literal_apply(parser_node *node, context *ctx)
     if (lit->type == TKN_LIT_INT)
     {
         return asprintf("%u", *((int *)lit->value));
-        ;
+    }
+    if (lit->type == TKN_LIT_CHAR)
+    {
+        return asprintf("%u", (int)(*((char *)lit->value)));
     }
     return lit->value;
 }
@@ -50,7 +53,7 @@ void literal_debug(int depth, parser_node *node)
 {
     node_literal *lit = (node_literal *)node->data;
     printtabs(depth);
-    if (lit->type == TKN_STR)
+    if (lit->type == TKN_LIT_STR)
         printf("Literal(Type: %d, Value: %s)\n", lit->type, lit->value);
     else if (lit->type == TKN_LIT_INT)
     {
@@ -65,7 +68,7 @@ void literal_debug(int depth, parser_node *node)
 parser_node *parse_literal(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-    if (tkn->type_id == TKN_STR || tkn->type_id == TKN_LIT_INT)
+    if (tkn->type_id == TKN_LIT_STR || tkn->type_id == TKN_LIT_INT || tkn->type_id == TKN_LIT_CHAR)
     {
         typed_token *val_tkn = tkn;
         tkn = tkn->next;
@@ -78,7 +81,7 @@ parser_node *parse_literal(typed_token **tkns_ptr)
         node_literal *lit = (node_literal *)node->data;
 
         lit->type = val_tkn->type_id;
-        if (lit->type == TKN_STR)
+        if (lit->type == TKN_LIT_STR)
         {
             lit->value = malloc(128);
             strcpy(lit->value, val_tkn->data);
@@ -87,6 +90,11 @@ parser_node *parse_literal(typed_token **tkns_ptr)
         {
             lit->value = malloc(sizeof(int));
             *((int *)lit->value) = *((int *)val_tkn->data);
+        }
+        else if (lit->type == TKN_LIT_CHAR)
+        {
+            lit->value = malloc(sizeof(char));
+            *((char *)lit->value) = *((char *)val_tkn->data);
         }
         else
         {

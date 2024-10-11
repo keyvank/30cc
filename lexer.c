@@ -42,7 +42,11 @@ void ident_tkn_debug(typed_token *tkn)
 }
 void str_tkn_debug(typed_token *tkn)
 {
-    printf("%s(%s)\n", STR(TKN_STR), (char *)tkn->data);
+    printf("%s(%s)\n", STR(TKN_LIT_STR), (char *)tkn->data);
+}
+void char_tkn_debug(typed_token *tkn)
+{
+    printf("%s(%c)\n", STR(TKN_LIT_CHAR), *((char *)tkn->data));
 }
 void int_lit_tkn_debug(typed_token *tkn)
 {
@@ -90,7 +94,7 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
         else if (strcmp(val, "while") == 0)
             return new_simp_tkn(TKN_WHILE);
         else if (strcmp(val, "struct") == 0)
-            return new_simp_tkn(TKN_STRUCT);
+            return new_simp_tkn(TKN_LIT_STRUCT);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
@@ -154,6 +158,34 @@ typed_token *next_op(char **inp_ptr)
         *inp_ptr += 1;
         return new_simp_tkn(TKN_AMP);
     }
+    if (*inp == '\'')
+    {
+        if (*(inp + 1) == '\\')
+        {
+            if (*(inp + 2) != '\0' && *(inp + 3) == '\'')
+            {
+                *inp_ptr += 4;
+                char e = *(inp + 2);
+                char *ch = malloc(1);
+                if (e == 'n')
+                {
+                    *ch = '\n';
+                }
+                else
+                {
+                    *ch = *(inp + 2);
+                }
+                return new_tkn(TKN_LIT_CHAR, (void *)ch, char_tkn_debug);
+            }
+        }
+        else if (*(inp + 1) != '\0' && *(inp + 2) == '\'')
+        {
+            *inp_ptr += 3;
+            char *ch = malloc(1);
+            *ch = *(inp + 1);
+            return new_tkn(TKN_LIT_CHAR, (void *)ch, char_tkn_debug);
+        }
+    }
     if (*inp == '"')
     {
         int sz = 0;
@@ -166,7 +198,7 @@ typed_token *next_op(char **inp_ptr)
                 inp += 1;
                 val[sz] = '\0';
                 *inp_ptr = inp;
-                return new_tkn(TKN_STR, val, str_tkn_debug);
+                return new_tkn(TKN_LIT_STR, val, str_tkn_debug);
             }
             char c = *inp;
             if (*inp == '\\')
@@ -368,7 +400,8 @@ typed_token *tokenize(char *inp)
             break;
         }
         typed_token *next = next_token(ptr);
-        if(next->type_id == TKN_COMMENT) {
+        if (next->type_id == TKN_COMMENT)
+        {
             continue;
         }
         t->next = next;
