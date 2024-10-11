@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "if.h"
 #include "statement.h"
-#include "expr.h"
+#include "expr/expr.h"
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
@@ -18,7 +18,8 @@ char *if_apply(parser_node *node, context *ctx)
 
     char *end_of_if = new_label(ctx);
     char *end_of_else = NULL;
-    if (ifn->else_body) {
+    if (ifn->else_body)
+    {
         end_of_else = new_label(ctx);
     }
 

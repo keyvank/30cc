@@ -2,11 +2,11 @@
 
 #include <stdlib.h>
 
-#include "../lexer.h"
-#include "parser.h"
+#include "../../lexer.h"
+#include "../parser.h"
 #include "assign.h"
-#include "param.h"
-#include "type.h"
+#include "../param.h"
+#include "../type.h"
 #include "expr.h"
 
 void assign_debug(int depth, parser_node *node)

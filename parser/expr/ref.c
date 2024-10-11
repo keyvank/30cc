@@ -1,0 +1,65 @@
+
+
+#include <stdlib.h>
+
+#include "../../lexer.h"
+#include "../parser.h"
+#include "ref.h"
+#include "expr.h"
+#include "var.h"
+
+void ref_debug(int depth, parser_node *node)
+{
+    node_ref *ref = (node_ref *)node->data;
+    printtabs(depth);
+    printf("Ref:\n");
+    ref->var->debug(depth + 1, ref->var);
+}
+
+char *ref_apply(parser_node *node, context *ctx)
+{
+    node_ref *ref = (node_ref *)node->data;
+    node_var *v = (node_var *)ref->var->data;
+    symbol *sym = find_symbol(ctx, v->var_name);
+    if (sym)
+    {
+        add_text(ctx, "mov rax, rsp");
+        add_text(ctx, "add rax, %u", sym->offset);
+
+        return "rax";
+    }
+    else
+    {
+        printf("Invalid & (Var not found)\n");
+        exit(1);
+    }
+}
+
+parser_node *parse_ref(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+
+    if (tkn->type_id == TKN_AMP)
+    {
+        tkn = tkn->next;
+        parser_node *n = parse_terminal(&tkn);
+        if (n)
+        {
+            *tkns_ptr = tkn;
+            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+            node->data = (void *)malloc(sizeof(node_ref));
+            node->debug = ref_debug;
+            node->apply = ref_apply;
+            node_ref *ref = (node_ref *)node->data;
+            ref->var = n;
+
+            return node;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    return NULL;
+}

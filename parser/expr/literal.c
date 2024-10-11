@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 
-#include "../lexer.h"
-#include "parser.h"
+#include "../../lexer.h"
+#include "../parser.h"
 #include "literal.h"
 
 char *escape(char *inp)
@@ -39,7 +39,8 @@ char *literal_apply(parser_node *node, context *ctx)
     }
     if (lit->type == TKN_LIT_INT)
     {
-        return asprintf("%u", *((int *)lit->value));;
+        return asprintf("%u", *((int *)lit->value));
+        ;
     }
     return lit->value;
 }

@@ -24,6 +24,16 @@ char *asprintf(char *fmt, ...)
     return txt;
 }
 
+void add_data(context *ctx, char *fmt, ...)
+{
+    char *txt = malloc(128);
+    va_list args;
+    va_start(args, fmt);
+    vsprintf(txt, fmt, args);
+    va_end(args);
+    add_to_list(&ctx->data, txt);
+}
+
 void add_text(context *ctx, char *fmt, ...)
 {
     char *txt = malloc(128);

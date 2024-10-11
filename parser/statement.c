@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "statement.h"
 #include "var_decl.h"
-#include "expr.h"
+#include "expr/expr.h"
 #include "for.h"
 #include "if.h"
 

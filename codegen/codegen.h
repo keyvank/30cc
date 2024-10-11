@@ -13,6 +13,7 @@ typedef struct
 
 context new_context();
 void add_text(context *ctx, char *fmt, ...);
+void add_data(context *ctx, char *fmt, ...);
 
 typedef struct
 {

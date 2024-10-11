@@ -6,6 +6,7 @@
 #include "parser.h"
 #include "program.h"
 #include "func.h"
+#include "var_decl.h"
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 #include "struct_def.h"
@@ -51,8 +52,10 @@ parser_node *parse_program(typed_token **tkn_ptr)
 {
     int func_count = 0;
     int struct_def_count = 0;
+    int var_decl_count = 0;
     parser_node **funcs = (parser_node **)malloc(sizeof(parser_node *) * 128);
     parser_node **struct_defs = (parser_node **)malloc(sizeof(parser_node *) * 128);
+    parser_node **var_decls = (parser_node **)malloc(sizeof(parser_node *) * 128);
     typed_token *tkn = *tkn_ptr;
     while (tkn)
     {
@@ -79,6 +82,10 @@ parser_node *parse_program(typed_token **tkn_ptr)
         else if (f = parse_struct_def(&tkn))
         {
             struct_defs[struct_def_count++] = f;
+        }
+        else if (f = parse_var_decl(&tkn))
+        {
+            var_decls[var_decl_count++] = f;
         }
         else
         {

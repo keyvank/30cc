@@ -6,7 +6,7 @@
 #include "for.h"
 #include "var_decl.h"
 #include "statement.h"
-#include "expr.h"
+#include "expr/expr.h"
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
