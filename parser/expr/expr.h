@@ -14,4 +14,11 @@ typedef struct
     parser_node *right;
 } node_binary_op;
 
+typedef struct
+{
+    parser_node *cond;
+    parser_node *true_val;
+    parser_node *false_val;
+} node_cond;
+
 #endif

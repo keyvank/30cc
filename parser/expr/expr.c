@@ -104,6 +104,43 @@ char *binary_op_apply(parser_node *node, context *ctx)
     return asprintf("[rsp + %u]", tmp->offset);
 }
 
+void cond_debug(int depth, parser_node *node)
+{
+    node_cond *cond = (node_cond *)node->data;
+    printtabs(depth);
+    printf("CondExpr:\n");
+    printtabs(depth + 1);
+    printf("Cond:\n");
+    cond->cond->debug(depth + 2, cond->cond);
+    printtabs(depth + 1);
+    printf("Yes:\n");
+    cond->true_val->debug(depth + 2, cond->true_val);
+    printtabs(depth + 1);
+    printf("No:\n");
+    cond->false_val->debug(depth + 2, cond->false_val);
+}
+
+char *cond_apply(parser_node *node, context *ctx)
+{
+    node_cond *cond = (node_cond *)node->data;
+    char *cond_res = cond->cond->apply(cond->cond, ctx);
+    char *yes_val = cond->true_val->apply(cond->true_val, ctx);
+    char *no_val = cond->false_val->apply(cond->false_val, ctx);
+    char *l1 = new_label(ctx);
+    char *l2 = new_label(ctx);
+    add_text(ctx, "mov rax, %s", cond_res);
+    add_text(ctx, "cmp rax, 0");
+    add_text(ctx, "je %s", l1);
+    add_text(ctx, "mov rax, %s", yes_val);
+    add_text(ctx, "jmp %s", l2);
+    add_text(ctx, "%s:", l1);
+    add_text(ctx, "mov rax, %s", no_val);
+    add_text(ctx, "%s:", l2);
+    symbol *sym = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov [rsp+%u], rax", sym->offset);
+    return asprintf("[rsp+%u]", sym->offset);
+}
+
 parser_node *parse_paren(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -187,6 +224,31 @@ parser_node *parse_expr(typed_token **tkns_ptr)
                 else
                 {
                     return NULL;
+                }
+            }
+            else if (tkn->type_id == TKN_QUEST)
+            {
+                tkn = tkn->next;
+                parser_node *yes = parse_expr(&tkn);
+                if (yes && tkn->type_id == TKN_COLON)
+                {
+                    tkn = tkn->next;
+                    parser_node *no = parse_expr(&tkn);
+                    if (no)
+                    {
+
+                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                        node->data = (void *)malloc(sizeof(node_cond));
+                        node->debug = cond_debug;
+                        node->apply = cond_apply;
+                        node_cond *binop = (node_cond *)node->data;
+                        binop->cond = curr;
+                        binop->true_val = yes;
+                        binop->false_val = no;
+
+                        *tkns_ptr = tkn;
+                        return node;
+                    }
                 }
             }
             else

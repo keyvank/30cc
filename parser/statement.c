@@ -51,7 +51,7 @@ void return_debug(int depth, parser_node *node)
 {
     node_return *ret = (node_return *)node->data;
     printtabs(depth);
-    printf("Return:");
+    printf("Return:\n");
     if (ret->exp != NULL)
     {
         ret->exp->debug(depth + 1, ret->exp);

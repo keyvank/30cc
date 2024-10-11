@@ -131,6 +131,16 @@ typed_token *next_op(char **inp_ptr)
             return new_simp_tkn(TKN_MACRO_DEFINE);
         }
     }
+    if (*inp == '?')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_QUEST);
+    }
+    if (*inp == ':')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_COLON);
+    }
     if (*inp == '(')
     {
         *inp_ptr += 1;

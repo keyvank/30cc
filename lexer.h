@@ -59,6 +59,8 @@ typed_token *tokenize(char *inp);
 #define TKN_ANDAND 82
 #define TKN_OR 83
 #define TKN_OROR 84
+#define TKN_QUEST 85
+#define TKN_COLON 86
 
 #define TKN_COMMENT 128
 #define TKN_MACRO_DEFINE 129
