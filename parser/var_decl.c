@@ -13,18 +13,12 @@
 char *var_decl_apply(parser_node *node, context *ctx)
 {
     node_var_decl *decl = (node_var_decl *)node->data;
+    symbol *sym = new_symbol(ctx, decl->identity, 8);
     if (decl->value)
     {
         char *val = decl->value->apply(decl->value, ctx);
-
-        char *code = malloc(128);
-        sprintf(code, "mov rax, %s", val);
-        add_to_list(&ctx->text, code);
-
-        code = malloc(128);
-        symbol *sym = new_symbol(ctx, decl->identity, 8);
-        sprintf(code, "mov [rsp+%u], rax", sym->offset);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "mov rax, %s", val);
+        add_text(ctx, "mov [rsp+%u], rax", sym->offset);
     }
     return NULL;
 }
