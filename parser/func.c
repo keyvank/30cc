@@ -24,19 +24,11 @@ char *func_def_apply(parser_node *node, context *ctx)
 {
     node_func_def *func = (node_func_def *)node->data;
 
-    char *glob = malloc(128);
-    sprintf(glob, "global %s", func->identity);
-    add_to_list(&ctx->text, glob);
-
-    char *label = malloc(128);
-    sprintf(label, "%s:", func->identity);
-    add_to_list(&ctx->text, label);
-
-    add_to_list(&ctx->text, "push rbp");
-    add_to_list(&ctx->text, "mov rbp, rsp");
-
-    // TODO
-    add_to_list(&ctx->text, "sub rsp, 1024");
+    add_text(ctx, "global %s", func->identity);
+    add_text(ctx, "%s:", func->identity);
+    add_text(ctx, "push rbp");
+    add_text(ctx, "mov rbp, rsp");
+    add_text(ctx, "sub rsp, __%s_size", func->identity);
 
     for (int i = 0; i < func->num_params; i++)
     {
@@ -61,10 +53,8 @@ char *func_def_apply(parser_node *node, context *ctx)
             exit(0);
         }
 
-        char *code = malloc(128);
         symbol *sym = new_symbol(ctx, par->identity, 8);
-        sprintf(code, "mov [rsp+%u], %s", sym->offset, regname);
-        add_to_list(&ctx->text, code);
+        add_text(ctx, "mov [rsp+%u], %s", sym->offset, regname);
     }
 
     for (int i = 0; i < func->num_statements; i++)
@@ -73,9 +63,9 @@ char *func_def_apply(parser_node *node, context *ctx)
         node->apply(node, ctx);
     }
 
-    add_to_list(&ctx->text, "mov rsp, rbp");
-    add_to_list(&ctx->text, "pop rbp");
-    add_to_list(&ctx->text, "ret");
+    add_text(ctx, "mov rsp, rbp");
+    add_text(ctx, "pop rbp");
+    add_text(ctx, "ret");
     return NULL;
 }
 

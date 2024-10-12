@@ -38,6 +38,14 @@ char *program_apply(parser_node *node, context *ctx)
         ctx->symbol_table = new_linked_list();
         parser_node *node = prog->functions[i];
         node->apply(node, ctx);
+        list_node *sym = ctx->symbol_table.first;
+        int total = 0;
+        while (sym)
+        {
+            total += ((symbol *)sym->value)->size;
+            sym = sym->next;
+        }
+        add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
     }
     add_text(ctx, "extern exit");
     add_text(ctx, "global _start");
