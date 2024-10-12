@@ -34,6 +34,9 @@ char *binary_op_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rax, %s", left);
     add_text(ctx, "mov rbx, %s", right);
 
+    char *l1 = NULL;
+    char *l2 = NULL;
+
     switch (binop->op)
     {
     case TKN_PLUS:
@@ -47,21 +50,21 @@ char *binary_op_apply(parser_node *node, context *ctx)
         break;
     case TKN_ANDAND:
     case TKN_OROR:
-        char *ll1 = new_label(ctx);
-        char *ll2 = new_label(ctx);
+        l1 = new_label(ctx);
+        l2 = new_label(ctx);
         add_text(ctx, "cmp rax, 0");
         if (binop->op == TKN_ANDAND)
-            add_text(ctx, "je %s", ll1);
+            add_text(ctx, "je %s", l1);
         else
-            add_text(ctx, "jne %s", ll1);
+            add_text(ctx, "jne %s", l1);
         add_text(ctx, "mov rax, rbx");
-        add_text(ctx, "jmp %s", ll2);
-        add_text(ctx, "%s:", ll1);
+        add_text(ctx, "jmp %s", l2);
+        add_text(ctx, "%s:", l1);
         if (binop->op == TKN_ANDAND)
             add_text(ctx, "mov rax, 0");
         else
             add_text(ctx, "mov rax, 1");
-        add_text(ctx, "%s:", ll2);
+        add_text(ctx, "%s:", l2);
         break;
     case TKN_LT:
     case TKN_LTE:
@@ -70,8 +73,8 @@ char *binary_op_apply(parser_node *node, context *ctx)
     case TKN_EQ:
     case TKN_NEQ:
         add_to_list(&ctx->text, "cmp rax, rbx");
-        char *l1 = new_label(ctx);
-        char *l2 = new_label(ctx);
+        l1 = new_label(ctx);
+        l2 = new_label(ctx);
 
         char *op = NULL;
         if (binop->op == TKN_LT)
@@ -286,10 +289,7 @@ parser_node *parse_expr(typed_token **tkns_ptr)
             return res;
         }
     }
-    else
-    {
-        return NULL;
-    }
+    return NULL;
 }
 
 parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_prec)
