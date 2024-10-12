@@ -45,6 +45,8 @@ char *program_apply(parser_node *node, context *ctx)
             total += ((symbol *)sym->value)->size;
             sym = sym->next;
         }
+        // 16 byte stack alignment
+        total = total + (16 - total % 16);
         add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
     }
     add_text(ctx, "extern exit");
