@@ -5,6 +5,7 @@ typedef struct node_
 {
     void *value;
     struct node_ *next;
+    struct node_ *prev;
 } list_node;
 
 typedef struct
@@ -16,6 +17,7 @@ typedef struct
 
 linked_list new_linked_list();
 void free_list(linked_list *l);
+void pop_list(linked_list *l);
 
 void add_to_list(linked_list *l, void *value);
 #endif

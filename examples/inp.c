@@ -1,17 +1,13 @@
 void printf(char *, ...);
-
 int main()
 {
-    int a = 123;
+    int i = 10;
+
+    for (int i = 0; i < 5; i = i + 1)
     {
-        int a = 234;
-        {
-            int a = 345;
-            printf("%u ", a);
-        }
-        printf("%u ", a);
+        int i = 2;
+        printf("%u ", i);
     }
-    printf("%u ", a);
-    int a = 456;
-    printf("%u ", a);
+
+    printf("%u ", i);
 }

@@ -9,6 +9,7 @@ typedef struct
     linked_list text;
     linked_list symbol_table;
     int label_counter;
+    int stack_size;
 } context;
 
 context new_context();

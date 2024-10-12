@@ -14,6 +14,8 @@ char *for_apply(parser_node *node, context *ctx)
 {
     node_for *forn = (node_for *)node->data;
 
+    int num_syms = ctx->symbol_table.count;
+
     forn->init->apply(forn->init, ctx);
 
     char *start_for = new_label(ctx);
@@ -28,6 +30,11 @@ char *for_apply(parser_node *node, context *ctx)
     forn->act->apply(forn->act, ctx);
     add_text(ctx, "jmp %s", start_for);
     add_text(ctx, "%s:", end_for);
+
+    while (ctx->symbol_table.count > num_syms)
+    {
+        pop_list(&ctx->symbol_table);
+    }
 
     return NULL;
 }

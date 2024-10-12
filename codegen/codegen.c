@@ -13,6 +13,7 @@ context new_context()
     ctx.text = new_linked_list();
     ctx.symbol_table = new_linked_list();
     ctx.label_counter = 0;
+    ctx.stack_size = 0;
     return ctx;
 }
 
@@ -28,7 +29,7 @@ char *asprintf(char *fmt, ...)
 
 void add_data(context *ctx, char *fmt, ...)
 {
-    char *txt = (char*)malloc(128);
+    char *txt = (char *)malloc(128);
     va_list args;
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
@@ -38,7 +39,7 @@ void add_data(context *ctx, char *fmt, ...)
 
 void add_text(context *ctx, char *fmt, ...)
 {
-    char *txt = (char*)malloc(128);
+    char *txt = (char *)malloc(128);
     va_list args;
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
@@ -48,7 +49,7 @@ void add_text(context *ctx, char *fmt, ...)
 
 symbol *find_symbol(context *ctx, char *name)
 {
-    list_node *curr = ctx->symbol_table.first;
+    list_node *curr = ctx->symbol_table.last;
     while (curr)
     {
         symbol *sym = (symbol *)curr->value;
@@ -56,14 +57,14 @@ symbol *find_symbol(context *ctx, char *name)
         {
             return sym;
         }
-        curr = curr->next;
+        curr = curr->prev;
     }
     return NULL;
 }
 
 char *new_label(context *ctx)
 {
-    char *name = (char*)malloc(128);
+    char *name = (char *)malloc(128);
     sprintf(name, "__tmp_label_%u", ctx->label_counter);
     ctx->label_counter++;
     return name;
@@ -75,40 +76,17 @@ symbol *new_symbol(context *ctx, char *name, int sz)
     newsym->name = name;
     newsym->offset = 0;
     newsym->size = sz;
-
-    list_node *curr = ctx->symbol_table.first;
-    if (!curr)
+    if (ctx->symbol_table.last)
     {
-        add_to_list(&ctx->symbol_table, newsym);
-        return newsym;
+        symbol *lastsym = ((symbol *)ctx->symbol_table.last->value);
+        newsym->offset = lastsym->offset + lastsym->size;
     }
-    int offset = 0;
-    while (curr)
-    {
-        symbol *sym = (symbol *)curr->value;
-        if (strcmp(sym->name, name) == 0)
-        {
-            printf("Symbol already there!\n");
-            exit(1);
-        }
-        offset += sym->size;
-        curr = curr->next;
-    }
-    newsym->offset = offset;
     add_to_list(&ctx->symbol_table, newsym);
+    ctx->stack_size += sz;
     return newsym;
 }
 
 symbol *new_temp_symbol(context *ctx, int sz)
 {
-    list_node *curr = ctx->symbol_table.first;
-    int cnt = 0;
-    while (curr)
-    {
-        cnt += 1;
-        curr = curr->next;
-    }
-    char *name = malloc(128);
-    sprintf(name, "__tmp_sym_%u", cnt);
-    return new_symbol(ctx, name, sz);
+    return new_symbol(ctx, "", sz);
 }

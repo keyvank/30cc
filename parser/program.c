@@ -36,15 +36,10 @@ char *program_apply(parser_node *node, context *ctx)
     for (int i = 0; i < prog->num_functions; i++)
     {
         ctx->symbol_table = new_linked_list();
+        ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
         node->apply(node, ctx);
-        list_node *sym = ctx->symbol_table.first;
-        int total = 0;
-        while (sym)
-        {
-            total += ((symbol *)sym->value)->size;
-            sym = sym->next;
-        }
+        int total = ctx->stack_size;
         // 16 byte stack alignment
         total = total + (16 - total % 16);
         add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
