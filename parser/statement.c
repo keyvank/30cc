@@ -13,9 +13,13 @@
 char *compound_statement_apply(parser_node *node, context *ctx)
 {
     node_compound_statement *comp = (node_compound_statement *)node->data;
+    int num_syms = ctx->symbol_table.count;
     for (int i = 0; i < comp->num_statements; i++)
     {
         comp->statements[i]->apply(comp->statements[i], ctx);
+    }
+    while(ctx->symbol_table.count > num_syms) {
+        pop_list(&ctx->symbol_table);
     }
     return NULL;
 }
