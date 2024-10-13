@@ -119,10 +119,9 @@ def main():
 
     print(f"found {diff_count} differences in snapshots")
 
-    exit(diff_count == 0)
-
+    if diff_count > 0:
+        exit(1)
 
 
 if __name__ == "__main__":
     main()
-
