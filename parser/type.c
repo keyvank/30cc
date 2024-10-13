@@ -41,7 +41,8 @@ parser_node *parse_type(typed_token **tkns_ptr)
         par->name = ret_type_tkn->data;
     } else if (tkn->type_id == TKN_LIT_STRUCT) 
     {
-        typed_token *struct_name_tkn = tkn->next;
+        tkn = tkn->next;
+        typed_token *struct_name_tkn = tkn;
         // TODO: maybe error?
         if (struct_name_tkn == NULL) {
             return NULL;
@@ -50,12 +51,12 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node->data = (void *)malloc(sizeof(node_type));
         node->debug = type_debug;
         node_type *par = (node_type *)node->data;
-        if (struct_name_tkn->next == NULL) {
+        if (tkn->next == NULL) {
             // After name there must be either { or the variable name
             return NULL;
         }
         // This is a struct definition not variable
-        if (struct_name_tkn->next->type_id == TKN_L_BRACE) {
+        if (tkn->next->type_id == TKN_L_BRACE) {
             return NULL;
         }
         par->name = malloc(128);
