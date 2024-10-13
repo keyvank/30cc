@@ -105,7 +105,7 @@ char *binary_op_apply(parser_node *node, context *ctx)
     symbol *tmp = new_temp_symbol(ctx, 8);
 
     add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
-    return asprintf("[rsp + %u]", tmp->offset);
+    return cc_asprintf("[rsp + %u]", tmp->offset);
 }
 
 void cond_debug(int depth, parser_node *node)
@@ -142,7 +142,7 @@ char *cond_apply(parser_node *node, context *ctx)
     add_text(ctx, "%s:", l2);
     symbol *sym = new_temp_symbol(ctx, 8);
     add_text(ctx, "mov [rsp+%u], rax", sym->offset);
-    return asprintf("[rsp+%u]", sym->offset);
+    return cc_asprintf("[rsp+%u]", sym->offset);
 }
 
 void cast_debug(int depth, parser_node *node)

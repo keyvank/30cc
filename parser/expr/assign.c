@@ -31,7 +31,7 @@ char *assign_apply(parser_node *node, context *ctx)
     symbol *sym = find_symbol(ctx, assign->identity);
 
     add_text(ctx, "mov rax, %s", val);
-    char *res = asprintf("[rsp+%u]", sym->offset);
+    char *res = cc_asprintf("[rsp+%u]", sym->offset);
     add_text(ctx, "mov %s, rax", res);
 
     return res;

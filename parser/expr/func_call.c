@@ -32,7 +32,7 @@ char *func_call_apply(parser_node *node, context *ctx)
 
         symbol *tmp = new_temp_symbol(ctx, 8);
 
-        char *regname = asprintf("[rsp + %u]", tmp->offset);
+        char *regname = cc_asprintf("[rsp + %u]", tmp->offset);
 
         add_text(ctx, "mov rax, %s", regval);
         add_text(ctx, "mov %s, rax", regname);
@@ -66,7 +66,7 @@ char *func_call_apply(parser_node *node, context *ctx)
     symbol *tmp = new_temp_symbol(ctx, 8);
     add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
 
-    return asprintf("[rsp + %u]", tmp->offset);
+    return cc_asprintf("[rsp + %u]", tmp->offset);
 }
 
 parser_node *parse_func_call(typed_token **tkns_ptr)
