@@ -1,9 +1,3 @@
-name: c
-  VarDecl(c):
-    Type(TKN_INT)
-name: m
-  VarDecl(m):
-    Type(MyStruct)struct
 section .data
 __main_size: equ 16
 section .text

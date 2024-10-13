@@ -1,12 +1,3 @@
-name: a
-  VarDecl(a):
-    Type(TKN_INT)
-name: b
-  VarDecl(b):
-    Type(TKN_INT)
-name: a
-  VarDecl(a):
-    Type(TKN_INT)
 section .data
 __haha_size: equ 16
 __abc_size: equ 16

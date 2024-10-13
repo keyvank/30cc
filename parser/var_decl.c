@@ -110,8 +110,6 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             decl->type = tp;
             decl->identity = malloc(128);
             strcpy(decl->identity, name_tkn->data);
-            printf("name: %s\n", decl->identity);
-            node->debug(1,node);
             decl->value = val_expr;
 
             return node;

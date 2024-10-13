@@ -1,12 +1,3 @@
-name: i
-  VarDecl(i):
-    Type(TKN_INT)
-name: i
-  VarDecl(i):
-    Type(TKN_INT)
-name: i
-  VarDecl(i):
-    Type(TKN_INT)
 section .data
 __printf_size: equ 16
 __temp_str_1 db `%u `, 0
