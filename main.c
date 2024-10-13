@@ -19,19 +19,22 @@ char *read_source_file(FILE *fp);
         (p) = NULL; \
     } while (0)
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    int ret = 0;
-    char *content = NULL;
-
-    FILE *fp = fopen("./examples/inp.c", "rb");
-    if (!fp)
-    {
-        perror("failed to read source file");
-        ret = 1;
-        goto defer_exit;
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return 1;
     }
 
+    int ret = 0;
+    char *content = NULL;
+    const char *filename = argv[1];
+
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        fprintf(stderr, "Error opening file: %s\n", filename);
+        return 1;
+    }
     content = read_source_file(fp);
 
     if (!content)

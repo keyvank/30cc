@@ -49,7 +49,7 @@ typed_token *preprocess(typed_token *tkns)
             tkn = tkn->next;
             if (tkn->type_id == TKN_ID)
             {
-                char *name = asprintf("%s", (char *)tkn->data);
+                char *name = cc_asprintf("%s", (char *)tkn->data);
                 tkn = tkn->next;
                 define *def = (define *)malloc(sizeof(define));
                 def->id = name;

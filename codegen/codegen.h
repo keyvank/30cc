@@ -23,7 +23,7 @@ typedef struct
     int offset;
 } symbol;
 
-char *asprintf(char *fmt, ...);
+char *cc_asprintf(char *fmt, ...);
 symbol *find_symbol(context *tab, char *name);
 symbol *new_symbol(context *ctx, char *name, int sz);
 symbol *new_temp_symbol(context *ctx, int sz);

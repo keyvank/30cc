@@ -17,7 +17,7 @@ context new_context()
     return ctx;
 }
 
-char *asprintf(char *fmt, ...)
+char *cc_asprintf(char *fmt, ...)
 {
     char *txt = (char *)malloc(128);
     va_list args;
