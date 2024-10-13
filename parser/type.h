@@ -10,6 +10,7 @@ typedef struct
 {
     char *name;
     int num_pointing;
+    int is_struct;
     int dim;
     int *dims;
 } node_type;
