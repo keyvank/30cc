@@ -1,0 +1,56 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(TKN_VOID)
+    ParamTypes:
+      Type(TKN_CHAR*)
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_INT)
+    Params:
+    Statements:
+      VarDecl(i):
+        Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 10)
+      For(
+        Init:
+          VarDecl(i):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 5)
+        Act:
+          Assign(i):
+            Value:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            VarDecl(i):
+              Type(TKN_INT)
+              Value:
+                Literal(Type: 34, Value: 2)
+            FunctionCall(Name: printf)
+              Args:
+                Literal(Type: 33, Value: %u )
+                Variable(i)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          Variable(i)
+  )
+)

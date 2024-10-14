@@ -27,7 +27,7 @@ void type_debug(int depth, parser_node *node)
 }
 
 parser_node *parse_type(typed_token **tkns_ptr)
-{
+{ 
     typed_token *tkn = *tkns_ptr;
     parser_node *node = NULL;
     if (tkn->type_id == TKN_INT || tkn->type_id == TKN_VOID || tkn->type_id == TKN_CHAR)

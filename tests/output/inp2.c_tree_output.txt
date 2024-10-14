@@ -1,0 +1,145 @@
+Program(
+  FunctionDecl(
+    Name:
+      haha
+    Returns:
+      Type(TKN_VOID)
+    ParamTypes:
+  )
+  FunctionDecl(
+    Name:
+      abc
+    Returns:
+      Type(TKN_VOID)
+    ParamTypes:
+      Type(TKN_INT)
+      Type(TKN_INT)
+      Type(TKN_INT)
+      Type(TKN_INT***)
+  )
+  Function(
+    Name:
+      f
+    Returns:
+      Type(TKN_VOID)
+    Params:
+      Param: a
+        Type(TKN_INT)
+    Statements:
+      BinaryOp(Op: 72)
+        Left:
+          Literal(Type: 34, Value: 123)
+        Right:
+          BinaryOp(Op: 78)
+            Left:
+              Literal(Type: 34, Value: 234)
+            Right:
+              Literal(Type: 34, Value: 345)
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_VOID*)
+    Params:
+      Param: a
+        Type(TKN_INT*)
+      Param: b
+        Type(TKN_INT**)
+    Statements:
+      VarDecl(a):
+        Type(TKN_INT)
+        Value:
+          BinaryOp(Op: 72)
+            Left:
+              Literal(Type: 33, Value: 1)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Literal(Type: 33, Value: 2)
+                Right:
+                  BinaryOp(Op: 72)
+                    Left:
+                      BinaryOp(Op: 78)
+                        Left:
+                          Literal(Type: 33, Value: 3)
+                        Right:
+                          Literal(Type: 33, Value: 4)
+                    Right:
+                      BinaryOp(Op: 72)
+                        Left:
+                          Literal(Type: 33, Value: 5)
+                        Right:
+                          Literal(Type: 33, Value: 6)
+      VarDecl(b):
+        Type(TKN_INT)
+        Value:
+          BinaryOp(Op: 72)
+            Left:
+              Literal(Type: 33, Value: 234)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Literal(Type: 33, Value: 2)
+                Right:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Literal(Type: 33, Value: 23)
+                    Right:
+                      Literal(Type: 33, Value: 1)
+      Assign(b):
+        Value:
+          BinaryOp(Op: 72)
+            Left:
+              Literal(Type: 33, Value: 2)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Literal(Type: 33, Value: 3)
+                Right:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Literal(Type: 33, Value: 4)
+                    Right:
+                      Literal(Type: 33, Value: 5)
+      Assign(a):
+        Value:
+          BinaryOp(Op: 72)
+            Left:
+              FunctionCall(Name: hey)
+                Args:
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Literal(Type: 33, Value: ab)
+                Right:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Literal(Type: 33, Value: cd)
+                    Right:
+                      FunctionCall(Name: func)
+                        Args:
+      FunctionCall(Name: salam)
+        Args:
+      CompoundStatement
+        Assign(a):
+          Value:
+            Literal(Type: 33, Value: salam)
+        Literal(Type: 33, Value: khubi)
+        CompoundStatement
+          Literal(Type: 33, Value: chetori)
+          VarDecl(a):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 33, Value: haha)
+          CompoundStatement
+          CompoundStatement
+            FunctionCall(Name: salam)
+              Args:
+                Literal(Type: 33, Value: a)
+                Literal(Type: 33, Value: b)
+                FunctionCall(Name: ggg)
+                  Args:
+                    Literal(Type: 33, Value: d)
+  )
+)

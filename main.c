@@ -21,8 +21,9 @@ char *read_source_file(FILE *fp);
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s <filename> <mode> (<mode>: --lex, --asm or --tree)\n", argv[0]);
         return 1;
     }
 
@@ -31,7 +32,8 @@ int main(int argc, char *argv[])
     const char *filename = argv[1];
 
     FILE *fp = fopen(filename, "rb");
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         fprintf(stderr, "Error opening file: %s\n", filename);
         return 1;
     }
@@ -46,11 +48,14 @@ int main(int argc, char *argv[])
 
     typed_token *tkn = tokenize(content);
 
-    typed_token *t = tkn;
-    while (t)
+    if (strcmp(argv[2], "--lex") == 0)
     {
-        // t->debug(t);
-        t = t->next;
+        typed_token *t = tkn;
+        while (t)
+        {
+            t->debug(t);
+            t = t->next;
+        }
     }
 
     tkn = preprocess(tkn);
@@ -59,29 +64,35 @@ int main(int argc, char *argv[])
     parser_node *prog = parse_program(&tkn);
     if (prog)
     {
-        // prog->debug(0, prog);
-        // exit(0);
+        if (strcmp(argv[2], "--tree") == 0)
+        {
+            prog->debug(0, prog);
+            exit(0);
+        }
     }
     else
     {
         printf("Parse failed!\n");
     }
 
-    context ctx = new_context();
-    prog->apply(prog, &ctx);
-    list_node *curr = ctx.data.first;
-    printf("section .data\n");
-    while (curr)
+    if (strcmp(argv[2], "--asm") == 0)
     {
-        printf("%s\n", (char*)curr->value);
-        curr = curr->next;
-    }
-    printf("section .text\n");
-    curr = ctx.text.first;
-    while (curr)
-    {
-        printf("%s\n", (char*)curr->value);
-        curr = curr->next;
+        context ctx = new_context();
+        prog->apply(prog, &ctx);
+        list_node *curr = ctx.data.first;
+        printf("section .data\n");
+        while (curr)
+        {
+            printf("%s\n", (char *)curr->value);
+            curr = curr->next;
+        }
+        printf("section .text\n");
+        curr = ctx.text.first;
+        while (curr)
+        {
+            printf("%s\n", (char *)curr->value);
+            curr = curr->next;
+        }
     }
 
 defer_exit:
@@ -105,7 +116,8 @@ char *read_source_file(FILE *fp)
         goto ret;
 
     int rd = fread(data, sizeof(char), st.st_size, fp);
-    if(rd != st.st_size) {
+    if (rd != st.st_size)
+    {
         data = NULL;
         goto ret;
     }

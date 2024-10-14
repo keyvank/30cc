@@ -1,0 +1,371 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(TKN_VOID)
+    ParamTypes:
+      Type(TKN_CHAR*)
+  )
+  Function(
+    Name:
+      doub
+    Returns:
+      Type(TKN_INT)
+    Params:
+      Param: k
+        Type(TKN_INT)
+    Statements:
+      Return:
+        BinaryOp(Op: 78)
+          Left:
+            Variable(k)
+          Right:
+            Literal(Type: 34, Value: 2)
+  )
+  Function(
+    Name:
+      fact
+    Returns:
+      Type(TKN_INT)
+    Params:
+      Param: a
+        Type(TKN_INT)
+    Statements:
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Fact: %u
+)
+          Variable(a)
+      If(
+        Cond:
+          Variable(a)
+        Body:
+          CompoundStatement
+            Return:
+              BinaryOp(Op: 78)
+                Left:
+                  Variable(a)
+                Right:
+                  FunctionCall(Name: fact)
+                    Args:
+                      BinaryOp(Op: 75)
+                        Left:
+                          Variable(a)
+                        Right:
+                          Literal(Type: 34, Value: 1)
+  )
+  Function(
+    Name:
+      fibo
+    Returns:
+      Type(TKN_INT)
+    Params:
+      Param: n
+        Type(TKN_INT)
+    Statements:
+      If(
+        Cond:
+          BinaryOp(Op: 65)
+            Left:
+              Variable(n)
+            Right:
+              Literal(Type: 34, Value: 0)
+        Body:
+          CompoundStatement
+            Return:
+              Literal(Type: 34, Value: 1)
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_INT)
+    Params:
+    Statements:
+      VarDecl(i2):
+        Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 0)
+      While(
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i2)
+            Right:
+              Literal(Type: 34, Value: 10)
+        Body:
+          CompoundStatement
+            FunctionCall(Name: printf)
+              Args:
+                Literal(Type: 33, Value: I: %u
+)
+                Variable(i2)
+            Assign(i2):
+              Value:
+                BinaryOp(Op: 72)
+                  Left:
+                    Variable(i2)
+                  Right:
+                    Literal(Type: 34, Value: 1)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %c %c %u)
+          Literal(Type: 35)
+          Literal(Type: 34, Value: 110)
+          Literal(Type: 35)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: 
+)
+      VarDecl(a):
+        Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 10)
+      VarDecl(b):
+        Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 20)
+      VarDecl(c):
+        Type(TKN_INT)
+        Value:
+          BinaryOp(Op: 78)
+            Left:
+              Variable(a)
+            Right:
+              Variable(b)
+      VarDecl(d):
+        Type(TKN_INT)
+        Value:
+          BinaryOp(Op: 78)
+            Left:
+              Variable(c)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(c)
+                Right:
+                  Variable(a)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Result: %u
+)
+          BinaryOp(Op: 72)
+            Left:
+              Variable(c)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(c)
+                Right:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Variable(d)
+                    Right:
+                      BinaryOp(Op: 78)
+                        Left:
+                          BinaryOp(Op: 72)
+                            Left:
+                              Variable(b)
+                            Right:
+                              Variable(a)
+                        Right:
+                          Variable(a)
+      VarDecl(cc):
+        Type(TKN_INT*)
+        Value:
+          Ref:
+            Variable(c)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Addr of a: %u
+)
+          Ref:
+            Variable(a)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Value of b: %u
+)
+          Deref:
+            BinaryOp(Op: 72)
+              Left:
+                Ref:
+                  Variable(a)
+              Right:
+                Literal(Type: 34, Value: 8)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Addr of c: %u
+)
+          Variable(cc)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Double of 123: %u
+)
+          BinaryOp(Op: 72)
+            Left:
+              FunctionCall(Name: doub)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      FunctionCall(Name: doub)
+                        Args:
+                          BinaryOp(Op: 78)
+                            Left:
+                              Literal(Type: 34, Value: 123)
+                            Right:
+                              FunctionCall(Name: doub)
+                                Args:
+                                  Literal(Type: 34, Value: 123)
+                    Right:
+                      Literal(Type: 34, Value: 2)
+            Right:
+              Literal(Type: 34, Value: 10)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: Factorial 5: %u
+)
+          FunctionCall(Name: fact)
+            Args:
+              Literal(Type: 34, Value: 5)
+      If(
+        Cond:
+          Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            FunctionCall(Name: printf)
+              Args:
+                Literal(Type: 33, Value: TRUE
+)
+      If(
+        Cond:
+          Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            FunctionCall(Name: printf)
+              Args:
+                Literal(Type: 33, Value: TRUE
+)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          BinaryOp(Op: 71)
+            Left:
+              Literal(Type: 34, Value: 5)
+            Right:
+              Literal(Type: 34, Value: 1)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 0)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 1)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 2)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 3)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 4)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 5)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 6)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u )
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 7)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          FunctionCall(Name: fibo)
+            Args:
+              Literal(Type: 34, Value: 8)
+      For(
+        Init:
+          VarDecl(i):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 20)
+        Act:
+          Assign(i):
+            Value:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            FunctionCall(Name: printf)
+              Args:
+                Literal(Type: 33, Value: %u )
+                FunctionCall(Name: fibo)
+                  Args:
+                    Variable(i)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: 
+DONE!
+)
+      FunctionCall(Name: printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          BinaryOp(Op: 82)
+            Left:
+              BinaryOp(Op: 82)
+                Left:
+                  Literal(Type: 34, Value: 1)
+                Right:
+                  Literal(Type: 34, Value: 1)
+            Right:
+              BinaryOp(Op: 82)
+                Left:
+                  Literal(Type: 34, Value: 1)
+                Right:
+                  Literal(Type: 34, Value: 1)
+  )
+  Struct(MyStruct)
+    VarDecl(a):
+      Type(TKN_INT**[10][110][30])
+    VarDecl(b):
+      Type(TKN_CHAR)
+    VarDecl(c):
+      Type(TKN_INT)
+)

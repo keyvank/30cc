@@ -15,10 +15,10 @@ OUTPUT_FOLDER = "tests/output"
 TEMP_FOLDER = "temp_snapshots"
 
 
-def run(input_file):
+def run(input_file, mode):
     try:
         result = subprocess.run(
-            [C_PROGRAM_NAME, input_file], capture_output=True, text=True, check=True
+            [C_PROGRAM_NAME, input_file, '--' + mode], capture_output=True, text=True, check=True
         )
         return result.stdout
     except subprocess.CalledProcessError as e:
@@ -97,25 +97,26 @@ def main():
 
     diff_count = 0
     for test_file in TEST_FILES:
-        output_file = os.path.join(
-            OUTPUT_FOLDER, f"{os.path.basename(test_file)}_output.txt"
-        )
+        for mode in ['lex', 'tree', 'asm']:
+            output_file = os.path.join(
+                OUTPUT_FOLDER, f"{os.path.basename(test_file)}_{mode}_output.txt"
+            )
 
-        if mode == "revert":
-            revert_snapshot(output_file)
-            continue
+            if mode == "revert":
+                revert_snapshot(output_file)
+                continue
 
-        output = run(test_file)
-        if output is None:
-            continue
+            output = run(test_file, mode)
+            if output is None:
+                continue
 
-        if os.path.exists(output_file):
-            if not compare_outputs(output_file, output):
-                diff_count += 1
-                print(f"Alert: New output differs from {output_file}")
-                update_output(output_file, output, True)
-        else:
-            update_output(output_file, output)
+            if os.path.exists(output_file):
+                if not compare_outputs(output_file, output):
+                    diff_count += 1
+                    print(f"Alert: New output differs from {output_file}")
+                    update_output(output_file, output, True)
+            else:
+                update_output(output_file, output)
 
     print(f"found {diff_count} differences in snapshots")
 

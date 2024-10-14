@@ -1,0 +1,17 @@
+Program(
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_INT)
+    Params:
+    Statements:
+      VarDecl(m):
+        Type(MyStruct)struct
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+  Struct(MyStruct)
+    VarDecl(c):
+      Type(TKN_INT)
+)

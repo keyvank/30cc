@@ -1,0 +1,65 @@
+section .data
+__printf_size: equ 16
+__temp_str_1 db `%u `, 0
+__temp_str_2 db `%u `, 0
+__main_size: equ 96
+section .text
+extern printf
+global main
+main:
+push rbp
+mov rbp, rsp
+sub rsp, __main_size
+mov rax, 10
+mov [rsp+0], rax
+mov rax, 0
+mov [rsp+8], rax
+__tmp_label_0:
+mov rax, [rsp + 8]
+mov rbx, 5
+cmp rax, rbx
+jl __tmp_label_2
+mov rax, 0
+jmp __tmp_label_3
+__tmp_label_2:
+mov rax, 1
+__tmp_label_3:
+mov [rsp + 16], rax
+mov rax, [rsp + 16]
+cmp rax, 0
+je __tmp_label_1
+mov rax, 2
+mov [rsp+24], rax
+mov rax, __temp_str_1
+mov [rsp + 32], rax
+mov rax, [rsp + 24]
+mov [rsp + 40], rax
+mov rdi, [rsp + 32]
+mov rsi, [rsp + 40]
+call printf
+mov [rsp + 48], rax
+mov rax, [rsp + 8]
+mov rbx, 1
+add rax, rbx
+mov [rsp + 24], rax
+mov rax, [rsp + 24]
+mov [rsp+8], rax
+jmp __tmp_label_0
+__tmp_label_1:
+mov rax, __temp_str_2
+mov [rsp + 8], rax
+mov rax, [rsp + 0]
+mov [rsp + 16], rax
+mov rdi, [rsp + 8]
+mov rsi, [rsp + 16]
+call printf
+mov [rsp + 24], rax
+mov rsp, rbp
+pop rbp
+ret
+extern exit
+global _start
+_start:
+call main
+mov rdi, 0
+call exit
