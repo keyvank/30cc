@@ -39,6 +39,14 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
     switch (binop->op)
     {
+    case TKN_DOT:
+    case TKN_ARROW:
+        // TODO
+        // 1. Find the location of variable in the stack
+        // 2. Find the location of the field
+        // Return [rsp + stack_offset + field_offset]?
+        printf("Unimplemented!\n");
+        exit(1);
     case TKN_PLUS:
         add_text(ctx, "add rax, rbx");
         break;
