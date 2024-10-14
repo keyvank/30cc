@@ -362,7 +362,12 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '-')
     {
-        if (*(inp + 1) == '-')
+        if (*(inp + 1) == '>')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_ARROW);
+        }
+        else if (*(inp + 1) == '-')
         {
             *inp_ptr += 2;
             return new_simp_tkn(TKN_MINMIN);
@@ -397,6 +402,9 @@ typed_token *next_op(char **inp_ptr)
         {
             *inp_ptr += 3;
             return new_simp_tkn(TKN_DOTS);
+        } else {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_DOT);
         }
     }
     return NULL;

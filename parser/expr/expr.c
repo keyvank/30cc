@@ -253,6 +253,9 @@ int op_prec(int op)
 {
     switch (op)
     {
+    case TKN_DOT:
+    case TKN_ARROW:
+        return 60;
     case TKN_STAR:
         return 50;
     case TKN_PLUS:
