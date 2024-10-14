@@ -29,24 +29,24 @@ char *escape(char *inp)
     return ret;
 }
 
-char *literal_apply(parser_node *node, context *ctx)
+apply_result *literal_apply(parser_node *node, context *ctx)
 {
     node_literal *lit = (node_literal *)node->data;
     if (lit->type == TKN_LIT_STR)
     {
         char *varname = cc_asprintf("__temp_str_%u", ctx->data.count);
         add_data(ctx, "%s db `%s`, 0", varname, escape(lit->value));
-        return varname;
+        return new_result(varname, NULL);
     }
     if (lit->type == TKN_LIT_INT)
     {
-        return cc_asprintf("%u", *((int *)lit->value));
+        return new_result(cc_asprintf("%u", *((int *)lit->value)), NULL);
     }
     if (lit->type == TKN_LIT_CHAR)
     {
-        return cc_asprintf("%u", (int)(*((char *)lit->value)));
+        return new_result(cc_asprintf("%u", (int)(*((char *)lit->value))), NULL);
     }
-    return lit->value;
+    return NULL;
 }
 
 void literal_debug(int depth, parser_node *node)

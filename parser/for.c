@@ -10,7 +10,7 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-char *for_apply(parser_node *node, context *ctx)
+apply_result *for_apply(parser_node *node, context *ctx)
 {
     node_for *forn = (node_for *)node->data;
 
@@ -22,8 +22,8 @@ char *for_apply(parser_node *node, context *ctx)
     char *end_for = new_label(ctx);
 
     add_text(ctx, "%s:", start_for);
-    char *condv = forn->cond->apply(forn->cond, ctx);
-    add_text(ctx, "mov rax, %s", condv);
+    apply_result *condv = forn->cond->apply(forn->cond, ctx);
+    add_text(ctx, "mov rax, %s", condv->code);
     add_text(ctx, "cmp rax, 0");
     add_text(ctx, "je %s", end_for);
     forn->body->apply(forn->body, ctx);

@@ -26,13 +26,13 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
-char *binary_op_apply(parser_node *node, context *ctx)
+apply_result *binary_op_apply(parser_node *node, context *ctx)
 {
     node_binary_op *binop = (node_binary_op *)node->data;
-    char *left = binop->left->apply(binop->left, ctx);
-    char *right = binop->right->apply(binop->right, ctx);
-    add_text(ctx, "mov rax, %s", left);
-    add_text(ctx, "mov rbx, %s", right);
+    apply_result *left = binop->left->apply(binop->left, ctx);
+    apply_result *right = binop->right->apply(binop->right, ctx);
+    add_text(ctx, "mov rax, %s", left->code);
+    add_text(ctx, "mov rbx, %s", right->code);
 
     char *l1 = NULL;
     char *l2 = NULL;
@@ -105,7 +105,7 @@ char *binary_op_apply(parser_node *node, context *ctx)
     symbol *tmp = new_temp_symbol(ctx, 8);
 
     add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
-    return cc_asprintf("[rsp + %u]", tmp->offset);
+    return new_result(cc_asprintf("[rsp + %u]", tmp->offset), NULL);
 }
 
 void cond_debug(int depth, parser_node *node)
@@ -124,25 +124,25 @@ void cond_debug(int depth, parser_node *node)
     cond->false_val->debug(depth + 2, cond->false_val);
 }
 
-char *cond_apply(parser_node *node, context *ctx)
+apply_result *cond_apply(parser_node *node, context *ctx)
 {
     node_cond *cond = (node_cond *)node->data;
-    char *cond_res = cond->cond->apply(cond->cond, ctx);
-    char *yes_val = cond->true_val->apply(cond->true_val, ctx);
-    char *no_val = cond->false_val->apply(cond->false_val, ctx);
+    apply_result *cond_res = cond->cond->apply(cond->cond, ctx);
+    apply_result *yes_val = cond->true_val->apply(cond->true_val, ctx);
+    apply_result *no_val = cond->false_val->apply(cond->false_val, ctx);
     char *l1 = new_label(ctx);
     char *l2 = new_label(ctx);
-    add_text(ctx, "mov rax, %s", cond_res);
+    add_text(ctx, "mov rax, %s", cond_res->code);
     add_text(ctx, "cmp rax, 0");
     add_text(ctx, "je %s", l1);
-    add_text(ctx, "mov rax, %s", yes_val);
+    add_text(ctx, "mov rax, %s", yes_val->code);
     add_text(ctx, "jmp %s", l2);
     add_text(ctx, "%s:", l1);
-    add_text(ctx, "mov rax, %s", no_val);
+    add_text(ctx, "mov rax, %s", no_val->code);
     add_text(ctx, "%s:", l2);
     symbol *sym = new_temp_symbol(ctx, 8);
     add_text(ctx, "mov [rsp+%u], rax", sym->offset);
-    return cc_asprintf("[rsp+%u]", sym->offset);
+    return new_result(cc_asprintf("[rsp+%u]", sym->offset), NULL);
 }
 
 void cast_debug(int depth, parser_node *node)
@@ -158,10 +158,10 @@ void cast_debug(int depth, parser_node *node)
     cast->type->debug(depth + 2, cast->type);
 }
 
-char *cast_apply(parser_node *node, context *ctx)
+apply_result *cast_apply(parser_node *node, context *ctx)
 {
     node_cast *cast = (node_cast *)node->data;
-    return cast->val->apply(cast->val, ctx);
+    return new_result(cast->val->apply(cast->val, ctx)->code, NULL);
 }
 
 parser_node *parse_paren(typed_token **tkns_ptr)

@@ -10,7 +10,7 @@
 #include "if.h"
 #include "while.h"
 
-char *compound_statement_apply(parser_node *node, context *ctx)
+apply_result *compound_statement_apply(parser_node *node, context *ctx)
 {
     node_compound_statement *comp = (node_compound_statement *)node->data;
     int num_syms = ctx->symbol_table.count;
@@ -35,14 +35,14 @@ void compound_statement_debug(int depth, parser_node *node)
     }
 }
 
-char *return_apply(parser_node *node, context *ctx)
+apply_result *return_apply(parser_node *node, context *ctx)
 {
     node_return *func = (node_return *)node->data;
 
     if (func->exp)
     {
-        char *val = func->exp->apply(func->exp, ctx);
-        add_text(ctx, "mov rax, %s", val);
+        apply_result *val = func->exp->apply(func->exp, ctx);
+        add_text(ctx, "mov rax, %s", val->code);
     }
 
     add_text(ctx, "mov rsp, rbp");

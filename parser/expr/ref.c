@@ -16,7 +16,7 @@ void ref_debug(int depth, parser_node *node)
     ref->var->debug(depth + 1, ref->var);
 }
 
-char *ref_apply(parser_node *node, context *ctx)
+apply_result *ref_apply(parser_node *node, context *ctx)
 {
     node_ref *ref = (node_ref *)node->data;
     node_var *v = (node_var *)ref->var->data;
@@ -26,7 +26,7 @@ char *ref_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov rax, rsp");
         add_text(ctx, "add rax, %u", sym->offset);
 
-        return "rax";
+        return new_result("rax", NULL);
     }
     else
     {

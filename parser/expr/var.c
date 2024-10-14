@@ -12,7 +12,7 @@ void var_debug(int depth, parser_node *node)
     printf("Variable(%s)\n", var->var_name);
 }
 
-char *var_apply(parser_node *node, context *ctx)
+apply_result *var_apply(parser_node *node, context *ctx)
 {
     node_var *var = (node_var *)node->data;
     symbol *sym = find_symbol(ctx, var->var_name);
@@ -22,7 +22,7 @@ char *var_apply(parser_node *node, context *ctx)
     }
     else
     {
-        return cc_asprintf("[rsp + %u]", sym->offset);
+        return new_result(cc_asprintf("[rsp + %u]", sym->offset), NULL);
     }
     return NULL;
 }

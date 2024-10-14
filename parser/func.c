@@ -11,7 +11,7 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-char *func_decl_apply(parser_node *node, context *ctx)
+apply_result *func_decl_apply(parser_node *node, context *ctx)
 {
     node_func_decl *func = (node_func_decl *)node->data;
     char *ext = malloc(128);
@@ -20,7 +20,7 @@ char *func_decl_apply(parser_node *node, context *ctx)
     return NULL;
 }
 
-char *func_def_apply(parser_node *node, context *ctx)
+apply_result *func_def_apply(parser_node *node, context *ctx)
 {
     node_func_def *func = (node_func_def *)node->data;
 

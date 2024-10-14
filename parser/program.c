@@ -30,7 +30,7 @@ void program_debug(int depth, parser_node *node)
     printf(")\n");
 }
 
-char *program_apply(parser_node *node, context *ctx)
+apply_result *program_apply(parser_node *node, context *ctx)
 {
     node_program *prog = (node_program *)node->data;
     for (int i = 0; i < prog->num_functions; i++)

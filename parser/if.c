@@ -9,10 +9,10 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-char *if_apply(parser_node *node, context *ctx)
+apply_result *if_apply(parser_node *node, context *ctx)
 {
     node_if *ifn = (node_if *)node->data;
-    char *ife = ifn->cond->apply(ifn->cond, ctx);
+    apply_result *ife = ifn->cond->apply(ifn->cond, ctx);
 
     add_text(ctx, "mov rax, 0");
 
@@ -23,7 +23,7 @@ char *if_apply(parser_node *node, context *ctx)
         end_of_else = new_label(ctx);
     }
 
-    add_text(ctx, "cmp rax, %s", ife);
+    add_text(ctx, "cmp rax, %s", ife->code);
     add_text(ctx, "je %s", end_of_if);
     ifn->body->apply(ifn->body, ctx);
     if (ifn->else_body)

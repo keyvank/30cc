@@ -16,16 +16,22 @@ void deref_debug(int depth, parser_node *node)
     ref->var->debug(depth + 1, ref->var);
 }
 
-char *deref_apply(parser_node *node, context *ctx)
+apply_result *deref_apply(parser_node *node, context *ctx)
 {
     node_deref *deref = (node_deref *)node->data;
 
-    char *loc = deref->var->apply(deref->var, ctx);
+    apply_result *loc = deref->var->apply(deref->var, ctx);
 
-    add_text(ctx, "mov rax, %s", loc);
+    add_text(ctx, "mov rax, %s", loc->code);
     add_text(ctx, "mov rax, [rax]");
 
-    return "rax";
+    symbol *ret = new_temp_symbol(ctx, 8);
+
+    char *retloc = cc_asprintf("[rsp+%u]", ret->offset);
+
+    add_text(ctx, "mov %s, rax", retloc);
+
+    return new_result(retloc, NULL);
 }
 
 parser_node *parse_deref(typed_token **tkns_ptr)

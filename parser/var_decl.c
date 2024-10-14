@@ -10,14 +10,14 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-char *var_decl_apply(parser_node *node, context *ctx)
+apply_result *var_decl_apply(parser_node *node, context *ctx)
 {
     node_var_decl *decl = (node_var_decl *)node->data;
     symbol *sym = new_symbol(ctx, decl->identity, 8);
     if (decl->value)
     {
-        char *val = decl->value->apply(decl->value, ctx);
-        add_text(ctx, "mov rax, %s", val);
+        apply_result *val = decl->value->apply(decl->value, ctx);
+        add_text(ctx, "mov rax, %s", val->code);
         add_text(ctx, "mov [rsp+%u], rax", sym->offset);
     }
     return NULL;

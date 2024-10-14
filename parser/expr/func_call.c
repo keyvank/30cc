@@ -21,20 +21,20 @@ void func_call_debug(int depth, parser_node *node)
     }
 }
 
-char *func_call_apply(parser_node *node, context *ctx)
+apply_result *func_call_apply(parser_node *node, context *ctx)
 {
     node_func_call *call = (node_func_call *)node->data;
 
     char **argvals = (char **)malloc(sizeof(char *) * 6);
     for (int i = 0; i < call->num_args; i++)
     {
-        char *regval = call->args[i]->apply(call->args[i], ctx);
+        apply_result *regval = call->args[i]->apply(call->args[i], ctx);
 
         symbol *tmp = new_temp_symbol(ctx, 8);
 
         char *regname = cc_asprintf("[rsp + %u]", tmp->offset);
 
-        add_text(ctx, "mov rax, %s", regval);
+        add_text(ctx, "mov rax, %s", regval->code);
         add_text(ctx, "mov %s, rax", regname);
 
         argvals[i] = regname;
@@ -66,7 +66,7 @@ char *func_call_apply(parser_node *node, context *ctx)
     symbol *tmp = new_temp_symbol(ctx, 8);
     add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
 
-    return cc_asprintf("[rsp + %u]", tmp->offset);
+    return new_result(cc_asprintf("[rsp + %u]", tmp->offset), NULL);
 }
 
 parser_node *parse_func_call(typed_token **tkns_ptr)

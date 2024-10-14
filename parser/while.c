@@ -9,7 +9,7 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-char *while_apply(parser_node *node, context *ctx)
+apply_result *while_apply(parser_node *node, context *ctx)
 {
     node_while *w = (node_while *)node->data;
 
@@ -17,8 +17,8 @@ char *while_apply(parser_node *node, context *ctx)
     char *end_while = new_label(ctx);
 
     add_text(ctx, "%s:", start_while);
-    char *condv = w->cond->apply(w->cond, ctx);
-    add_text(ctx, "mov rax, %s", condv);
+    apply_result *condv = w->cond->apply(w->cond, ctx);
+    add_text(ctx, "mov rax, %s", condv->code);
     add_text(ctx, "cmp rax, 0");
     add_text(ctx, "je %s", end_while);
     w->body->apply(w->body, ctx);

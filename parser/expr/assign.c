@@ -23,18 +23,18 @@ void assign_debug(int depth, parser_node *node)
     }
 }
 
-char *assign_apply(parser_node *node, context *ctx)
+apply_result *assign_apply(parser_node *node, context *ctx)
 {
     node_assign *assign = (node_assign *)node->data;
 
-    char *val = assign->value->apply(assign->value, ctx);
+    apply_result *val = assign->value->apply(assign->value, ctx);
     symbol *sym = find_symbol(ctx, assign->identity);
 
-    add_text(ctx, "mov rax, %s", val);
+    add_text(ctx, "mov rax, %s", val->code);
     char *res = cc_asprintf("[rsp+%u]", sym->offset);
     add_text(ctx, "mov %s, rax", res);
 
-    return res;
+    return new_result(res, NULL);
 }
 
 parser_node *parse_assign(typed_token **tkns_ptr)
