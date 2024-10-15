@@ -20,6 +20,14 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
         cnt *= tp->dims[i];
     }
     symbol *sym = new_symbol(ctx, decl->identity, 8 * cnt);
+
+    // Store the address of the var in the var
+    if (cnt > 1)
+    {
+        add_text(ctx, "mov qword %s, %u", sym->repl, sym->offset);
+        add_text(ctx, "add %s, rsp", sym->repl);
+    }
+    
     if (decl->value)
     {
         apply_result *val = decl->value->apply(decl->value, ctx);

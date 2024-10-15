@@ -32,8 +32,8 @@ apply_result *index_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rbx, %u", elem_size);
     add_text(ctx, "mul rbx");
     add_text(ctx, "mov rbx, %s", arr->code);
-    add_text(ctx, "add rax, rbx");
-    add_text(ctx, "mov rax, [rax]");
+    add_text(ctx, "add rbx, rax");
+    add_text(ctx, "mov rax, [rbx]");
 
     symbol *sym = new_temp_symbol(ctx, elem_size);
     add_text(ctx, "mov %s, rax", sym->repl);
