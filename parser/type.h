@@ -15,4 +15,11 @@ typedef struct
     int *dims;
 } node_type;
 
+typedef struct
+{
+    parser_node *ret_type;
+    int num_args;
+    parser_node **arg_types;
+} node_func_type;
+
 #endif

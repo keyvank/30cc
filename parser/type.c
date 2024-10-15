@@ -16,7 +16,8 @@ void type_debug(int depth, parser_node *node)
     {
         printf("*");
     }
-    for (int i = 0; i < tp->dim; i++) {
+    for (int i = 0; i < tp->dim; i++)
+    {
         printf("[%u]", tp->dims[i]);
     }
     printf(")");
@@ -26,8 +27,111 @@ void type_debug(int depth, parser_node *node)
     printf("\n");
 }
 
+void func_type_debug(int depth, parser_node *node)
+{
+    node_func_type *ft = (node_func_type *)node->data;
+    printtabs(depth);
+    printf("FuncType:\n");
+    printtabs(depth + 1);
+    printf("Arg Types:\n");
+    for (int i = 0; i < ft->num_args; i++)
+    {
+        ft->arg_types[i]->debug(depth + 2, ft->arg_types[i]);
+    }
+    printtabs(depth + 1);
+    printf("Return Type:\n");
+    ft->ret_type->debug(depth + 2, ft->ret_type);
+}
+
+parser_node *parse_simp_type(typed_token **tkns_ptr);
+
 parser_node *parse_type(typed_token **tkns_ptr)
 { 
+    typed_token *tkn = *tkns_ptr;
+    parser_node *ret_type = parse_simp_type(&tkn);
+    if (ret_type)
+    {
+        if (tkn->type_id == TKN_L_PAREN)
+        {
+            tkn = tkn->next;
+            if (tkn->type_id == TKN_STAR)
+            {
+                int ptr_cnt = 1;
+                tkn = tkn->next;
+                while (tkn->type_id == TKN_STAR)
+                {
+                    tkn = tkn->next;
+                    ptr_cnt += 1;
+                }
+                if (tkn->type_id == TKN_ID)
+                {
+                    tkn = tkn->next;
+                }
+                if (tkn->type_id == TKN_R_PAREN)
+                {
+                    tkn = tkn->next;
+                    if (tkn->type_id == TKN_L_PAREN)
+                    {
+                        tkn = tkn->next;
+                        int num_args = 0;
+                        parser_node **arg_types = (parser_node **)malloc(sizeof(parser_node *) * 32);
+                        while (tkn)
+                        {
+                            if (tkn->type_id == TKN_R_PAREN)
+                            {
+                                tkn = tkn->next;
+                                *tkns_ptr = tkn;
+                                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                                node->data = (void *)malloc(sizeof(node_func_type));
+                                node->debug = func_type_debug;
+                                node_func_type *ft = (node_func_type *)node->data;
+                                ft->ret_type = ret_type;
+                                ft->num_args = num_args;
+                                ft->arg_types = arg_types;
+                                return node;
+                            }
+                            else
+                            {
+                                parser_node *param = parse_type(&tkn);
+                                if (param)
+                                {
+                                    arg_types[num_args++] = param;
+
+                                    if(tkn->type_id == TKN_ID) {
+                                        tkn =tkn->next;
+                                    }
+
+                                    if (tkn->type_id == TKN_COMMA)
+                                    {
+                                        tkn = tkn->next;
+                                        continue;
+                                    }
+                                    if (tkn->type_id != TKN_R_PAREN)
+                                    {
+                                        return NULL;
+                                    }
+                                }
+                                else
+                                {
+                                    return NULL;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            *tkns_ptr = tkn;
+            return ret_type;
+        }
+    }
+    return NULL;
+}
+
+parser_node *parse_simp_type(typed_token **tkns_ptr)
+{
     typed_token *tkn = *tkns_ptr;
     parser_node *node = NULL;
     if (tkn->type_id == TKN_INT || tkn->type_id == TKN_VOID || tkn->type_id == TKN_CHAR)
