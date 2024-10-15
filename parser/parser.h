@@ -19,6 +19,7 @@ typedef struct parser_node_
 typedef struct apply_result_ {
     char *code;
     parser_node *type;
+    char *addr_code;
 } apply_result;
 
 apply_result *new_result(char *code, parser_node *type);

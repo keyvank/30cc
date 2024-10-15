@@ -22,7 +22,13 @@ apply_result *var_apply(parser_node *node, context *ctx)
     }
     else
     {
-        return new_result(sym->repl, NULL);
+        symbol *addr_sym = new_temp_symbol(ctx, 8);
+        add_text(ctx, "mov rax, rsp");
+        add_text(ctx, "add rax, %u", sym->offset);
+        add_text(ctx, "mov %s, rax", addr_sym->repl);
+        apply_result *res = new_result(sym->repl, NULL);
+        res->addr_code = addr_sym->repl;
+        return res;
     }
     return NULL;
 }

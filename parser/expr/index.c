@@ -33,12 +33,19 @@ apply_result *index_apply(parser_node *node, context *ctx)
     add_text(ctx, "mul rbx");
     add_text(ctx, "mov rbx, %s", arr->code);
     add_text(ctx, "add rbx, rax");
+
+    symbol *sym_addr = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rbx", sym_addr->repl);
+
     add_text(ctx, "mov rax, [rbx]");
+    symbol *sym_val = new_temp_symbol(ctx, elem_size);
+    add_text(ctx, "mov %s, rax", sym_val->repl);
 
-    symbol *sym = new_temp_symbol(ctx, elem_size);
-    add_text(ctx, "mov %s, rax", sym->repl);
+    apply_result *ret = new_result(sym_val->repl, NULL);
+    ret->code = sym_val->repl;
+    ret->addr_code = sym_addr->repl;
 
-    return new_result(sym->repl, NULL);
+    return ret;
 }
 
 parser_node *parse_index(typed_token **tkns_ptr, parser_node *arr)

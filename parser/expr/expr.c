@@ -41,7 +41,16 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     {
     case TKN_ASSIGN:
         add_text(ctx, "mov rax, %s", right->code);
-        add_text(ctx, "mov %s, rax", left->code);
+        if (left->addr_code)
+        {
+            add_text(ctx, "mov rbx, %s", left->addr_code);
+            add_text(ctx, "mov [rbx], rax");
+        }
+        else
+        {
+            printf("Cannot assign!\n");
+            exit(1);
+        }
         break;
     case TKN_DOT:
     case TKN_ARROW:
