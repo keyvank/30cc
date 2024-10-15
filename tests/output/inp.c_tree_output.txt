@@ -31,8 +31,10 @@ Program(
             Right:
               Literal(Type: 34, Value: 5)
         Act:
-          Assign(i):
-            Value:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
               BinaryOp(Op: 72)
                 Left:
                   Variable(i)

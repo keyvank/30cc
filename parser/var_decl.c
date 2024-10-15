@@ -19,15 +19,22 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
     {
         cnt *= tp->dims[i];
     }
-    symbol *sym = new_symbol(ctx, decl->identity, 8 * cnt);
+    int elem_size = 8;
+    int ptr_size = 8;
+
+    int alloc_size = cnt * elem_size;
+    if (tp->dims)
+        alloc_size += ptr_size;
+
+    symbol *sym = new_symbol(ctx, decl->identity, alloc_size);
 
     // Store the address of the var in the var
-    if (cnt > 1)
+    if (tp->dims)
     {
-        add_text(ctx, "mov qword %s, %u", sym->repl, sym->offset);
+        add_text(ctx, "mov qword %s, %u", sym->repl, sym->offset + ptr_size);
         add_text(ctx, "add %s, rsp", sym->repl);
     }
-    
+
     if (decl->value)
     {
         apply_result *val = decl->value->apply(decl->value, ctx);

@@ -1,11 +1,13 @@
 section .data
-__main_size: equ 16
+__main_size: equ 32
 section .text
 global main
 main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+mov qword [rsp+0], 8
+add [rsp+0], rsp
 mov rax, 0
 mov rsp, rbp
 pop rbp

@@ -107,8 +107,10 @@ Program(
                 Literal(Type: 33, Value: I: %u
 )
                 Variable(i2)
-            Assign(i2):
-              Value:
+            BinaryOp(Op: 64)
+              Left:
+                Variable(i2)
+              Right:
                 BinaryOp(Op: 72)
                   Left:
                     Variable(i2)
@@ -395,8 +397,10 @@ Program(
             Right:
               Literal(Type: 34, Value: 20)
         Act:
-          Assign(i):
-            Value:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
               BinaryOp(Op: 72)
                 Left:
                   Variable(i)

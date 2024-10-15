@@ -1,0 +1,98 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(TKN_VOID)
+    ParamTypes:
+      Type(TKN_CHAR*)
+  )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Type(TKN_CHAR*)
+    ParamTypes:
+      Type(TKN_INT)
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_INT)
+    Params:
+    Statements:
+      VarDecl(a):
+        Type(TKN_INT[10])
+      For(
+        Init:
+          VarDecl(i):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 10)
+        Act:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          BinaryOp(Op: 64)
+            Left:
+              Access:
+                In:
+                  Variable(a)
+                Index:
+                  Variable(i)
+            Right:
+              BinaryOp(Op: 78)
+                Left:
+                  Literal(Type: 34, Value: 2)
+                Right:
+                  Variable(i)
+      For(
+        Init:
+          VarDecl(i):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 10)
+        Act:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          FunctionCall:
+            Function:
+              Variable(printf)
+            Args:
+              Literal(Type: 33, Value: %u
+)
+              Access:
+                In:
+                  Variable(a)
+                Index:
+                  Variable(i)
+  )
+)
