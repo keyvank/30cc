@@ -17,40 +17,27 @@ Program(
       VarDecl(i):
         Type(TKN_INT)
         Value:
-          Literal(Type: 34, Value: 10)
-      For(
-        Init:
-          VarDecl(i):
-            Type(TKN_INT)
-            Value:
-              Literal(Type: 34, Value: 0)
-        Cond:
-          BinaryOp(Op: 66)
+          BinaryOp(Op: 75)
             Left:
-              Variable(i)
-            Right:
-              Literal(Type: 34, Value: 5)
-        Act:
-          Assign(i):
-            Value:
-              BinaryOp(Op: 72)
+              BinaryOp(Op: 75)
                 Left:
-                  Variable(i)
+                  Literal(Type: 34, Value: 10)
                 Right:
-                  Literal(Type: 34, Value: 1)
-        Body:
-          CompoundStatement
-            VarDecl(i):
-              Type(TKN_INT)
-              Value:
-                Literal(Type: 34, Value: 2)
-            FunctionCall(Name: printf)
-              Args:
-                Literal(Type: 33, Value: %u )
-                Variable(i)
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 1)
+                    Right:
+                      Literal(Type: 34, Value: 2)
+            Right:
+              BinaryOp(Op: 75)
+                Left:
+                  Literal(Type: 34, Value: 3)
+                Right:
+                  Literal(Type: 34, Value: 4)
       FunctionCall(Name: printf)
         Args:
-          Literal(Type: 33, Value: %u )
+          Literal(Type: 33, Value: %d
+)
           Variable(i)
   )
 )

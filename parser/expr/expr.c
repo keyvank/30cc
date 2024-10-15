@@ -320,7 +320,7 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
                 while (1)
                 {
                     int look_prec = op_prec(tkn->type_id);
-                    if (look_prec < prec)
+                    if (look_prec <= prec) // <= for left assoc and < for right assoc
                     {
                         break;
                     }

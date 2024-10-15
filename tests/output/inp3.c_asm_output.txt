@@ -247,23 +247,23 @@ mov rax, [rsp + 120]
 mov [rsp+104], rax
 mov rax, __temp_str_8
 mov [rsp + 128], rax
-mov rax, [rsp + 80]
-mov rbx, [rsp + 72]
+mov rax, [rsp + 88]
+mov rbx, [rsp + 88]
 add rax, rbx
 mov [rsp + 136], rax
 mov rax, [rsp + 136]
-mov rbx, [rsp + 72]
-mul rbx
+mov rbx, [rsp + 104]
+add rax, rbx
 mov [rsp + 144], rax
-mov rax, [rsp + 104]
-mov rbx, [rsp + 144]
+mov rax, [rsp + 80]
+mov rbx, [rsp + 72]
 add rax, rbx
 mov [rsp + 152], rax
-mov rax, [rsp + 88]
-mov rbx, [rsp + 152]
-add rax, rbx
+mov rax, [rsp + 152]
+mov rbx, [rsp + 72]
+mul rbx
 mov [rsp + 160], rax
-mov rax, [rsp + 88]
+mov rax, [rsp + 144]
 mov rbx, [rsp + 160]
 add rax, rbx
 mov [rsp + 168], rax
