@@ -23,12 +23,16 @@ apply_result *deref_apply(parser_node *node, context *ctx)
     apply_result *loc = deref->var->apply(deref->var, ctx);
 
     add_text(ctx, "mov rax, %s", loc->code);
+    symbol *sym_addr = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rax", sym_addr->repl);
+
     add_text(ctx, "mov rax, [rax]");
+    symbol *sym_val = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rax", sym_val->repl);
 
-    symbol *ret = new_temp_symbol(ctx, 8);
-    add_text(ctx, "mov %s, rax", ret->repl);
-
-    return new_result(ret->repl, NULL);
+    apply_result *res = new_result(sym_val->repl, NULL);
+    res->addr_code = sym_addr->repl;
+    return res;
 }
 
 parser_node *parse_deref(typed_token **tkns_ptr)
