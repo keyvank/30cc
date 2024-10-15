@@ -5,12 +5,12 @@
 #include "../parser.h"
 #include "expr.h"
 #include "literal.h"
-#include "assign.h"
 #include "../../codegen/codegen.h"
 #include "var.h"
 #include "func_call.h"
 #include "ref.h"
 #include "deref.h"
+#include "index.h"
 #include "../type.h"
 
 void binary_op_debug(int depth, parser_node *node)
@@ -39,6 +39,10 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
     switch (binop->op)
     {
+    case TKN_ASSIGN:
+        add_text(ctx, "mov rax, %s", right->code);
+        add_text(ctx, "mov %s, rax", left->code);
+        break;
     case TKN_DOT:
     case TKN_ARROW:
         // TODO
@@ -241,8 +245,6 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     if (!curr)
         curr = parse_literal(&tkn);
     if (!curr)
-        curr = parse_assign(&tkn);
-    if (!curr)
         curr = parse_var(&tkn);
     if (!curr)
         curr = parse_ref(&tkn);
@@ -258,6 +260,7 @@ int op_prec(int op)
 {
     switch (op)
     {
+    case TKN_L_BRACK:
     case TKN_L_PAREN:
         return 100;
     case TKN_DOT:
@@ -279,6 +282,8 @@ int op_prec(int op)
         return 20;
     case TKN_ANDAND:
         return 10;
+    case TKN_ASSIGN:
+        return 5;
     default:
         return 0;
     }
@@ -315,6 +320,13 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
             if (func_call)
             {
                 lhs = func_call;
+                continue;
+            }
+
+            parser_node *idx = parse_index(&tkn, lhs);
+            if (idx)
+            {
+                lhs = idx;
                 continue;
             }
 

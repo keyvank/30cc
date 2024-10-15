@@ -13,7 +13,13 @@
 apply_result *var_decl_apply(parser_node *node, context *ctx)
 {
     node_var_decl *decl = (node_var_decl *)node->data;
-    symbol *sym = new_symbol(ctx, decl->identity, 8);
+    node_type *tp = (node_type *)decl->type->data;
+    int cnt = 1;
+    for (int i = 0; i < tp->dim; i++)
+    {
+        cnt *= tp->dims[i];
+    }
+    symbol *sym = new_symbol(ctx, decl->identity, 8 * cnt);
     if (decl->value)
     {
         apply_result *val = decl->value->apply(decl->value, ctx);
@@ -62,7 +68,9 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
                         tkn = tkn->next;
                         dims[dim++] = sz;
                         continue;
-                    } else {
+                    }
+                    else
+                    {
                         return NULL;
                     }
                 }
