@@ -108,7 +108,9 @@ Program(
             Left:
               BinaryOp(Op: 72)
                 Left:
-                  FunctionCall(Name: hey)
+                  FunctionCall:
+                    Function:
+                      Variable(hey)
                     Args:
                 Right:
                   Literal(Type: 33, Value: ab)
@@ -117,9 +119,13 @@ Program(
                 Left:
                   Literal(Type: 33, Value: cd)
                 Right:
-                  FunctionCall(Name: func)
+                  FunctionCall:
+                    Function:
+                      Variable(func)
                     Args:
-      FunctionCall(Name: salam)
+      FunctionCall:
+        Function:
+          Variable(salam)
         Args:
       CompoundStatement
         Assign(a):
@@ -134,11 +140,15 @@ Program(
               Literal(Type: 33, Value: haha)
           CompoundStatement
           CompoundStatement
-            FunctionCall(Name: salam)
+            FunctionCall:
+              Function:
+                Variable(salam)
               Args:
                 Literal(Type: 33, Value: a)
                 Literal(Type: 33, Value: b)
-                FunctionCall(Name: ggg)
+                FunctionCall:
+                  Function:
+                    Variable(ggg)
                   Args:
                     Literal(Type: 33, Value: d)
   )

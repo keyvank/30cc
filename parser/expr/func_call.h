@@ -5,11 +5,11 @@
 #include "../../lexer.h"
 #include "../parser.h"
 
-parser_node *parse_func_call(typed_token **tkns_ptr);
+parser_node *parse_func_call(typed_token **tkns_ptr, parser_node *func);
 
 typedef struct
 {
-    char *func_name;
+    parser_node *func;
     int num_args;
     parser_node **args;
 } node_func_call;

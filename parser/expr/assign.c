@@ -31,10 +31,9 @@ apply_result *assign_apply(parser_node *node, context *ctx)
     symbol *sym = find_symbol(ctx, assign->identity);
 
     add_text(ctx, "mov rax, %s", val->code);
-    char *res = cc_asprintf("[rsp+%u]", sym->offset);
-    add_text(ctx, "mov %s, rax", res);
+    add_text(ctx, "mov %s, rax", sym->repl);
 
-    return new_result(res, NULL);
+    return new_result(sym->repl, NULL);
 }
 
 parser_node *parse_assign(typed_token **tkns_ptr)

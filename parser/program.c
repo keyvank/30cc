@@ -38,6 +38,8 @@ apply_result *program_apply(parser_node *node, context *ctx)
         ctx->symbol_table = new_linked_list();
         ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
+        char *func_name = ((node_func_decl*)node->data)->identity;
+        new_global_symbol(ctx, func_name, func_name);
         node->apply(node, ctx);
         int total = ctx->stack_size;
         // 16 byte stack alignment

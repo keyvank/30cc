@@ -44,11 +44,15 @@ Program(
               Type(TKN_INT)
               Value:
                 Literal(Type: 34, Value: 2)
-            FunctionCall(Name: printf)
+            FunctionCall:
+              Function:
+                Variable(printf)
               Args:
                 Literal(Type: 33, Value: %u )
                 Variable(i)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
           Variable(i)

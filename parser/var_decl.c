@@ -18,7 +18,7 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
     {
         apply_result *val = decl->value->apply(decl->value, ctx);
         add_text(ctx, "mov rax, %s", val->code);
-        add_text(ctx, "mov [rsp+%u], rax", sym->offset);
+        add_text(ctx, "mov %s, rax", sym->repl);
     }
     return NULL;
 }

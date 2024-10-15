@@ -32,7 +32,9 @@ Program(
       Param: a
         Type(TKN_INT)
     Statements:
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Fact: %u
 )
@@ -47,7 +49,9 @@ Program(
                 Left:
                   Variable(a)
                 Right:
-                  FunctionCall(Name: fact)
+                  FunctionCall:
+                    Function:
+                      Variable(fact)
                     Args:
                       BinaryOp(Op: 75)
                         Left:
@@ -96,7 +100,9 @@ Program(
               Literal(Type: 34, Value: 10)
         Body:
           CompoundStatement
-            FunctionCall(Name: printf)
+            FunctionCall:
+              Function:
+                Variable(printf)
               Args:
                 Literal(Type: 33, Value: I: %u
 )
@@ -108,13 +114,17 @@ Program(
                     Variable(i2)
                   Right:
                     Literal(Type: 34, Value: 1)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %c %c %u)
           Literal(Type: 35)
           Literal(Type: 34, Value: 110)
           Literal(Type: 35)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: 
 )
@@ -146,7 +156,9 @@ Program(
                   Variable(c)
                 Right:
                   Variable(a)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Result: %u
 )
@@ -176,13 +188,17 @@ Program(
         Value:
           Ref:
             Variable(c)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Addr of a: %u
 )
           Ref:
             Variable(a)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Value of b: %u
 )
@@ -193,39 +209,53 @@ Program(
                   Variable(a)
               Right:
                 Literal(Type: 34, Value: 8)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Addr of c: %u
 )
           Variable(cc)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Double of 123: %u
 )
           BinaryOp(Op: 72)
             Left:
-              FunctionCall(Name: doub)
+              FunctionCall:
+                Function:
+                  Variable(doub)
                 Args:
                   BinaryOp(Op: 78)
                     Left:
-                      FunctionCall(Name: doub)
+                      FunctionCall:
+                        Function:
+                          Variable(doub)
                         Args:
                           BinaryOp(Op: 78)
                             Left:
                               Literal(Type: 34, Value: 123)
                             Right:
-                              FunctionCall(Name: doub)
+                              FunctionCall:
+                                Function:
+                                  Variable(doub)
                                 Args:
                                   Literal(Type: 34, Value: 123)
                     Right:
                       Literal(Type: 34, Value: 2)
             Right:
               Literal(Type: 34, Value: 10)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: Factorial 5: %u
 )
-          FunctionCall(Name: fact)
+          FunctionCall:
+            Function:
+              Variable(fact)
             Args:
               Literal(Type: 34, Value: 5)
       If(
@@ -233,7 +263,9 @@ Program(
           Literal(Type: 34, Value: 1)
         Body:
           CompoundStatement
-            FunctionCall(Name: printf)
+            FunctionCall:
+              Function:
+                Variable(printf)
               Args:
                 Literal(Type: 33, Value: TRUE
 )
@@ -242,11 +274,15 @@ Program(
           Literal(Type: 34, Value: 1)
         Body:
           CompoundStatement
-            FunctionCall(Name: printf)
+            FunctionCall:
+              Function:
+                Variable(printf)
               Args:
                 Literal(Type: 33, Value: TRUE
 )
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u
 )
@@ -255,59 +291,95 @@ Program(
               Literal(Type: 34, Value: 5)
             Right:
               Literal(Type: 34, Value: 1)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 0)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 1)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 2)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 3)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 4)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 5)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 6)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 7)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u
 )
-          FunctionCall(Name: fibo)
+          FunctionCall:
+            Function:
+              Variable(fibo)
             Args:
               Literal(Type: 34, Value: 8)
       For(
@@ -332,18 +404,26 @@ Program(
                   Literal(Type: 34, Value: 1)
         Body:
           CompoundStatement
-            FunctionCall(Name: printf)
+            FunctionCall:
+              Function:
+                Variable(printf)
               Args:
                 Literal(Type: 33, Value: %u )
-                FunctionCall(Name: fibo)
+                FunctionCall:
+                  Function:
+                    Variable(fibo)
                   Args:
                     Variable(i)
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: 
 DONE!
 )
-      FunctionCall(Name: printf)
+      FunctionCall:
+        Function:
+          Variable(printf)
         Args:
           Literal(Type: 33, Value: %u
 )

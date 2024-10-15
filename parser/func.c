@@ -54,7 +54,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
         }
 
         symbol *sym = new_symbol(ctx, par->identity, 8);
-        add_text(ctx, "mov [rsp+%u], %s", sym->offset, regname);
+        add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 
     for (int i = 0; i < func->num_statements; i++)
