@@ -53,51 +53,51 @@ mov rbp, rsp
 sub rsp, __main_size
 mov [rsp+0], rdi
 mov [rsp+8], rsi
+mov rax, __temp_str_3
+mov rbx, __temp_str_4
+add rax, rbx
+mov [rsp + 24], rax
 mov rax, __temp_str_5
 mov rbx, __temp_str_6
 mul rbx
-mov [rsp + 24], rax
-mov rax, __temp_str_7
-mov rbx, __temp_str_8
-add rax, rbx
 mov [rsp + 32], rax
 mov rax, [rsp + 24]
 mov rbx, [rsp + 32]
 add rax, rbx
 mov [rsp + 40], rax
-mov rax, __temp_str_4
-mov rbx, [rsp + 40]
+mov rax, [rsp + 40]
+mov rbx, __temp_str_7
 add rax, rbx
 mov [rsp + 48], rax
-mov rax, __temp_str_3
-mov rbx, [rsp + 48]
+mov rax, [rsp + 48]
+mov rbx, __temp_str_8
 add rax, rbx
 mov [rsp + 56], rax
 mov rax, [rsp + 56]
 mov [rsp+16], rax
+mov rax, __temp_str_9
+mov rbx, __temp_str_10
+add rax, rbx
+mov [rsp + 72], rax
 mov rax, __temp_str_11
 mov rbx, __temp_str_12
 add rax, rbx
-mov [rsp + 72], rax
-mov rax, __temp_str_10
-mov rbx, [rsp + 72]
-add rax, rbx
 mov [rsp + 80], rax
-mov rax, __temp_str_9
+mov rax, [rsp + 72]
 mov rbx, [rsp + 80]
 add rax, rbx
 mov [rsp + 88], rax
 mov rax, [rsp + 88]
 mov [rsp+64], rax
+mov rax, __temp_str_13
+mov rbx, __temp_str_14
+add rax, rbx
+mov [rsp + 96], rax
 mov rax, __temp_str_15
 mov rbx, __temp_str_16
 add rax, rbx
-mov [rsp + 96], rax
-mov rax, __temp_str_14
-mov rbx, [rsp + 96]
-add rax, rbx
 mov [rsp + 104], rax
-mov rax, __temp_str_13
+mov rax, [rsp + 96]
 mov rbx, [rsp + 104]
 add rax, rbx
 mov [rsp + 112], rax
@@ -105,17 +105,17 @@ mov rax, [rsp + 112]
 mov [rsp+64], rax
 call hey
 mov [rsp + 120], rax
-call func
-mov [rsp + 128], rax
-mov rax, __temp_str_18
-mov rbx, [rsp + 128]
+mov rax, [rsp + 120]
+mov rbx, __temp_str_17
 add rax, rbx
+mov [rsp + 128], rax
+call func
 mov [rsp + 136], rax
-mov rax, __temp_str_17
+mov rax, __temp_str_18
 mov rbx, [rsp + 136]
 add rax, rbx
 mov [rsp + 144], rax
-mov rax, [rsp + 120]
+mov rax, [rsp + 128]
 mov rbx, [rsp + 144]
 add rax, rbx
 mov [rsp + 152], rax

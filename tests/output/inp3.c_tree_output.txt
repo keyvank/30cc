@@ -152,25 +152,25 @@ Program(
 )
           BinaryOp(Op: 72)
             Left:
-              Variable(c)
-            Right:
               BinaryOp(Op: 72)
                 Left:
-                  Variable(c)
-                Right:
                   BinaryOp(Op: 72)
                     Left:
-                      Variable(d)
+                      Variable(c)
                     Right:
-                      BinaryOp(Op: 78)
-                        Left:
-                          BinaryOp(Op: 72)
-                            Left:
-                              Variable(b)
-                            Right:
-                              Variable(a)
-                        Right:
-                          Variable(a)
+                      Variable(c)
+                Right:
+                  Variable(d)
+            Right:
+              BinaryOp(Op: 78)
+                Left:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Variable(b)
+                    Right:
+                      Variable(a)
+                Right:
+                  Variable(a)
       VarDecl(cc):
         Type(TKN_INT*)
         Value:
