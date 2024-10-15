@@ -8,6 +8,7 @@ typedef struct
     linked_list data;
     linked_list text;
     linked_list symbol_table;
+    linked_list global_table;
     int label_counter;
     int stack_size;
 } context;
@@ -21,11 +22,13 @@ typedef struct
     char *name;
     int size;
     int offset;
+    char *repl;
 } symbol;
 
 char *cc_asprintf(char *fmt, ...);
 symbol *find_symbol(context *tab, char *name);
 symbol *new_symbol(context *ctx, char *name, int sz);
+symbol *new_global_symbol(context *ctx, char *name, char *repl);
 symbol *new_temp_symbol(context *ctx, int sz);
 char *new_label(context *ctx);
 #endif

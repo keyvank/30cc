@@ -111,9 +111,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
 
     symbol *tmp = new_temp_symbol(ctx, 8);
-
-    add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
-    return new_result(cc_asprintf("[rsp + %u]", tmp->offset), NULL);
+    add_text(ctx, "mov %s, rax", tmp->repl);
+    return new_result(tmp->repl, NULL);
 }
 
 void cond_debug(int depth, parser_node *node)
@@ -149,8 +148,8 @@ apply_result *cond_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rax, %s", no_val->code);
     add_text(ctx, "%s:", l2);
     symbol *sym = new_temp_symbol(ctx, 8);
-    add_text(ctx, "mov [rsp+%u], rax", sym->offset);
-    return new_result(cc_asprintf("[rsp+%u]", sym->offset), NULL);
+    add_text(ctx, "mov %s, rax", sym->repl);
+    return new_result(sym->repl, NULL);
 }
 
 void cast_debug(int depth, parser_node *node)
@@ -244,8 +243,6 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     if (!curr)
         curr = parse_assign(&tkn);
     if (!curr)
-        curr = parse_func_call(&tkn);
-    if (!curr)
         curr = parse_var(&tkn);
     if (!curr)
         curr = parse_ref(&tkn);
@@ -261,6 +258,8 @@ int op_prec(int op)
 {
     switch (op)
     {
+    case TKN_L_PAREN:
+        return 100;
     case TKN_DOT:
     case TKN_ARROW:
         return 60;
@@ -312,6 +311,13 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
         int prec = op_prec(tkn->type_id);
         if (prec >= min_prec)
         {
+            parser_node *func_call = parse_func_call(&tkn, lhs);
+            if (func_call)
+            {
+                lhs = func_call;
+                continue;
+            }
+
             int op_type_id = tkn->type_id;
             tkn = tkn->next;
             parser_node *rhs = parse_terminal(&tkn);

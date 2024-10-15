@@ -12,7 +12,10 @@ void func_call_debug(int depth, parser_node *node)
 {
     node_func_call *call = (node_func_call *)node->data;
     printtabs(depth);
-    printf("FunctionCall(Name: %s)\n", call->func_name);
+    printf("FunctionCall:\n");
+    printtabs(depth + 1);
+    printf("Function:\n");
+    call->func->debug(depth + 2, call->func);
     printtabs(depth + 1);
     printf("Args:\n");
     for (int i = 0; i < call->num_args; i++)
@@ -31,13 +34,10 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         apply_result *regval = call->args[i]->apply(call->args[i], ctx);
 
         symbol *tmp = new_temp_symbol(ctx, 8);
-
-        char *regname = cc_asprintf("[rsp + %u]", tmp->offset);
-
         add_text(ctx, "mov rax, %s", regval->code);
-        add_text(ctx, "mov %s, rax", regname);
+        add_text(ctx, "mov %s, rax", tmp->repl);
 
-        argvals[i] = regname;
+        argvals[i] = tmp->repl;
     }
     for (int i = 0; i < call->num_args; i++)
     {
@@ -62,66 +62,62 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", regname, argvals[i]);
     }
 
-    add_text(ctx, "call %s", call->func_name);
-    symbol *tmp = new_temp_symbol(ctx, 8);
-    add_text(ctx, "mov [rsp + %u], rax", tmp->offset);
+    apply_result *fun = call->func->apply(call->func, ctx);
 
-    return new_result(cc_asprintf("[rsp + %u]", tmp->offset), NULL);
+    add_text(ctx, "call %s", fun->code);
+    symbol *tmp = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rax", tmp->repl);
+
+    return new_result(tmp->repl, NULL);
 }
 
-parser_node *parse_func_call(typed_token **tkns_ptr)
+parser_node *parse_func_call(typed_token **tkns_ptr, parser_node *func)
 {
     typed_token *tkn = *tkns_ptr;
-
-    if (tkn->type_id == TKN_ID)
+    
+    if (tkn->type_id == TKN_L_PAREN)
     {
-        typed_token *name_tkn = tkn;
         tkn = tkn->next;
-        if (tkn->type_id == TKN_L_PAREN)
+        int num_args = 0;
+        parser_node **args = (parser_node **)malloc(sizeof(parser_node *) * 32);
+        while (tkn)
         {
-            tkn = tkn->next;
-            int num_args = 0;
-            parser_node **args = (parser_node **)malloc(sizeof(parser_node *) * 32);
-            while (tkn)
+            if (tkn->type_id == TKN_R_PAREN)
             {
-                if (tkn->type_id == TKN_R_PAREN)
-                {
-                    tkn = tkn->next;
-                    *tkns_ptr = tkn;
+                tkn = tkn->next;
+                *tkns_ptr = tkn;
 
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_func_call));
-                    node->debug = func_call_debug;
-                    node->apply = func_call_apply;
-                    node_func_call *call = (node_func_call *)node->data;
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                node->data = (void *)malloc(sizeof(node_func_call));
+                node->debug = func_call_debug;
+                node->apply = func_call_apply;
+                node_func_call *call = (node_func_call *)node->data;
 
-                    call->func_name = malloc(128);
-                    strcpy(call->func_name, (char *)name_tkn->data);
-                    call->num_args = num_args;
-                    call->args = args;
+                call->func = func;
+                call->num_args = num_args;
+                call->args = args;
 
-                    return node;
-                }
-                parser_node *arg = parse_expr(&tkn);
-                if (arg)
-                {
-                    args[num_args++] = arg;
-                }
-                else
+                return node;
+            }
+            parser_node *arg = parse_expr(&tkn);
+            if (arg)
+            {
+                args[num_args++] = arg;
+            }
+            else
+            {
+                return NULL;
+            }
+
+            if (tkn->type_id == TKN_COMMA)
+            {
+                tkn = tkn->next;
+            }
+            else
+            {
+                if (tkn->type_id != TKN_R_PAREN)
                 {
                     return NULL;
-                }
-
-                if (tkn->type_id == TKN_COMMA)
-                {
-                    tkn = tkn->next;
-                }
-                else
-                {
-                    if (tkn->type_id != TKN_R_PAREN)
-                    {
-                        return NULL;
-                    }
                 }
             }
         }

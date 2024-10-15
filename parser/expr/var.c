@@ -22,7 +22,7 @@ apply_result *var_apply(parser_node *node, context *ctx)
     }
     else
     {
-        return new_result(cc_asprintf("[rsp + %u]", sym->offset), NULL);
+        return new_result(sym->repl, NULL);
     }
     return NULL;
 }

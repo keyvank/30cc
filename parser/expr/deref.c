@@ -26,12 +26,9 @@ apply_result *deref_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rax, [rax]");
 
     symbol *ret = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rax", ret->repl);
 
-    char *retloc = cc_asprintf("[rsp+%u]", ret->offset);
-
-    add_text(ctx, "mov %s, rax", retloc);
-
-    return new_result(retloc, NULL);
+    return new_result(ret->repl, NULL);
 }
 
 parser_node *parse_deref(typed_token **tkns_ptr)
