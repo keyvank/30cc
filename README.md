@@ -118,3 +118,14 @@ int main()
 - Assemble with NASM: `nasm -f elf64 out.asm -o out.o`
 - Link with the C standard-library: `ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc -o out out.o`
 - Run the output: `./out`
+
+## Contribute
+
+The missing parts are:
+
+- [ ] `#include` macro.
+- [ ] `#ifdef`, `#define` and `#ifndef` macros.
+- [ ] Field-access in structs (The `.` and `->` operators)
+- [ ] Type-checker
+- [ ] Some binary expressions (`+=`, `-=`, `*=`)
+- [ ] Unary expressions (`++`, `--`, `-`, `!`)
