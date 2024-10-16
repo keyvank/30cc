@@ -25,8 +25,10 @@ apply_result *ref_apply(parser_node *node, context *ctx)
     {
         add_text(ctx, "mov rax, rsp");
         add_text(ctx, "add rax, %u", sym->offset);
+        symbol *res = new_temp_symbol(ctx, 8);
+        add_text(ctx, "mov %s, rax", res->repl);
 
-        return new_result("rax", NULL);
+        return new_result(res->repl, NULL);
     }
     else
     {

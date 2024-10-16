@@ -94,5 +94,47 @@ Program(
                   Variable(a)
                 Index:
                   Variable(i)
+      VarDecl(b):
+        Type(TKN_INT*[1024])
+      VarDecl(c):
+        Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 123)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(b)
+            Index:
+              Literal(Type: 34, Value: 0)
+        Right:
+          Ref:
+            Variable(c)
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            Access:
+              In:
+                Variable(b)
+              Index:
+                Literal(Type: 34, Value: 0)
+        Right:
+          BinaryOp(Op: 78)
+            Left:
+              Deref:
+                Access:
+                  In:
+                    Variable(b)
+                  Index:
+                    Literal(Type: 34, Value: 0)
+            Right:
+              Literal(Type: 34, Value: 2)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          Variable(c)
   )
 )

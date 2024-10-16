@@ -2,7 +2,8 @@ section .data
 __printf_size: equ 16
 __malloc_size: equ 16
 __temp_str_2 db `%u\n`, 0
-__main_size: equ 352
+__temp_str_3 db `%u\n`, 0
+__main_size: equ 8736
 section .text
 extern printf
 extern malloc
@@ -143,6 +144,86 @@ mov [rbx], rax
 mov [rsp+208], rax
 jmp __tmp_label_4
 __tmp_label_5:
+mov qword [rsp+88], 96
+add [rsp+88], rsp
+mov qword [rsp+8288], 8296
+add [rsp+8288], rsp
+mov rax, 123
+mov [rsp+8288], rax
+mov rax, rsp
+add rax, 88
+mov [rsp+8304], rax
+mov rax, 0
+mov rbx, 8
+mul rbx
+mov rbx, [rsp+88]
+add rbx, rax
+mov [rsp+8312], rbx
+mov rax, [rbx]
+mov [rsp+8320], rax
+mov rax, rsp
+add rax, 8288
+mov [rsp+8328], rax
+mov rax, [rsp+8320]
+mov rbx, [rsp+8328]
+mov rax, [rsp+8328]
+mov rbx, [rsp+8312]
+mov [rbx], rax
+mov [rsp+8336], rax
+mov rax, rsp
+add rax, 88
+mov [rsp+8344], rax
+mov rax, 0
+mov rbx, 8
+mul rbx
+mov rbx, [rsp+88]
+add rbx, rax
+mov [rsp+8352], rbx
+mov rax, [rbx]
+mov [rsp+8360], rax
+mov rax, [rsp+8360]
+mov [rsp+8368], rax
+mov rax, [rax]
+mov [rsp+8376], rax
+mov rax, rsp
+add rax, 88
+mov [rsp+8384], rax
+mov rax, 0
+mov rbx, 8
+mul rbx
+mov rbx, [rsp+88]
+add rbx, rax
+mov [rsp+8392], rbx
+mov rax, [rbx]
+mov [rsp+8400], rax
+mov rax, [rsp+8400]
+mov [rsp+8408], rax
+mov rax, [rax]
+mov [rsp+8416], rax
+mov rax, [rsp+8416]
+mov rbx, 2
+mul rbx
+mov [rsp+8424], rax
+mov rax, [rsp+8376]
+mov rbx, [rsp+8424]
+mov rax, [rsp+8424]
+mov rbx, [rsp+8368]
+mov [rbx], rax
+mov [rsp+8432], rax
+mov rax, __temp_str_3
+mov [rsp+8440], rax
+mov rax, rsp
+add rax, 8288
+mov [rsp+8448], rax
+mov rax, [rsp+8288]
+mov [rsp+8456], rax
+mov rdi, [rsp+8440]
+mov rsi, [rsp+8456]
+mov rax, rsp
+add rax, 0
+mov [rsp+8464], rax
+call printf
+mov [rsp+8472], rax
 mov rsp, rbp
 pop rbp
 ret
