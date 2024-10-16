@@ -16,21 +16,13 @@ apply_result *var_apply(parser_node *node, context *ctx)
 {
     node_var *var = (node_var *)node->data;
     symbol *sym = find_symbol(ctx, var->var_name);
-    if (!sym)
-    {
-        printf("ERROR!");
-    }
-    else
-    {
-        symbol *addr_sym = new_temp_symbol(ctx, 8);
-        add_text(ctx, "mov rax, rsp");
-        add_text(ctx, "add rax, %u", sym->offset);
-        add_text(ctx, "mov %s, rax", addr_sym->repl);
-        apply_result *res = new_result(sym->repl, NULL);
-        res->addr_code = addr_sym->repl;
-        return res;
-    }
-    return NULL;
+    symbol *addr_sym = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov rax, rsp");
+    add_text(ctx, "add rax, %u", sym->offset);
+    add_text(ctx, "mov %s, rax", addr_sym->repl);
+    apply_result *res = new_result(sym->repl, NULL);
+    res->addr_code = addr_sym->repl;
+    return res;
 }
 
 parser_node *parse_var(typed_token **tkns_ptr)

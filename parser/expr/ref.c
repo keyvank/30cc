@@ -21,20 +21,11 @@ apply_result *ref_apply(parser_node *node, context *ctx)
     node_ref *ref = (node_ref *)node->data;
     node_var *v = (node_var *)ref->var->data;
     symbol *sym = find_symbol(ctx, v->var_name);
-    if (sym)
-    {
-        add_text(ctx, "mov rax, rsp");
-        add_text(ctx, "add rax, %u", sym->offset);
-        symbol *res = new_temp_symbol(ctx, 8);
-        add_text(ctx, "mov %s, rax", res->repl);
-
-        return new_result(res->repl, NULL);
-    }
-    else
-    {
-        printf("Invalid & (Var not found)\n");
-        exit(1);
-    }
+    add_text(ctx, "mov rax, rsp");
+    add_text(ctx, "add rax, %u", sym->offset);
+    symbol *res = new_temp_symbol(ctx, 8);
+    add_text(ctx, "mov %s, rax", res->repl);
+    return new_result(res->repl, NULL);
 }
 
 parser_node *parse_ref(typed_token **tkns_ptr)
