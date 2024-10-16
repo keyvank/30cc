@@ -129,3 +129,4 @@ The missing parts are:
 - [ ] Type-checker
 - [ ] Some binary expressions (`+=`, `-=`, `*=`)
 - [ ] Unary expressions (`++`, `--`, `-`, `!`)
+- [ ] Pointer-integer addition (Based on the type-size)
