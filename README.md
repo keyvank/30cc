@@ -1,8 +1,14 @@
 # 30 C Compiler!
 
-A toy C compiler written in C, with the goal of being able to compile itself 🤝
+`30cc` (Pronounced as *CCC*, because in the Persian language, the number 30 is pronounced as C) is a toy C compiler written in C, with the goal of being able to compile itself 🤝 This is my first attempt in writing a self-hosting software! What is a self-hosting software?
 
-`30cc` emits x86-64 assembly as its output.
+- Imagine `30cc` gets strong enough to be able to compile itself.
+- I will first compile `30cc` with `gcc` to get the `30cc` compiler's binary.
+- I will then use the `gcc`-generated `30cc` binary file to compile the `30cc` again.
+- I now have a `30cc`-compiled version of `30cc`, which I can use for further developing the compiler!
+- I can forget about `gcc`, as if it never existed! Beautiful hah? `30cc` is now all alive by itself!
+
+`30cc` emits x86-64 assembly as its output. The outputs are totally unoptimized, but that's fine, the project aims to be educational.
 
 Currently, this is the most complicated code `30cc` is able to successfully parse and compile:
 
@@ -104,3 +110,11 @@ int main()
     printf("\nDONE!\n");
 }
 ```
+
+## Usage
+
+- First build the compiler using `gcc` by running: `make`
+- Compile to NASM x86-64 assembly: `./a.out INP_FILE.c --asm > out.asm`
+- Assemble with NASM: `nasm -f elf64 out.asm -o out.o`
+- Link with the C standard-library: `ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc -o out out.o`
+- Run the output: `./out`
