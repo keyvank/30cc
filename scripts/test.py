@@ -9,6 +9,7 @@ TEST_FILES = [
     "./examples/inp2.c",
     "./examples/inp3.c",
     "./examples/inp4.c",
+    "./examples/inp5.c",
 ]
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"

@@ -60,7 +60,6 @@ int main(int argc, char *argv[])
 
     tkn = preprocess(tkn);
 
-    // printf("========\n");
     parser_node *prog = parse_program(&tkn);
     if (prog)
     {
@@ -72,7 +71,9 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("Parse failed!\n");
+        fprintf(stderr, "Parse failed!\n");
+        ret = 1;
+        goto defer_exit;
     }
 
     if (strcmp(argv[2], "--asm") == 0)

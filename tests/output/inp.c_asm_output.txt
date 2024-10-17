@@ -2,7 +2,7 @@ section .data
 __printf_size: equ 16
 __temp_str_1 db `%u `, 0
 __temp_str_2 db `%u `, 0
-__main_size: equ 96
+__main_size: equ 192
 section .text
 extern printf
 global main
@@ -10,12 +10,19 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+mov qword [rsp+0], 8
+add [rsp+0], rsp
 mov rax, 10
 mov [rsp+0], rax
+mov qword [rsp+16], 24
+add [rsp+16], rsp
 mov rax, 0
-mov [rsp+8], rax
+mov [rsp+16], rax
 __tmp_label_0:
-mov rax, [rsp+8]
+mov rax, rsp
+add rax, 16
+mov [rsp+32], rax
+mov rax, [rsp+16]
 mov rbx, 5
 cmp rax, rbx
 jl __tmp_label_2
@@ -24,36 +31,60 @@ jmp __tmp_label_3
 __tmp_label_2:
 mov rax, 1
 __tmp_label_3:
-mov [rsp+16], rax
-mov rax, [rsp+16]
+mov [rsp+40], rax
+mov rax, [rsp+40]
 cmp rax, 0
 je __tmp_label_1
+mov qword [rsp+48], 56
+add [rsp+48], rsp
 mov rax, 2
-mov [rsp+24], rax
-mov rax, __temp_str_1
-mov [rsp+32], rax
-mov rax, [rsp+24]
-mov [rsp+40], rax
-mov rdi, [rsp+32]
-mov rsi, [rsp+40]
-call printf
 mov [rsp+48], rax
-mov rax, [rsp+8]
+mov rax, __temp_str_1
+mov [rsp+64], rax
+mov rax, rsp
+add rax, 48
+mov [rsp+72], rax
+mov rax, [rsp+48]
+mov [rsp+80], rax
+mov rdi, [rsp+64]
+mov rsi, [rsp+80]
+mov rax, rsp
+add rax, 0
+mov [rsp+88], rax
+call printf
+mov [rsp+96], rax
+mov rax, rsp
+add rax, 16
+mov [rsp+48], rax
+mov rax, rsp
+add rax, 16
+mov [rsp+56], rax
+mov rax, [rsp+16]
 mov rbx, 1
 add rax, rbx
-mov [rsp+24], rax
-mov rax, [rsp+24]
-mov [rsp+8], rax
+mov [rsp+64], rax
+mov rax, [rsp+16]
+mov rbx, [rsp+64]
+mov rax, [rsp+64]
+mov rbx, [rsp+48]
+mov [rbx], rax
+mov [rsp+72], rax
 jmp __tmp_label_0
 __tmp_label_1:
 mov rax, __temp_str_2
-mov [rsp+8], rax
-mov rax, [rsp+0]
 mov [rsp+16], rax
-mov rdi, [rsp+8]
-mov rsi, [rsp+16]
-call printf
+mov rax, rsp
+add rax, 0
 mov [rsp+24], rax
+mov rax, [rsp+0]
+mov [rsp+32], rax
+mov rdi, [rsp+16]
+mov rsi, [rsp+32]
+mov rax, rsp
+add rax, 0
+mov [rsp+40], rax
+call printf
+mov [rsp+48], rax
 mov rsp, rbp
 pop rbp
 ret

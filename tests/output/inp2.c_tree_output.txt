@@ -87,8 +87,10 @@ Program(
                   Literal(Type: 33, Value: 23)
                 Right:
                   Literal(Type: 33, Value: 1)
-      Assign(b):
-        Value:
+      BinaryOp(Op: 64)
+        Left:
+          Variable(b)
+        Right:
           BinaryOp(Op: 72)
             Left:
               BinaryOp(Op: 72)
@@ -102,8 +104,10 @@ Program(
                   Literal(Type: 33, Value: 4)
                 Right:
                   Literal(Type: 33, Value: 5)
-      Assign(a):
-        Value:
+      BinaryOp(Op: 64)
+        Left:
+          Variable(a)
+        Right:
           BinaryOp(Op: 72)
             Left:
               BinaryOp(Op: 72)
@@ -128,8 +132,10 @@ Program(
           Variable(salam)
         Args:
       CompoundStatement
-        Assign(a):
-          Value:
+        BinaryOp(Op: 64)
+          Left:
+            Variable(a)
+          Right:
             Literal(Type: 33, Value: salam)
         Literal(Type: 33, Value: khubi)
         CompoundStatement

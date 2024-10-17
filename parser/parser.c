@@ -14,5 +14,6 @@ apply_result *new_result(char *code, parser_node *type) {
     apply_result *ret = (apply_result*)malloc(sizeof(apply_result));
     ret->code = code;
     ret->type = type;
+    ret->addr_code = NULL;
     return ret;
 }

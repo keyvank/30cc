@@ -70,6 +70,8 @@ symbol *find_symbol(context *ctx, char *name)
         }
         curr = curr->prev;
     }
+    fprintf(stderr, "Unknown identifier '%s'!\n", name);
+    exit(1);
     return NULL;
 }
 
