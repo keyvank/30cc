@@ -1,0 +1,21 @@
+Program(
+  Function(
+    Name:
+      main
+    Returns:
+      Type(TKN_INT)
+    Params:
+    Statements:
+      VarDecl(a):
+        Type(TKN_INT)
+      VarDecl(b):
+        Type(TKN_INT)
+      BinaryOp(Op: 74)
+        Left:
+          Variable(a)
+        Right:
+          Variable(b)
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
