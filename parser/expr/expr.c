@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "../../lexer.h"
@@ -41,6 +42,19 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     {
     case TKN_ASSIGN:
         add_text(ctx, "mov rax, %s", right->code);
+        if (left->addr_code)
+        {
+            add_text(ctx, "mov rbx, %s", left->addr_code);
+            add_text(ctx, "mov [rbx], rax");
+        }
+        else
+        {
+            printf("Cannot assign!\n");
+            exit(1);
+        }
+        break;
+    case TKN_PLUSEQ:
+        add_text(ctx, "add rax, rbx");
         if (left->addr_code)
         {
             add_text(ctx, "mov rbx, %s", left->addr_code);
@@ -291,6 +305,7 @@ int op_prec(int op)
         return 20;
     case TKN_ANDAND:
         return 10;
+    case TKN_PLUSEQ:
     case TKN_ASSIGN:
         return 5;
     default:

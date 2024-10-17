@@ -27,6 +27,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0) {
+        fprintf(stderr, "Unknown argument %s", argv[2]);
+        return 1;
+    }
+
     int ret = 0;
     char *content = NULL;
     const char *filename = argv[1];
