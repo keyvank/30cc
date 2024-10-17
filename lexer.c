@@ -356,7 +356,7 @@ typed_token *next_op(char **inp_ptr)
         }
         else
         {
-            *inp_ptr += 2;
+            *inp_ptr += 1;
             return new_simp_tkn(TKN_PLUS);
         }
     }
