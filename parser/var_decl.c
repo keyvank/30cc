@@ -14,9 +14,7 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
 {
     node_var_decl *decl = (node_var_decl *)node->data;
     node_type *tp = (node_type *)decl->type->data;
-    int alloc_size = tp->type->size(tp->type, ctx);
-
-    symbol *sym = new_symbol(ctx, decl->identity, alloc_size);
+    symbol *sym = new_symbol(ctx, decl->identity, tp->type);
 
     if (decl->value)
     {

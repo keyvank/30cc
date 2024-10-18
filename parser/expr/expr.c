@@ -137,9 +137,9 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         exit(1);
     }
 
-    symbol *tmp = new_temp_symbol(ctx, 8);
+    symbol *tmp = new_temp_symbol(ctx, left->type);
     add_text(ctx, "mov %s, rax", tmp->repl);
-    return new_result(tmp->repl, NULL);
+    return new_result(tmp->repl, tmp->type);
 }
 
 void cond_debug(int depth, parser_node *node)
@@ -174,9 +174,9 @@ apply_result *cond_apply(parser_node *node, context *ctx)
     add_text(ctx, "%s:", l1);
     add_text(ctx, "mov rax, %s", no_val->code);
     add_text(ctx, "%s:", l2);
-    symbol *sym = new_temp_symbol(ctx, 8);
+    symbol *sym = new_temp_symbol(ctx, yes_val->type);
     add_text(ctx, "mov %s, rax", sym->repl);
-    return new_result(sym->repl, NULL);
+    return new_result(sym->repl, sym->type);
 }
 
 void cast_debug(int depth, parser_node *node)

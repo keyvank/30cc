@@ -53,7 +53,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
             exit(0);
         }
 
-        symbol *sym = new_symbol(ctx, par->identity, 8);
+        symbol *sym = new_symbol(ctx, par->identity, ((node_type *)par->type->data)->type);
         add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 

@@ -84,12 +84,13 @@ char *new_label(context *ctx)
     return name;
 }
 
-symbol *new_global_symbol(context *ctx, char *name, char *repl)
+symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *type)
 {
     symbol *newsym = (symbol *)malloc(sizeof(symbol));
     newsym->name = name;
     newsym->repl = repl;
     newsym->offset = 0;
+    newsym->type = type;
     add_to_list(&ctx->global_table, newsym);
     return newsym;
 }
@@ -152,6 +153,8 @@ int primitive_type_size(general_type *self, context *ctx)
         return 8;
     if (strcmp(p->type_name, "TKN_CHAR") == 0)
         return 1;
+    if (strcmp(p->type_name, "TKN_VOID") == 0)
+        return 0;
     fprintf(stderr, "Unknown type '%s'!\n", p->type_name);
     exit(1);
     return 0;
@@ -165,6 +168,12 @@ int primitive_type_named_offset(general_type *self, context *ctx, char *idx) {
 
 int pointer_type_named_offset(general_type *self, context *ctx, char *idx) {
     fprintf(stderr, "Cannot access fields within a pointer type!\n");
+    exit(1);
+    return 0;
+}
+
+int func_pointer_type_named_offset(general_type *self, context *ctx, char *idx) {
+    fprintf(stderr, "Cannot access fields within a function pointer type!\n");
     exit(1);
     return 0;
 }
@@ -184,6 +193,19 @@ void pointer_type_debug(general_type *self, context *ctx, int depth)
 }
 
 int pointer_type_size(general_type *self, context *ctx)
+{
+    return 8;
+}
+
+void func_pointer_type_debug(general_type *self, context *ctx, int depth)
+{
+    func_pointer_type *p = (func_pointer_type *)self->data;
+    printtabs(depth);
+    printf("FuncPointer, returns:\n");
+    p->return_type->debug(p->return_type, ctx, depth + 1);
+}
+
+int func_pointer_type_size(general_type *self, context *ctx)
 {
     return 8;
 }
@@ -228,6 +250,17 @@ general_type *new_pointer_type(general_type *of)
     ret->debug = pointer_type_debug;
     ret->size = pointer_type_size;
     ret->named_offset = pointer_type_named_offset;
+    return ret;
+}
+
+general_type *new_func_pointer_type(general_type *return_type) {
+    general_type *ret = (general_type *)malloc(sizeof(general_type));
+    func_pointer_type *data = (func_pointer_type *)malloc(sizeof(func_pointer_type));
+    data->return_type = return_type;
+    ret->data = data;
+    ret->debug = func_pointer_type_debug;
+    ret->size = func_pointer_type_size;
+    ret->named_offset = func_pointer_type_named_offset;
     return ret;
 }
 
