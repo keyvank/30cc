@@ -6,6 +6,98 @@
 #include "codegen.h"
 #include "../linked_list.h"
 
+void printtabs(int depth);
+void primitive_type_debug(general_type *self, context *ctx, int depth)
+{
+    primitive_type *p = (primitive_type *)self->data;
+    printtabs(depth);
+    printf("%s\n", p->type_name);
+}
+
+int primitive_type_size(general_type *self, context *ctx)
+{
+    primitive_type *p = (primitive_type *)self->data;
+    if (strcmp(p->type_name, "TKN_INT") == 0)
+        return 8;
+    if (strcmp(p->type_name, "TKN_CHAR") == 0)
+        return 1;
+    fprintf(stderr, "Unknown type '%s'!\n", p->type_name);
+    exit(1);
+    return 0;
+}
+
+void pointer_type_debug(general_type *self, context *ctx, int depth)
+{
+    pointer_type *p = (pointer_type *)self->data;
+    printtabs(depth);
+    printf("Pointer of:\n");
+    p->of->debug(p->of, ctx, depth + 1);
+}
+
+int pointer_type_size(general_type *self, context *ctx)
+{
+    return 8;
+}
+
+void struct_type_debug(general_type *self, context *ctx, int depth)
+{
+    struct_type *p = (struct_type *)self->data;
+    printtabs(depth);
+    printf("Struct:\n");
+    for (int i = 0; i < p->num_fields; i++)
+    {
+        printtabs(depth + 1);
+        printf("Field(%s):\n", p->field_names[i]);
+        p->fields[i]->debug(p->fields[i], ctx, depth + 2);
+    }
+}
+
+int struct_type_size(general_type *self, context *ctx)
+{
+    struct_type *p = (struct_type *)self->data;
+    int sz = 0;
+    for (int i = 0; i < p->num_fields; i++)
+    {
+        sz += p->fields[i]->size(p->fields[i], ctx);
+    }
+    return sz;
+}
+
+general_type *new_primitive_type(char *type_name)
+{
+    general_type *ret = (general_type *)malloc(sizeof(general_type));
+    primitive_type *data = (primitive_type *)malloc(sizeof(primitive_type));
+    data->type_name = type_name;
+    ret->data = data;
+    ret->debug = primitive_type_debug;
+    ret->size = primitive_type_size;
+    return ret;
+}
+
+general_type *new_pointer_type(general_type *of)
+{
+    general_type *ret = (general_type *)malloc(sizeof(general_type));
+    pointer_type *data = (pointer_type *)malloc(sizeof(pointer_type));
+    data->of = of;
+    ret->data = data;
+    ret->debug = pointer_type_debug;
+    ret->size = pointer_type_size;
+    return ret;
+}
+
+general_type *new_struct_type(int num_fields, char **field_names, general_type **fields)
+{
+    general_type *ret = (general_type *)malloc(sizeof(general_type));
+    struct_type *data = (struct_type *)malloc(sizeof(struct_type));
+    data->num_fields = num_fields;
+    data->field_names = field_names;
+    data->fields = fields;
+    ret->data = data;
+    ret->debug = struct_type_debug;
+    ret->size = struct_type_size;
+    return ret;
+}
+
 context new_context()
 {
     context ctx;

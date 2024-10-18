@@ -30,6 +30,34 @@ typedef struct
     int stack_size;
 } context;
 
+typedef struct general_type_
+{
+    void *data;
+    void (*debug)(struct general_type_ *self, context *ctx, int depth);
+    int (*size)(struct general_type_ *self, context *ctx);
+} general_type;
+
+typedef struct
+{
+    char *type_name;
+} primitive_type;
+
+typedef struct
+{
+    int num_fields;
+    char **field_names;
+    general_type **fields;
+} struct_type;
+
+typedef struct
+{
+    general_type *of;
+} pointer_type;
+
+general_type *new_primitive_type(char *type_name);
+general_type *new_struct_type(int num_fields, char **field_names, general_type **fields);
+general_type *new_pointer_type(general_type *of);
+
 context new_context();
 void add_text(context *ctx, char *fmt, ...);
 void add_data(context *ctx, char *fmt, ...);
