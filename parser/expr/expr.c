@@ -32,6 +32,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     node_binary_op *binop = (node_binary_op *)node->data;
     apply_result *left = binop->left->apply(binop->left, ctx);
     apply_result *right = binop->right->apply(binop->right, ctx);
+
     add_text(ctx, "mov rax, %s", left->code);
     add_text(ctx, "mov rbx, %s", right->code);
 
@@ -195,7 +196,8 @@ void cast_debug(int depth, parser_node *node)
 apply_result *cast_apply(parser_node *node, context *ctx)
 {
     node_cast *cast = (node_cast *)node->data;
-    return new_result(cast->val->apply(cast->val, ctx)->code, NULL);
+    general_type *cast_type = ((node_type *)cast->type->data)->type;
+    return new_result(cast->val->apply(cast->val, ctx)->code, cast_type);
 }
 
 parser_node *parse_paren(typed_token **tkns_ptr)

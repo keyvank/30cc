@@ -160,25 +160,29 @@ int primitive_type_size(general_type *self, context *ctx)
     return 0;
 }
 
-int primitive_type_named_offset(general_type *self, context *ctx, char *idx) {
+int primitive_type_named_offset(general_type *self, context *ctx, char *idx)
+{
     fprintf(stderr, "Cannot access fields within a primitive type!\n");
     exit(1);
     return 0;
 }
 
-int pointer_type_named_offset(general_type *self, context *ctx, char *idx) {
+int pointer_type_named_offset(general_type *self, context *ctx, char *idx)
+{
     fprintf(stderr, "Cannot access fields within a pointer type!\n");
     exit(1);
     return 0;
 }
 
-int func_pointer_type_named_offset(general_type *self, context *ctx, char *idx) {
+int func_pointer_type_named_offset(general_type *self, context *ctx, char *idx)
+{
     fprintf(stderr, "Cannot access fields within a function pointer type!\n");
     exit(1);
     return 0;
 }
 
-int struct_type_named_offset(general_type *self, context *ctx, char *idx) {
+int struct_type_named_offset(general_type *self, context *ctx, char *idx)
+{
     fprintf(stderr, "Cannot access fields within a struct type!\n");
     exit(1);
     return 0;
@@ -253,7 +257,8 @@ general_type *new_pointer_type(general_type *of)
     return ret;
 }
 
-general_type *new_func_pointer_type(general_type *return_type) {
+general_type *new_func_pointer_type(general_type *return_type)
+{
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     func_pointer_type *data = (func_pointer_type *)malloc(sizeof(func_pointer_type));
     data->return_type = return_type;
@@ -274,4 +279,37 @@ general_type *new_struct_type(char *struct_name)
     ret->size = struct_type_size;
     ret->named_offset = struct_type_named_offset;
     return ret;
+}
+
+int types_equal(general_type *a, general_type *b)
+{
+    if ((a->debug != b->debug) || (a->named_offset != b->named_offset) || (a->size != b->size))
+    {
+        return 0;
+    }
+    if (a->size == primitive_type_size)
+    {
+        char *a_name = ((primitive_type *)a->data)->type_name;
+        char *b_name = ((primitive_type *)b->data)->type_name;
+        return strcmp(a_name, b_name) == 0;
+    }
+    else if (a->size == struct_type_size)
+    {
+        char *a_name = ((struct_type *)a->data)->struct_name;
+        char *b_name = ((struct_type *)b->data)->struct_name;
+        return strcmp(a_name, b_name) == 0;
+    }
+    else if (a->size == pointer_type_size)
+    {
+        general_type *a_of = ((pointer_type *)a->data)->of;
+        general_type *b_of = ((pointer_type *)b->data)->of;
+        return types_equal(a_of, b_of);
+    }
+    else if (a->size == func_pointer_type_size)
+    {
+        general_type *a_ret = ((func_pointer_type *)a->data)->return_type;
+        general_type *b_ret = ((func_pointer_type *)b->data)->return_type;
+        return types_equal(a_ret, b_ret);
+    }
+    return 0;
 }
