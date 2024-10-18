@@ -14,9 +14,10 @@ int main()
     *(b[0]) = *(b[0]) * 2;
     printf("%u\n", c);
 
-    char *str = malloc(20);
+    char *str = (char *)(malloc(20));
     str[0] = 'h';
     str[1] = 'i';
     str[2] = '!';
-    str[3] = 0;
+    str[3] = '\0';
+    printf("%s", str);
 }

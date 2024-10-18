@@ -33,6 +33,14 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     apply_result *left = binop->left->apply(binop->left, ctx);
     apply_result *right = binop->right->apply(binop->right, ctx);
 
+    if (!types_equal(left->type, right->type))
+    {
+        printf("Cannot apply binary-operand on types!\n");
+        left->type->debug(left->type, ctx, 0);
+        right->type->debug(right->type, ctx, 0);
+        exit(1);
+    }
+
     add_text(ctx, "mov rax, %s", left->code);
     add_text(ctx, "mov rbx, %s", right->code);
 

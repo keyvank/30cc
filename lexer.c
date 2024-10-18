@@ -220,6 +220,10 @@ typed_token *next_op(char **inp_ptr)
                 {
                     *ch = '\n';
                 }
+                else if (e == '0')
+                {
+                    *ch = '\0';
+                }
                 else
                 {
                     *ch = *(inp + 2);
@@ -402,7 +406,9 @@ typed_token *next_op(char **inp_ptr)
         {
             *inp_ptr += 3;
             return new_simp_tkn(TKN_DOTS);
-        } else {
+        }
+        else
+        {
             *inp_ptr += 1;
             return new_simp_tkn(TKN_DOT);
         }
