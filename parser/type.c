@@ -10,22 +10,7 @@
 void type_debug(int depth, parser_node *node)
 {
     node_type *tp = (node_type *)node->data;
-    printtabs(depth);
-    printf("Type(%s", tp->type->name);
-    for (int i = 0; i < tp->type->num_pointing; i++)
-    {
-        printf("*");
-    }
-    for (int i = 0; i < tp->type->dim; i++)
-    {
-        printf("[%u]", tp->type->dims[i]);
-    }
-    printf(")");
-    if (tp->type->is_struct == 1)
-    {
-        printf("struct");
-    }
-    printf("\n");
+    tp->type->debug(tp->type, NULL, depth);
 }
 
 parser_node *parse_type(typed_token **tkns_ptr)
@@ -40,7 +25,7 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node->data = (void *)malloc(sizeof(node_type));
         node->debug = type_debug;
         node_type *par = (node_type *)node->data;
-        par->type = new_type(ret_type_tkn->data, 0, 0, 0, NULL);
+        par->type = new_primitive_type(ret_type_tkn->data);
     }
     else if (tkn->type_id == TKN_LIT_STRUCT)
     {
@@ -68,22 +53,18 @@ parser_node *parse_type(typed_token **tkns_ptr)
 
         char *tp_name = malloc(128);
         strcpy(tp_name, struct_name_tkn->data);
-        par->type = new_type(tp_name, 0, 1, 0, NULL);
+        par->type = new_struct_type(tp_name);
         tkn = struct_name_tkn->next;
     }
 
     if (node != NULL)
     {
-        int num_pointing = 0;
+        node_type *par = (node_type *)node->data;
         while (tkn->type_id == TKN_STAR)
         {
             tkn = tkn->next;
-            num_pointing++;
+            par->type = new_pointer_type(par->type);
         }
-        node_type *par = (node_type *)node->data;
-        par->type->num_pointing = num_pointing;
-        par->type->dim = 0;
-        par->type->dims = NULL;
         *tkns_ptr = tkn;
     }
     return node;

@@ -14,26 +14,9 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
 {
     node_var_decl *decl = (node_var_decl *)node->data;
     node_type *tp = (node_type *)decl->type->data;
-    int cnt = 1;
-    for (int i = 0; i < tp->type->dim; i++)
-    {
-        cnt *= tp->type->dims[i];
-    }
-    int elem_size = size_of(ctx, tp->type);
-    int ptr_size = 8;
-
-    int alloc_size = cnt * elem_size;
-    if (tp->type->dims)
-        alloc_size += ptr_size;
+    int alloc_size = tp->type->size(tp->type, ctx);
 
     symbol *sym = new_symbol(ctx, decl->identity, alloc_size);
-
-    // Store the address of the var in the var
-    if (tp->type->dims)
-    {
-        add_text(ctx, "mov qword %s, %u", sym->repl, sym->offset + ptr_size);
-        add_text(ctx, "add %s, rsp", sym->repl);
-    }
 
     if (decl->value)
     {
@@ -68,35 +51,6 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
         {
             typed_token *name_tkn = tkn;
             tkn = tkn->next;
-
-            int dim = 0;
-            int *dims = malloc(sizeof(int) * 32);
-            while (tkn->type_id == TKN_L_BRACK)
-            {
-                tkn = tkn->next;
-                if (tkn->type_id == TKN_LIT_INT)
-                {
-                    int sz = *((int *)tkn->data);
-                    tkn = tkn->next;
-                    if (tkn->type_id == TKN_R_BRACK)
-                    {
-                        tkn = tkn->next;
-                        dims[dim++] = sz;
-                        continue;
-                    }
-                    else
-                    {
-                        return NULL;
-                    }
-                }
-                else
-                {
-                    return NULL;
-                }
-            }
-
-            ((node_type *)tp->data)->type->dims = dims;
-            ((node_type *)tp->data)->type->dim = dim;
 
             parser_node *val_expr = NULL;
 

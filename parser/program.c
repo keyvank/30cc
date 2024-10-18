@@ -37,7 +37,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
     for (int i = 0; i < prog->num_struct_defs; i++)
     {
         node_struct_def *sd = (node_struct_def *)prog->struct_defs[i]->data;
-        context_type **fields = (context_type **)malloc(sizeof(context_type *) * sd->num_fields);
+        general_type **fields = (general_type **)malloc(sizeof(general_type *) * sd->num_fields);
         for (int j = 0; j < sd->num_fields; j++)
         {
             fields[j] = ((node_type *)((node_var_decl *)sd->fields[j]->data)->type->data)->type;

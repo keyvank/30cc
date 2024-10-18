@@ -9,7 +9,7 @@ parser_node *parse_type(typed_token **tkns_ptr);
 
 typedef struct
 {
-    context_type *type;
+    general_type *type;
 } node_type;
 
 #endif

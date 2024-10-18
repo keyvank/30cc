@@ -5,22 +5,6 @@
 
 typedef struct
 {
-    char *name;
-    int num_pointing;
-    int is_struct;
-    int dim;
-    int *dims;
-} context_type;
-
-typedef struct
-{
-    char *name;
-    int num_fields;
-    context_type **fields;
-} context_struct;
-
-typedef struct
-{
     linked_list data;
     linked_list text;
     linked_list symbol_table;
@@ -39,14 +23,19 @@ typedef struct general_type_
 
 typedef struct
 {
+    char *name;
+    int num_fields;
+    general_type **fields;
+} context_struct;
+
+typedef struct
+{
     char *type_name;
 } primitive_type;
 
 typedef struct
 {
-    int num_fields;
-    char **field_names;
-    general_type **fields;
+    char *struct_name;
 } struct_type;
 
 typedef struct
@@ -55,7 +44,7 @@ typedef struct
 } pointer_type;
 
 general_type *new_primitive_type(char *type_name);
-general_type *new_struct_type(int num_fields, char **field_names, general_type **fields);
+general_type *new_struct_type(char *struct_name);
 general_type *new_pointer_type(general_type *of);
 
 context new_context();
@@ -79,11 +68,4 @@ char *new_label(context *ctx);
 
 context_struct *find_struct(context *ctx, char *name);
 void new_struct(context *ctx, context_struct *s);
-
-int size_of(context *ctx, context_type *tp);
-context_type *new_type(char *name,
-                       int num_pointing,
-                       int is_struct,
-                       int dim,
-                       int *dims);
 #endif
