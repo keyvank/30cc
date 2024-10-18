@@ -94,26 +94,26 @@ symbol *new_global_symbol(context *ctx, char *name, char *repl)
     return newsym;
 }
 
-symbol *new_symbol(context *ctx, char *name, int sz)
+symbol *new_symbol(context *ctx, char *name, general_type *type)
 {
     symbol *newsym = (symbol *)malloc(sizeof(symbol));
     newsym->name = name;
     newsym->offset = 0;
-    newsym->size = sz;
+    newsym->type = type;
     if (ctx->symbol_table.last)
     {
         symbol *lastsym = ((symbol *)ctx->symbol_table.last->value);
-        newsym->offset = lastsym->offset + lastsym->size;
+        newsym->offset = lastsym->offset + lastsym->type->size(lastsym->type, ctx);
     }
     newsym->repl = cc_asprintf("[rsp+%u]", newsym->offset);
     add_to_list(&ctx->symbol_table, newsym);
-    ctx->stack_size += sz;
+    ctx->stack_size += newsym->type->size(newsym->type, ctx);
     return newsym;
 }
 
-symbol *new_temp_symbol(context *ctx, int sz)
+symbol *new_temp_symbol(context *ctx, general_type *type)
 {
-    return new_symbol(ctx, "", sz);
+    return new_symbol(ctx, "", type);
 }
 
 context_struct *find_struct(context *ctx, char *name)
@@ -153,6 +153,24 @@ int primitive_type_size(general_type *self, context *ctx)
     if (strcmp(p->type_name, "TKN_CHAR") == 0)
         return 1;
     fprintf(stderr, "Unknown type '%s'!\n", p->type_name);
+    exit(1);
+    return 0;
+}
+
+int primitive_type_named_offset(general_type *self, context *ctx, char *idx) {
+    fprintf(stderr, "Cannot access fields within a primitive type!\n");
+    exit(1);
+    return 0;
+}
+
+int pointer_type_named_offset(general_type *self, context *ctx, char *idx) {
+    fprintf(stderr, "Cannot access fields within a pointer type!\n");
+    exit(1);
+    return 0;
+}
+
+int struct_type_named_offset(general_type *self, context *ctx, char *idx) {
+    fprintf(stderr, "Cannot access fields within a struct type!\n");
     exit(1);
     return 0;
 }
@@ -197,6 +215,7 @@ general_type *new_primitive_type(char *type_name)
     ret->data = data;
     ret->debug = primitive_type_debug;
     ret->size = primitive_type_size;
+    ret->named_offset = primitive_type_named_offset;
     return ret;
 }
 
@@ -208,6 +227,7 @@ general_type *new_pointer_type(general_type *of)
     ret->data = data;
     ret->debug = pointer_type_debug;
     ret->size = pointer_type_size;
+    ret->named_offset = pointer_type_named_offset;
     return ret;
 }
 
@@ -219,5 +239,6 @@ general_type *new_struct_type(char *struct_name)
     ret->data = data;
     ret->debug = struct_type_debug;
     ret->size = struct_type_size;
+    ret->named_offset = struct_type_named_offset;
     return ret;
 }

@@ -18,10 +18,10 @@ typedef struct parser_node_
 
 typedef struct apply_result_ {
     char *code;
-    parser_node *type;
+    general_type *type;
     char *addr_code;
 } apply_result;
 
-apply_result *new_result(char *code, parser_node *type);
+apply_result *new_result(char *code, general_type *type);
 
 #endif

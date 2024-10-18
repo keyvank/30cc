@@ -25,7 +25,7 @@ apply_result *ref_apply(parser_node *node, context *ctx)
     add_text(ctx, "add rax, %u", sym->offset);
     symbol *res = new_temp_symbol(ctx, 8);
     add_text(ctx, "mov %s, rax", res->repl);
-    return new_result(res->repl, NULL);
+    return new_result(res->repl, new_pointer_type(sym->type));
 }
 
 parser_node *parse_ref(typed_token **tkns_ptr)

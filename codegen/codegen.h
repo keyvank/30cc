@@ -19,6 +19,7 @@ typedef struct general_type_
     void *data;
     void (*debug)(struct general_type_ *self, context *ctx, int depth);
     int (*size)(struct general_type_ *self, context *ctx);
+    int (*named_offset)(struct general_type_ *self, context *ctx, char *name);
 } general_type;
 
 typedef struct
@@ -54,16 +55,16 @@ void add_data(context *ctx, char *fmt, ...);
 typedef struct
 {
     char *name;
-    int size;
+    general_type *type;
     int offset;
     char *repl;
 } symbol;
 
 char *cc_asprintf(char *fmt, ...);
 symbol *find_symbol(context *tab, char *name);
-symbol *new_symbol(context *ctx, char *name, int sz);
+symbol *new_symbol(context *ctx, char *name, general_type *type);
 symbol *new_global_symbol(context *ctx, char *name, char *repl);
-symbol *new_temp_symbol(context *ctx, int sz);
+symbol *new_temp_symbol(context *ctx, general_type *type);
 char *new_label(context *ctx);
 
 context_struct *find_struct(context *ctx, char *name);

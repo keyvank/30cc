@@ -20,7 +20,7 @@ apply_result *var_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rax, rsp");
     add_text(ctx, "add rax, %u", sym->offset);
     add_text(ctx, "mov %s, rax", addr_sym->repl);
-    apply_result *res = new_result(sym->repl, NULL);
+    apply_result *res = new_result(sym->repl, sym->type);
     res->addr_code = addr_sym->repl;
     return res;
 }

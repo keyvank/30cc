@@ -36,15 +36,15 @@ apply_result *literal_apply(parser_node *node, context *ctx)
     {
         char *varname = cc_asprintf("__temp_str_%u", ctx->data.count);
         add_data(ctx, "%s db `%s`, 0", varname, escape(lit->value));
-        return new_result(varname, NULL);
+        return new_result(varname, new_pointer_type(new_primitive_type("TKN_CHAR")));
     }
     if (lit->type == TKN_LIT_INT)
     {
-        return new_result(cc_asprintf("%u", *((int *)lit->value)), NULL);
+        return new_result(cc_asprintf("%u", *((int *)lit->value)), new_primitive_type("TKN_INT"));
     }
     if (lit->type == TKN_LIT_CHAR)
     {
-        return new_result(cc_asprintf("%u", (int)(*((char *)lit->value))), NULL);
+        return new_result(cc_asprintf("%u", (int)(*((char *)lit->value))), new_primitive_type("TKN_CHAR"));
     }
     return NULL;
 }
