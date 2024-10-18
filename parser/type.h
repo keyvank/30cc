@@ -3,16 +3,13 @@
 
 #include "../lexer.h"
 #include "parser.h"
+#include "../codegen/codegen.h"
 
 parser_node *parse_type(typed_token **tkns_ptr);
 
 typedef struct
 {
-    char *name;
-    int num_pointing;
-    int is_struct;
-    int dim;
-    int *dims;
+    context_type *type;
 } node_type;
 
 #endif

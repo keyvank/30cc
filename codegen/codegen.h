@@ -5,10 +5,27 @@
 
 typedef struct
 {
+    char *name;
+    int num_pointing;
+    int is_struct;
+    int dim;
+    int *dims;
+} context_type;
+
+typedef struct
+{
+    char *name;
+    int num_fields;
+    context_type **fields;
+} context_struct;
+
+typedef struct
+{
     linked_list data;
     linked_list text;
     linked_list symbol_table;
     linked_list global_table;
+    linked_list structs;
     int label_counter;
     int stack_size;
 } context;
@@ -31,4 +48,14 @@ symbol *new_symbol(context *ctx, char *name, int sz);
 symbol *new_global_symbol(context *ctx, char *name, char *repl);
 symbol *new_temp_symbol(context *ctx, int sz);
 char *new_label(context *ctx);
+
+context_struct *find_struct(context *ctx, char *name);
+void new_struct(context *ctx, context_struct *s);
+
+int size_of(context *ctx, context_type *tp);
+context_type *new_type(char *name,
+                       int num_pointing,
+                       int is_struct,
+                       int dim,
+                       int *dims);
 #endif
