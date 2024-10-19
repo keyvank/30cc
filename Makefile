@@ -12,4 +12,4 @@ run:
 	./a.out examples/inp5.c --asm > out.asm
 	nasm -f elf64 out.asm -o out.o
 	ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc -o out out.o
-	./out
+	./out a b c
