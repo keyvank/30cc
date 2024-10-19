@@ -63,6 +63,12 @@ typed_token *tokenize(char *inp);
 #define TKN_COLON 86
 #define TKN_DOT 87
 #define TKN_ARROW 88
+#define TKN_DIV 89
+#define TKN_DIVEQ 90
+#define TKN_MOD 91
+#define TKN_MODEQ 92
+#define TKN_OREQ 93
+#define TKN_ANDEQ 94
 
 #define TKN_COMMENT 128
 #define TKN_MACRO_DEFINE 129

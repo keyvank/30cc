@@ -1,5 +1,5 @@
 section .data
-__main_size: equ 64
+__main_size: equ 128
 section .text
 global main
 main:
@@ -8,8 +8,12 @@ mov rbp, rsp
 sub rsp, __main_size
 mov qword [rsp+0], 8
 add [rsp+0], rsp
+mov rax, 2
+mov [rsp+0], rax
 mov qword [rsp+16], 24
 add [rsp+16], rsp
+mov rax, 3
+mov [rsp+16], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
@@ -22,6 +26,34 @@ add rax, rbx
 mov rbx, [rsp+32]
 mov [rbx], rax
 mov [rsp+48], rax
+mov rax, rsp
+add rax, 0
+mov [rsp+56], rax
+mov rax, rsp
+add rax, 16
+mov [rsp+64], rax
+mov rax, [rsp+0]
+mov rbx, [rsp+16]
+sub rax, rbx
+mov rbx, [rsp+56]
+mov [rbx], rax
+mov [rsp+72], rax
+mov rax, rsp
+add rax, 0
+mov [rsp+80], rax
+mov rax, rsp
+add rax, 16
+mov [rsp+88], rax
+mov rax, [rsp+16]
+mov rbx, 1
+add rax, rbx
+mov [rsp+96], rax
+mov rax, [rsp+0]
+mov rbx, [rsp+96]
+mul rbx
+mov rbx, [rsp+80]
+mov [rbx], rax
+mov [rsp+104], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

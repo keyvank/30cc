@@ -8,13 +8,31 @@ Program(
     Statements:
       VarDecl(a):
         Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 2)
       VarDecl(b):
         Type(TKN_INT)
+        Value:
+          Literal(Type: 34, Value: 3)
       BinaryOp(Op: 74)
         Left:
           Variable(a)
         Right:
           Variable(b)
+      BinaryOp(Op: 77)
+        Left:
+          Variable(a)
+        Right:
+          Variable(b)
+      BinaryOp(Op: 79)
+        Left:
+          Variable(a)
+        Right:
+          BinaryOp(Op: 72)
+            Left:
+              Variable(b)
+            Right:
+              Literal(Type: 34, Value: 1)
       Return:
         Literal(Type: 34, Value: 0)
   )
