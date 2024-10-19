@@ -1,5 +1,5 @@
 section .data
-__main_size: equ 224
+__main_size: equ 128
 section .text
 global main
 main:
@@ -54,73 +54,6 @@ mul rbx
 mov rbx, [rsp+80]
 mov [rbx], rax
 mov [rsp+104], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+112], rax
-mov rax, rsp
-add rax, 16
-mov [rsp+120], rax
-mov rax, [rsp+0]
-mov rbx, [rsp+16]
-div rbx
-mov rbx, [rsp+112]
-mov [rbx], rax
-mov [rsp+128], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+136], rax
-mov rax, rsp
-add rax, 16
-mov [rsp+144], rax
-mov rax, [rsp+0]
-mov rbx, [rsp+16]
-move rdx, 0
-div rbx
-mov rbx, [rsp+136]
-mov [rbx], rdx
-mov [rsp+152], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+160], rax
-mov rax, rsp
-add rax, 16
-mov [rsp+168], rax
-mov rax, [rsp+0]
-mov rbx, [rsp+16]
-and rax, rbx
-mov rbx, [rsp+160]
-mov [rbx], rax
-or rax, rbx
-or rax, rbx
-mov rbx, [rsp+160]
-mov [rbx], rax
-cmp rax, 0
-jne __tmp_label_0
-mov rax, rbx
-jmp __tmp_label_1
-__tmp_label_0:
-mov rax, 1
-__tmp_label_1:
-mov [rsp+176], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+184], rax
-mov rax, rsp
-add rax, 16
-mov [rsp+192], rax
-mov rax, [rsp+0]
-mov rbx, [rsp+16]
-or rax, rbx
-mov rbx, [rsp+184]
-mov [rbx], rax
-cmp rax, 0
-jne __tmp_label_2
-mov rax, rbx
-jmp __tmp_label_3
-__tmp_label_2:
-mov rax, 1
-__tmp_label_3:
-mov [rsp+200], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

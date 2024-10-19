@@ -33,26 +33,6 @@ Program(
               Variable(b)
             Right:
               Literal(Type: 34, Value: 1)
-      BinaryOp(Op: 90)
-        Left:
-          Variable(a)
-        Right:
-          Variable(b)
-      BinaryOp(Op: 92)
-        Left:
-          Variable(a)
-        Right:
-          Variable(b)
-      BinaryOp(Op: 94)
-        Left:
-          Variable(a)
-        Right:
-          Variable(b)
-      BinaryOp(Op: 93)
-        Left:
-          Variable(a)
-        Right:
-          Variable(b)
       Return:
         Literal(Type: 34, Value: 0)
   )

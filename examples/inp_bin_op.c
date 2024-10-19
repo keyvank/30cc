@@ -4,9 +4,5 @@ int main() {
   a += b;
   a -= b;
   a *= b + 1;
-  a /= b;
-  a %= b;
-  a &= b;
-  a |= b;
   return 0;
 }

@@ -109,21 +109,10 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "div rbx");
         add_text(ctx, "move rax, rdx");
         break;
-    case TKN_MODEQ:
-        add_text(ctx, "move rdx, 0");
-        add_text(ctx, "div rbx");
-        move_reg_to_var(ctx, left, "rdx");
-        break;
     case TKN_AND:
         add_text(ctx, "and rax, rbx");
-    case TKN_ANDEQ:
-        add_text(ctx, "and rax, rbx");
-        move_reg_to_var(ctx, left, "rax");
     case TKN_OR:
         add_text(ctx, "or rax, rbx");
-    case TKN_OREQ:
-        add_text(ctx, "or rax, rbx");
-        move_reg_to_var(ctx, left, "rax");
     case TKN_ANDAND:
     case TKN_OROR:
         l1 = new_label(ctx);
