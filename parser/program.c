@@ -49,6 +49,12 @@ apply_result *program_apply(parser_node *node, context *ctx)
     add_text(ctx, "extern exit");
     add_text(ctx, "global _start");
     add_text(ctx, "_start:");
+
+    add_text(ctx, "; Pass argc and argv");
+    add_text(ctx, "mov rdi, [rsp]");
+    add_text(ctx, "mov rsi, rsp");
+    add_text(ctx, "add rsi, 8");
+    
     add_text(ctx, "call main");
     add_text(ctx, "mov rdi, 0");
     add_text(ctx, "call exit");
