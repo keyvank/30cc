@@ -19,11 +19,9 @@ void ref_debug(int depth, parser_node *node)
 apply_result *ref_apply(parser_node *node, context *ctx)
 {
     node_ref *ref = (node_ref *)node->data;
-    node_var *v = (node_var *)ref->var->data;
-    symbol *sym = find_symbol(ctx, v->var_name);
-    add_text(ctx, "mov rax, rsp");
-    add_text(ctx, "add rax, %u", sym->offset);
-    symbol *res = new_temp_symbol(ctx, new_pointer_type(sym->type));
+    apply_result *v = ref->var->apply(ref->var, ctx);
+    add_text(ctx, "mov rax, %s", v->addr_code);
+    symbol *res = new_temp_symbol(ctx, new_pointer_type(v->type));
     add_text(ctx, "mov %s, rax", res->repl);
     return new_result(res->repl, res->type);
 }
