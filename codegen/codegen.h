@@ -26,6 +26,7 @@ typedef struct
 {
     char *name;
     int num_fields;
+    char **field_names;
     general_type **fields;
 } context_struct;
 

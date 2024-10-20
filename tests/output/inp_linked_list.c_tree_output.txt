@@ -1,0 +1,241 @@
+Program(
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Pointer of:
+        TKN_VOID
+    ParamTypes:
+      TKN_INT
+  )
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  Function(
+    Name:
+      new_list
+    Returns:
+      Pointer of:
+        struct linked_list
+    Params:
+    Statements:
+      VarDecl(ret):
+        Pointer of:
+          struct linked_list
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 8)
+            Type:
+              Pointer of:
+                struct linked_list
+      Return:
+        Variable(ret)
+  )
+  Function(
+    Name:
+      add_val
+    Returns:
+      TKN_VOID
+    Params:
+      Param: lst
+        Pointer of:
+          struct linked_list
+      Param: val
+        TKN_INT
+    Statements:
+      VarDecl(new):
+        Pointer of:
+          struct node
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 16)
+            Type:
+              Pointer of:
+                struct node
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            Cast:
+              Val:
+                Ref:
+                  Access:
+                    Object:
+                      Variable(new)
+                    Field: next
+                    IsPtr: 1
+              Type:
+                Pointer of:
+                  TKN_INT
+        Right:
+          Variable(new)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(new)
+            Field: val
+            IsPtr: 1
+        Right:
+          Variable(val)
+      If(
+        Cond:
+          Access:
+            Object:
+              Variable(lst)
+            Field: first
+            IsPtr: 1
+        Body:
+          CompoundStatement
+            VarDecl(curr):
+              Pointer of:
+                struct node
+              Value:
+                Access:
+                  Object:
+                    Variable(lst)
+                  Field: first
+                  IsPtr: 1
+            While(
+              Cond:
+                Access:
+                  Object:
+                    Variable(curr)
+                  Field: next
+                  IsPtr: 1
+              Body:
+                CompoundStatement
+                  BinaryOp(Op: 64)
+                    Left:
+                      Variable(curr)
+                    Right:
+                      Cast:
+                        Val:
+                          Access:
+                            Object:
+                              Variable(curr)
+                            Field: next
+                            IsPtr: 1
+                        Type:
+                          Pointer of:
+                            struct node
+            BinaryOp(Op: 64)
+              Left:
+                Access:
+                  Object:
+                    Variable(curr)
+                  Field: next
+                  IsPtr: 1
+              Right:
+                Cast:
+                  Val:
+                    Variable(new)
+                  Type:
+                    Pointer of:
+                      TKN_VOID
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      VarDecl(lst):
+        Pointer of:
+          struct linked_list
+        Value:
+          FunctionCall:
+            Function:
+              Variable(new_list)
+            Args:
+      FunctionCall:
+        Function:
+          Variable(add_val)
+        Args:
+          Variable(lst)
+          Literal(Type: 34, Value: 123)
+      FunctionCall:
+        Function:
+          Variable(add_val)
+        Args:
+          Variable(lst)
+          Literal(Type: 34, Value: 432)
+      FunctionCall:
+        Function:
+          Variable(add_val)
+        Args:
+          Variable(lst)
+          Literal(Type: 34, Value: 999)
+      FunctionCall:
+        Function:
+          Variable(add_val)
+        Args:
+          Variable(lst)
+          Literal(Type: 34, Value: 873)
+      VarDecl(curr):
+        Pointer of:
+          struct node
+        Value:
+          Access:
+            Object:
+              Variable(lst)
+            Field: first
+            IsPtr: 1
+      While(
+        Cond:
+          Variable(curr)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: %u
+)
+                Access:
+                  Object:
+                    Variable(curr)
+                  Field: val
+                  IsPtr: 1
+            BinaryOp(Op: 64)
+              Left:
+                Variable(curr)
+              Right:
+                Cast:
+                  Val:
+                    Access:
+                      Object:
+                        Variable(curr)
+                      Field: next
+                      IsPtr: 1
+                  Type:
+                    Pointer of:
+                      struct node
+  )
+  Struct(node)
+    VarDecl(val):
+      TKN_INT
+    VarDecl(next):
+      Pointer of:
+        TKN_VOID
+  Struct(linked_list)
+    VarDecl(first):
+      Pointer of:
+        struct node
+)

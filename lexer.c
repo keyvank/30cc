@@ -95,7 +95,7 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
         else if (strcmp(val, "while") == 0)
             return new_simp_tkn(TKN_WHILE);
         else if (strcmp(val, "struct") == 0)
-            return new_simp_tkn(TKN_LIT_STRUCT);
+            return new_simp_tkn(TKN_STRUCT);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }

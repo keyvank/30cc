@@ -1,0 +1,83 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Pointer of:
+        TKN_VOID
+    ParamTypes:
+      TKN_INT
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      VarDecl(m):
+        Pointer of:
+          struct MyStruct
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 16)
+            Type:
+              Pointer of:
+                struct MyStruct
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: a
+            IsPtr: 1
+        Right:
+          Literal(Type: 34, Value: 10)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: b
+            IsPtr: 1
+        Right:
+          Literal(Type: 34, Value: 20)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u %u
+)
+          Access:
+            Object:
+              Variable(m)
+            Field: a
+            IsPtr: 1
+          Access:
+            Object:
+              Variable(m)
+            Field: b
+            IsPtr: 1
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+  Struct(MyStruct)
+    VarDecl(a):
+      TKN_INT
+    VarDecl(b):
+      TKN_INT
+)

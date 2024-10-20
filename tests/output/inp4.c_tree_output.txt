@@ -1,4 +1,22 @@
 Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Pointer of:
+        TKN_VOID
+    ParamTypes:
+      TKN_INT
+  )
   Function(
     Name:
       main
@@ -8,6 +26,163 @@ Program(
     Statements:
       VarDecl(m):
         struct MyStruct
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: c
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 5)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: d
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 10)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Access:
+                Object:
+                  Variable(m)
+                Field: hi
+                IsPtr: 0
+            Field: e
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 19)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Access:
+                Object:
+                  Variable(m)
+                Field: hi
+                IsPtr: 0
+            Field: f
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 123)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: e
+            IsPtr: 0
+        Right:
+          BinaryOp(Op: 72)
+            Left:
+              BinaryOp(Op: 78)
+                Left:
+                  Access:
+                    Object:
+                      Access:
+                        Object:
+                          Variable(m)
+                        Field: hi
+                        IsPtr: 0
+                    Field: f
+                    IsPtr: 0
+                Right:
+                  Literal(Type: 34, Value: 2)
+            Right:
+              Access:
+                Object:
+                  Variable(m)
+                Field: c
+                IsPtr: 0
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u %u %u %u %u
+)
+          Access:
+            Object:
+              Variable(m)
+            Field: c
+            IsPtr: 0
+          Access:
+            Object:
+              Variable(m)
+            Field: d
+            IsPtr: 0
+          Access:
+            Object:
+              Access:
+                Object:
+                  Variable(m)
+                Field: hi
+                IsPtr: 0
+            Field: e
+            IsPtr: 0
+          Access:
+            Object:
+              Access:
+                Object:
+                  Variable(m)
+                Field: hi
+                IsPtr: 0
+            Field: f
+            IsPtr: 0
+          Access:
+            Object:
+              Variable(m)
+            Field: e
+            IsPtr: 0
+      VarDecl(salam):
+        Pointer of:
+          TKN_INT
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      Literal(Type: 34, Value: 8)
+            Type:
+              Pointer of:
+                TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(salam)
+            Index:
+              Literal(Type: 34, Value: 5)
+        Right:
+          Literal(Type: 34, Value: 987)
+      VarDecl(s5):
+        Pointer of:
+          TKN_INT
+        Value:
+          Ref:
+            Access:
+              In:
+                Variable(salam)
+              Index:
+                Literal(Type: 34, Value: 5)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          Deref:
+            Variable(s5)
       Return:
         Literal(Type: 34, Value: 0)
   )
@@ -24,5 +199,5 @@ Program(
     VarDecl(hi):
       struct MyStruct2
     VarDecl(e):
-      TKN_CHAR
+      TKN_INT
 )
