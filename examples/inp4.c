@@ -1,4 +1,5 @@
 void printf(char *, ...);
+void *malloc(int sz);
 
 struct MyStruct2
 {
@@ -24,5 +25,10 @@ int main()
     m.e = m.hi.f * 2 + m.c; // 251
     printf("%u %u %u %u %u\n", m.c, m.d, m.hi.e, m.hi.f, m.e);
 
+    int *salam = (int *)malloc(10 * 8);
+    salam[5] = 987;
+    int *s5 = &salam[5];
+    printf("%u\n", *s5);
+    
     return 0;
 }
