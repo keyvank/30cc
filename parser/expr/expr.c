@@ -27,18 +27,18 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
-void move_reg_to_var(context *ctx, apply_result *var, char* reg) 
+void move_reg_to_var(context *ctx, apply_result *var, char *reg)
 {
-        if (var->addr_code)
-        {
-            add_text(ctx, "mov rbx, %s", var->addr_code);
-            add_text(ctx, "mov [rbx], %s", reg);
-        }
-        else
-        {
-            printf("Cannot assign!\n");
-            exit(1);
-        }
+    if (var->addr_code)
+    {
+        add_text(ctx, "mov rbx, %s", var->addr_code);
+        add_text(ctx, "mov [rbx], %s", reg);
+    }
+    else
+    {
+        printf("Cannot assign!\n");
+        exit(1);
+    }
 }
 
 apply_result *binary_op_apply(parser_node *node, context *ctx)
@@ -316,6 +316,27 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     if (!curr)
         curr = parse_deref(&tkn);
     if (curr)
+    {
+        while (1)
+        {
+            parser_node *func_call = parse_func_call(&tkn, curr);
+            if (func_call)
+            {
+                curr = func_call;
+                continue;
+            }
+
+            parser_node *idx = parse_index(&tkn, curr);
+            if (idx)
+            {
+                curr = idx;
+                continue;
+            }
+
+            break;
+        }
+    }
+    if (curr)
         *tkns_ptr = tkn;
 
     return curr;
@@ -394,20 +415,6 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
         int prec = op_prec(tkn->type_id);
         if (prec >= min_prec)
         {
-            parser_node *func_call = parse_func_call(&tkn, lhs);
-            if (func_call)
-            {
-                lhs = func_call;
-                continue;
-            }
-
-            parser_node *idx = parse_index(&tkn, lhs);
-            if (idx)
-            {
-                lhs = idx;
-                continue;
-            }
-
             int op_type_id = tkn->type_id;
             tkn = tkn->next;
             parser_node *rhs = parse_terminal(&tkn);
