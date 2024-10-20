@@ -3,33 +3,37 @@ Program(
     Name:
       printf
     Returns:
-      Type(TKN_VOID)
+      TKN_VOID
     ParamTypes:
-      Type(TKN_CHAR*)
+      Pointer of:
+        TKN_CHAR
   )
   FunctionDecl(
     Name:
       malloc
     Returns:
-      Type(TKN_CHAR*)
+      Pointer of:
+        TKN_VOID
     ParamTypes:
-      Type(TKN_INT)
+      TKN_INT
   )
   Function(
     Name:
       main
     Returns:
-      Type(TKN_INT)
+      TKN_INT
     Params:
       Param: argc
-        Type(TKN_INT)
+        TKN_INT
       Param: argv
-        Type(TKN_CHAR**)
+        Pointer of:
+          Pointer of:
+            TKN_CHAR
     Statements:
       For(
         Init:
           VarDecl(i):
-            Type(TKN_INT)
+            TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -59,11 +63,27 @@ Program(
                   Index:
                     Variable(i)
       VarDecl(a):
-        Type(TKN_INT[10])
+        Pointer of:
+          TKN_INT
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      Literal(Type: 34, Value: 8)
+            Type:
+              Pointer of:
+                TKN_INT
       For(
         Init:
           VarDecl(i):
-            Type(TKN_INT)
+            TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -99,7 +119,7 @@ Program(
       For(
         Init:
           VarDecl(i):
-            Type(TKN_INT)
+            TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -109,15 +129,11 @@ Program(
             Right:
               Literal(Type: 34, Value: 10)
         Act:
-          BinaryOp(Op: 64)
+          BinaryOp(Op: 74)
             Left:
               Variable(i)
             Right:
-              BinaryOp(Op: 72)
-                Left:
-                  Variable(i)
-                Right:
-                  Literal(Type: 34, Value: 1)
+              Literal(Type: 34, Value: 1)
         Body:
           FunctionCall:
             Function:
@@ -131,9 +147,27 @@ Program(
                 Index:
                   Variable(i)
       VarDecl(b):
-        Type(TKN_INT*[1024])
+        Pointer of:
+          Pointer of:
+            TKN_INT
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 1024)
+                    Right:
+                      Literal(Type: 34, Value: 8)
+            Type:
+              Pointer of:
+                Pointer of:
+                  TKN_INT
       VarDecl(c):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           Literal(Type: 34, Value: 123)
       BinaryOp(Op: 64)
@@ -172,5 +206,70 @@ Program(
           Literal(Type: 33, Value: %u
 )
           Variable(c)
+      VarDecl(str):
+        Pointer of:
+          TKN_CHAR
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 20)
+            Type:
+              Pointer of:
+                TKN_CHAR
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(str)
+            Index:
+              Literal(Type: 34, Value: 0)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(str)
+            Index:
+              Literal(Type: 34, Value: 1)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(str)
+            Index:
+              Literal(Type: 34, Value: 2)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(str)
+            Index:
+              Literal(Type: 34, Value: 3)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(str)
+            Index:
+              Literal(Type: 34, Value: 4)
+        Right:
+          Literal(Type: 35)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %s)
+          Variable(str)
   )
 )

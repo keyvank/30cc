@@ -3,15 +3,15 @@ Program(
     Name:
       main
     Returns:
-      Type(TKN_INT)
+      TKN_INT
     Params:
     Statements:
       VarDecl(a):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           Literal(Type: 34, Value: 2)
       VarDecl(b):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           Literal(Type: 34, Value: 3)
       BinaryOp(Op: 74)
