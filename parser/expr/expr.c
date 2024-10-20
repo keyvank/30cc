@@ -15,19 +15,6 @@
 #include "../type.h"
 #include "access.h"
 
-void binary_op_debug(int depth, parser_node *node)
-{
-    node_binary_op *binop = (node_binary_op *)node->data;
-    printtabs(depth);
-    printf("BinaryOp(Op: %d)\n", binop->op);
-    printtabs(depth + 1);
-    printf("Left:\n");
-    binop->left->debug(depth + 2, binop->left);
-    printtabs(depth + 1);
-    printf("Right:\n");
-    binop->right->debug(depth + 2, binop->right);
-}
-
 void move_reg_to_var(context *ctx, apply_result *var, char *reg)
 {
     if (var->addr_code)
@@ -41,6 +28,50 @@ void move_reg_to_var(context *ctx, apply_result *var, char *reg)
         exit(1);
     }
 }
+
+void unary_op_debug(int depth, parser_node *node)
+{
+    node_unary_op *unary_op = (node_unary_op *)node->data;
+    printtabs(depth);
+    printf("unaryOp(Op: %d)\n", unary_op->op);
+    printtabs(depth);
+    printf("expression:\n");
+    unary_op->exp->debug(depth + 2, unary_op->exp);
+}
+
+apply_result *unary_op_apply(parser_node *node, context *ctx) {
+    add_text(ctx, "; unary op apply");
+    node_unary_op *unary_op = (node_unary_op *)node->data;
+    apply_result *operand = unary_op->exp->apply(unary_op->exp, ctx);
+    add_text(ctx, "; operand code: %s", operand->code);
+    add_text(ctx, "mov rax, %s", operand->code);
+    symbol *tmp = new_temp_symbol(ctx, operand->type);
+
+    if (unary_op->op == TKN_MIN) {
+        add_text(ctx, "neg rax");
+    } else if (unary_op->op == TKN_NOT) {   
+        add_text(ctx, "cmp rax, 0");
+        add_text(ctx, "sete al");
+        add_text(ctx, "movzx rax, al");
+    } else {}
+    add_text(ctx, "mov %s, rax", tmp->repl);
+    add_text(ctx, "; unary op finish");
+    return new_result(tmp->repl, tmp->type);
+}
+
+void binary_op_debug(int depth, parser_node *node)
+{
+    node_binary_op *binop = (node_binary_op *)node->data;
+    printtabs(depth);
+    printf("BinaryOp(Op: %d)\n", binop->op);
+    printtabs(depth + 1);
+    printf("Left:\n");
+    binop->left->debug(depth + 2, binop->left);
+    printtabs(depth + 1);
+    printf("Right:\n");
+    binop->right->debug(depth + 2, binop->right);
+}
+
 
 apply_result *binary_op_apply(parser_node *node, context *ctx)
 {
@@ -310,6 +341,12 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
 
     parser_node *curr = NULL;
 
+    int unary_op = 0;
+    if (tkn->type_id == TKN_MIN || tkn->type_id == TKN_NOT)  {
+        unary_op = tkn->type_id;
+        tkn = tkn->next;
+    }
+
     if (!curr)
         curr = parse_cast(&tkn);
     if (!curr)
@@ -350,6 +387,21 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
             break;
         }
     }
+
+    if (unary_op) {
+        if (!curr) {
+            fprintf(stderr, "Unary op %d with no operand", unary_op);
+        }
+        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+        node->data = (void *)malloc(sizeof(node_unary_op));
+        node->debug = unary_op_debug;
+        node->apply = unary_op_apply;
+        node_unary_op *unary = (node_unary_op *)node->data;
+        unary->op = unary_op;
+        unary->exp = curr;
+        curr = node;
+    }
+
     if (curr)
         *tkns_ptr = tkn;
 
