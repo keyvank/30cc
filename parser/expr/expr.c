@@ -111,8 +111,10 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         break;
     case TKN_AND:
         add_text(ctx, "and rax, rbx");
+        break;
     case TKN_OR:
         add_text(ctx, "or rax, rbx");
+        break;
     case TKN_ANDAND:
     case TKN_OROR:
         l1 = new_label(ctx);
