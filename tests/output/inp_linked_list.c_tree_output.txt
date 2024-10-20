@@ -70,6 +70,22 @@ Program(
                 struct node
       BinaryOp(Op: 64)
         Left:
+          Deref:
+            Cast:
+              Val:
+                Ref:
+                  Access:
+                    Object:
+                      Variable(new)
+                    Field: next
+                    IsPtr: 1
+              Type:
+                Pointer of:
+                  TKN_INT
+        Right:
+          Variable(new)
+      BinaryOp(Op: 64)
+        Left:
           Access:
             Object:
               Variable(new)

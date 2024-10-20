@@ -1,5 +1,6 @@
 void *malloc(int sz);
 void printf(char *s, ...);
+
 struct node
 {
     int val;
