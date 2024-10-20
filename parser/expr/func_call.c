@@ -33,7 +33,7 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
     {
         apply_result *regval = call->args[i]->apply(call->args[i], ctx);
 
-        symbol *tmp = new_temp_symbol(ctx, 8);
+        symbol *tmp = new_temp_symbol(ctx, regval->type);
         add_text(ctx, "mov rax, %s", regval->code);
         add_text(ctx, "mov %s, rax", tmp->repl);
 
@@ -63,18 +63,19 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
     }
 
     apply_result *fun = call->func->apply(call->func, ctx);
+    general_type *ret_type = ((func_pointer_type *)fun->type->data)->return_type;
 
     add_text(ctx, "call %s", fun->code);
-    symbol *tmp = new_temp_symbol(ctx, 8);
+    symbol *tmp = new_temp_symbol(ctx, ret_type);
     add_text(ctx, "mov %s, rax", tmp->repl);
 
-    return new_result(tmp->repl, NULL);
+    return new_result(tmp->repl, tmp->type);
 }
 
 parser_node *parse_func_call(typed_token **tkns_ptr, parser_node *func)
 {
     typed_token *tkn = *tkns_ptr;
-    
+
     if (tkn->type_id == TKN_L_PAREN)
     {
         tkn = tkn->next;

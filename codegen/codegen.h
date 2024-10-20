@@ -9,9 +9,51 @@ typedef struct
     linked_list text;
     linked_list symbol_table;
     linked_list global_table;
+    linked_list structs;
     int label_counter;
     int stack_size;
 } context;
+
+typedef struct general_type_
+{
+    void *data;
+    void (*debug)(struct general_type_ *self, context *ctx, int depth);
+    int (*size)(struct general_type_ *self, context *ctx);
+    int (*named_offset)(struct general_type_ *self, context *ctx, char *name);
+} general_type;
+
+typedef struct
+{
+    char *name;
+    int num_fields;
+    general_type **fields;
+} context_struct;
+
+typedef struct
+{
+    char *type_name;
+} primitive_type;
+
+typedef struct
+{
+    char *struct_name;
+} struct_type;
+
+typedef struct
+{
+    general_type *of;
+} pointer_type;
+
+typedef struct
+{
+    general_type *return_type;
+} func_pointer_type;
+
+general_type *new_primitive_type(char *type_name);
+general_type *new_struct_type(char *struct_name);
+general_type *new_pointer_type(general_type *of);
+general_type *new_func_pointer_type(general_type *return_type);
+int types_equal(general_type *a, general_type *b);
 
 context new_context();
 void add_text(context *ctx, char *fmt, ...);
@@ -20,15 +62,18 @@ void add_data(context *ctx, char *fmt, ...);
 typedef struct
 {
     char *name;
-    int size;
+    general_type *type;
     int offset;
     char *repl;
 } symbol;
 
 char *cc_asprintf(char *fmt, ...);
 symbol *find_symbol(context *tab, char *name);
-symbol *new_symbol(context *ctx, char *name, int sz);
-symbol *new_global_symbol(context *ctx, char *name, char *repl);
-symbol *new_temp_symbol(context *ctx, int sz);
+symbol *new_symbol(context *ctx, char *name, general_type *type);
+symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *type);
+symbol *new_temp_symbol(context *ctx, general_type *type);
 char *new_label(context *ctx);
+
+context_struct *find_struct(context *ctx, char *name);
+void new_struct(context *ctx, context_struct *s);
 #endif

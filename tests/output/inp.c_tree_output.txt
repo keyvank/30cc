@@ -3,25 +3,26 @@ Program(
     Name:
       printf
     Returns:
-      Type(TKN_VOID)
+      TKN_VOID
     ParamTypes:
-      Type(TKN_CHAR*)
+      Pointer of:
+        TKN_CHAR
   )
   Function(
     Name:
       main
     Returns:
-      Type(TKN_INT)
+      TKN_INT
     Params:
     Statements:
       VarDecl(i):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           Literal(Type: 34, Value: 10)
       For(
         Init:
           VarDecl(i):
-            Type(TKN_INT)
+            TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -43,7 +44,7 @@ Program(
         Body:
           CompoundStatement
             VarDecl(i):
-              Type(TKN_INT)
+              TKN_INT
               Value:
                 Literal(Type: 34, Value: 2)
             FunctionCall:

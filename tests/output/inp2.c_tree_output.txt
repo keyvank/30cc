@@ -3,28 +3,31 @@ Program(
     Name:
       haha
     Returns:
-      Type(TKN_VOID)
+      TKN_VOID
     ParamTypes:
   )
   FunctionDecl(
     Name:
       abc
     Returns:
-      Type(TKN_VOID)
+      TKN_VOID
     ParamTypes:
-      Type(TKN_INT)
-      Type(TKN_INT)
-      Type(TKN_INT)
-      Type(TKN_INT***)
+      TKN_INT
+      TKN_INT
+      TKN_INT
+      Pointer of:
+        Pointer of:
+          Pointer of:
+            TKN_INT
   )
   Function(
     Name:
       f
     Returns:
-      Type(TKN_VOID)
+      TKN_VOID
     Params:
       Param: a
-        Type(TKN_INT)
+        TKN_INT
     Statements:
       BinaryOp(Op: 72)
         Left:
@@ -40,15 +43,19 @@ Program(
     Name:
       main
     Returns:
-      Type(TKN_VOID*)
+      Pointer of:
+        TKN_VOID
     Params:
       Param: a
-        Type(TKN_INT*)
+        Pointer of:
+          TKN_INT
       Param: b
-        Type(TKN_INT**)
+        Pointer of:
+          Pointer of:
+            TKN_INT
     Statements:
       VarDecl(a):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           BinaryOp(Op: 72)
             Left:
@@ -72,7 +79,7 @@ Program(
             Right:
               Literal(Type: 33, Value: 6)
       VarDecl(b):
-        Type(TKN_INT)
+        TKN_INT
         Value:
           BinaryOp(Op: 72)
             Left:
@@ -141,7 +148,7 @@ Program(
         CompoundStatement
           Literal(Type: 33, Value: chetori)
           VarDecl(a):
-            Type(TKN_INT)
+            TKN_INT
             Value:
               Literal(Type: 33, Value: haha)
           CompoundStatement

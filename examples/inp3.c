@@ -6,7 +6,7 @@ void printf(char *, ...);
 
 struct MyStruct
 {
-    int **a[10][SALAM2][30];
+    int **a;
     char b;
     int c;
 };
@@ -66,7 +66,7 @@ int main()
     printf("Result: %u\n", c + c + d + ((b + a) * a));
     int *cc = &c;
     printf("Addr of a: %u\n", &a);
-    printf("Value of b: %u\n", *(&a + 8));
+    //printf("Value of b: %u\n", *(&a + 8));
     printf("Addr of c: %u\n", cc);
     printf("Double of 123: %u\n", doub(doub(123 * doub(123)) * 2) + 10);
     printf("Factorial 5: %u\n", fact(5));

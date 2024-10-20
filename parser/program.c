@@ -10,6 +10,7 @@
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 #include "struct_def.h"
+#include "type.h"
 
 void program_debug(int depth, parser_node *node)
 {
@@ -33,13 +34,28 @@ void program_debug(int depth, parser_node *node)
 apply_result *program_apply(parser_node *node, context *ctx)
 {
     node_program *prog = (node_program *)node->data;
+    for (int i = 0; i < prog->num_struct_defs; i++)
+    {
+        node_struct_def *sd = (node_struct_def *)prog->struct_defs[i]->data;
+        general_type **fields = (general_type **)malloc(sizeof(general_type *) * sd->num_fields);
+        for (int j = 0; j < sd->num_fields; j++)
+        {
+            fields[j] = ((node_type *)((node_var_decl *)sd->fields[j]->data)->type->data)->type;
+        }
+        context_struct *cs = (context_struct *)malloc(sizeof(context_struct));
+        cs->num_fields = sd->num_fields;
+        cs->fields = fields;
+        cs->name = sd->name;
+        new_struct(ctx, cs);
+    }
     for (int i = 0; i < prog->num_functions; i++)
     {
         ctx->symbol_table = new_linked_list();
         ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
-        char *func_name = ((node_func_decl*)node->data)->identity;
-        new_global_symbol(ctx, func_name, func_name);
+        char *func_name = ((node_func_def *)node->data)->identity;
+        general_type *func_ret = ((node_type*)((node_func_def *)node->data)->return_type->data)->type;
+        new_global_symbol(ctx, func_name, func_name, new_func_pointer_type(func_ret));
         node->apply(node, ctx);
         int total = ctx->stack_size;
         // 16 byte stack alignment

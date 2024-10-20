@@ -16,11 +16,11 @@ apply_result *var_apply(parser_node *node, context *ctx)
 {
     node_var *var = (node_var *)node->data;
     symbol *sym = find_symbol(ctx, var->var_name);
-    symbol *addr_sym = new_temp_symbol(ctx, 8);
+    symbol *addr_sym = new_temp_symbol(ctx, sym->type);
     add_text(ctx, "mov rax, rsp");
     add_text(ctx, "add rax, %u", sym->offset);
     add_text(ctx, "mov %s, rax", addr_sym->repl);
-    apply_result *res = new_result(sym->repl, NULL);
+    apply_result *res = new_result(sym->repl, sym->type);
     res->addr_code = addr_sym->repl;
     return res;
 }

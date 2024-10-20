@@ -24,9 +24,11 @@ void index_debug(int depth, parser_node *node)
 apply_result *index_apply(parser_node *node, context *ctx)
 {
     node_index *idx = (node_index *)node->data;
-    int elem_size = 8;
 
     apply_result *arr = idx->arr->apply(idx->arr, ctx);
+    general_type *base_type = ((pointer_type *)arr->type->data)->of;
+
+    int elem_size = base_type->size(base_type, ctx);
     apply_result *ind = idx->ind->apply(idx->ind, ctx);
     add_text(ctx, "mov rax, %s", ind->code);
     add_text(ctx, "mov rbx, %u", elem_size);
@@ -34,14 +36,14 @@ apply_result *index_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rbx, %s", arr->code);
     add_text(ctx, "add rbx, rax");
 
-    symbol *sym_addr = new_temp_symbol(ctx, 8);
+    symbol *sym_addr = new_temp_symbol(ctx, arr->type);
     add_text(ctx, "mov %s, rbx", sym_addr->repl);
 
     add_text(ctx, "mov rax, [rbx]");
-    symbol *sym_val = new_temp_symbol(ctx, elem_size);
+    symbol *sym_val = new_temp_symbol(ctx, base_type);
     add_text(ctx, "mov %s, rax", sym_val->repl);
 
-    apply_result *ret = new_result(sym_val->repl, NULL);
+    apply_result *ret = new_result(sym_val->repl, base_type);
     ret->code = sym_val->repl;
     ret->addr_code = sym_addr->repl;
 

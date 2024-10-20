@@ -3,15 +3,26 @@ Program(
     Name:
       main
     Returns:
-      Type(TKN_INT)
+      TKN_INT
     Params:
     Statements:
       VarDecl(m):
-        Type(MyStruct)struct
+        struct MyStruct
       Return:
         Literal(Type: 34, Value: 0)
   )
+  Struct(MyStruct2)
+    VarDecl(e):
+      TKN_INT
+    VarDecl(f):
+      TKN_INT
   Struct(MyStruct)
     VarDecl(c):
-      Type(TKN_INT)
+      TKN_INT
+    VarDecl(d):
+      TKN_INT
+    VarDecl(hi):
+      struct MyStruct2
+    VarDecl(e):
+      TKN_CHAR
 )

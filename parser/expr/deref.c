@@ -23,14 +23,15 @@ apply_result *deref_apply(parser_node *node, context *ctx)
     apply_result *loc = deref->var->apply(deref->var, ctx);
 
     add_text(ctx, "mov rax, %s", loc->code);
-    symbol *sym_addr = new_temp_symbol(ctx, 8);
+    symbol *sym_addr = new_temp_symbol(ctx, loc->type);
     add_text(ctx, "mov %s, rax", sym_addr->repl);
 
     add_text(ctx, "mov rax, [rax]");
-    symbol *sym_val = new_temp_symbol(ctx, 8);
+    general_type *deref_type = ((pointer_type *)loc->type->data)->of;
+    symbol *sym_val = new_temp_symbol(ctx, deref_type);
     add_text(ctx, "mov %s, rax", sym_val->repl);
 
-    apply_result *res = new_result(sym_val->repl, NULL);
+    apply_result *res = new_result(sym_val->repl, deref_type);
     res->addr_code = sym_addr->repl;
     return res;
 }

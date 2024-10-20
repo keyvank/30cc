@@ -27,18 +27,18 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
-void move_reg_to_var(context *ctx, apply_result *var, char* reg) 
+void move_reg_to_var(context *ctx, apply_result *var, char *reg)
 {
-        if (var->addr_code)
-        {
-            add_text(ctx, "mov rbx, %s", var->addr_code);
-            add_text(ctx, "mov [rbx], %s", reg);
-        }
-        else
-        {
-            printf("Cannot assign!\n");
-            exit(1);
-        }
+    if (var->addr_code)
+    {
+        add_text(ctx, "mov rbx, %s", var->addr_code);
+        add_text(ctx, "mov [rbx], %s", reg);
+    }
+    else
+    {
+        printf("Cannot assign!\n");
+        exit(1);
+    }
 }
 
 apply_result *binary_op_apply(parser_node *node, context *ctx)
@@ -46,6 +46,15 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     node_binary_op *binop = (node_binary_op *)node->data;
     apply_result *left = binop->left->apply(binop->left, ctx);
     apply_result *right = binop->right->apply(binop->right, ctx);
+
+    if (!types_equal(left->type, right->type))
+    {
+        printf("Cannot apply binary-operand on types!\n");
+        left->type->debug(left->type, ctx, 0);
+        right->type->debug(right->type, ctx, 0);
+        exit(1);
+    }
+
     add_text(ctx, "mov rax, %s", left->code);
     add_text(ctx, "mov rbx, %s", right->code);
 
@@ -169,9 +178,9 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         exit(1);
     }
 
-    symbol *tmp = new_temp_symbol(ctx, 8);
+    symbol *tmp = new_temp_symbol(ctx, left->type);
     add_text(ctx, "mov %s, rax", tmp->repl);
-    return new_result(tmp->repl, NULL);
+    return new_result(tmp->repl, tmp->type);
 }
 
 void cond_debug(int depth, parser_node *node)
@@ -206,9 +215,9 @@ apply_result *cond_apply(parser_node *node, context *ctx)
     add_text(ctx, "%s:", l1);
     add_text(ctx, "mov rax, %s", no_val->code);
     add_text(ctx, "%s:", l2);
-    symbol *sym = new_temp_symbol(ctx, 8);
+    symbol *sym = new_temp_symbol(ctx, yes_val->type);
     add_text(ctx, "mov %s, rax", sym->repl);
-    return new_result(sym->repl, NULL);
+    return new_result(sym->repl, sym->type);
 }
 
 void cast_debug(int depth, parser_node *node)
@@ -227,7 +236,8 @@ void cast_debug(int depth, parser_node *node)
 apply_result *cast_apply(parser_node *node, context *ctx)
 {
     node_cast *cast = (node_cast *)node->data;
-    return new_result(cast->val->apply(cast->val, ctx)->code, NULL);
+    general_type *cast_type = ((node_type *)cast->type->data)->type;
+    return new_result(cast->val->apply(cast->val, ctx)->code, cast_type);
 }
 
 parser_node *parse_paren(typed_token **tkns_ptr)
@@ -305,6 +315,27 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
         curr = parse_ref(&tkn);
     if (!curr)
         curr = parse_deref(&tkn);
+    if (curr)
+    {
+        while (1)
+        {
+            parser_node *func_call = parse_func_call(&tkn, curr);
+            if (func_call)
+            {
+                curr = func_call;
+                continue;
+            }
+
+            parser_node *idx = parse_index(&tkn, curr);
+            if (idx)
+            {
+                curr = idx;
+                continue;
+            }
+
+            break;
+        }
+    }
     if (curr)
         *tkns_ptr = tkn;
 
@@ -384,20 +415,6 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
         int prec = op_prec(tkn->type_id);
         if (prec >= min_prec)
         {
-            parser_node *func_call = parse_func_call(&tkn, lhs);
-            if (func_call)
-            {
-                lhs = func_call;
-                continue;
-            }
-
-            parser_node *idx = parse_index(&tkn, lhs);
-            if (idx)
-            {
-                lhs = idx;
-                continue;
-            }
-
             int op_type_id = tkn->type_id;
             tkn = tkn->next;
             parser_node *rhs = parse_terminal(&tkn);
