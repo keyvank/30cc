@@ -38,13 +38,17 @@ apply_result *program_apply(parser_node *node, context *ctx)
     {
         node_struct_def *sd = (node_struct_def *)prog->struct_defs[i]->data;
         general_type **fields = (general_type **)malloc(sizeof(general_type *) * sd->num_fields);
+        char **field_names = (char **)malloc(sizeof(char *) * sd->num_fields);
         for (int j = 0; j < sd->num_fields; j++)
         {
-            fields[j] = ((node_type *)((node_var_decl *)sd->fields[j]->data)->type->data)->type;
+            node_var_decl *var_decl = (node_var_decl *)sd->fields[j]->data;
+            field_names[j] = var_decl->identity;
+            fields[j] = ((node_type *)var_decl->type->data)->type;
         }
         context_struct *cs = (context_struct *)malloc(sizeof(context_struct));
         cs->num_fields = sd->num_fields;
         cs->fields = fields;
+        cs->field_names = field_names;
         cs->name = sd->name;
         new_struct(ctx, cs);
     }
@@ -54,7 +58,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
         ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
         char *func_name = ((node_func_def *)node->data)->identity;
-        general_type *func_ret = ((node_type*)((node_func_def *)node->data)->return_type->data)->type;
+        general_type *func_ret = ((node_type *)((node_func_def *)node->data)->return_type->data)->type;
         new_global_symbol(ctx, func_name, func_name, new_func_pointer_type(func_ret));
         node->apply(node, ctx);
         int total = ctx->stack_size;
@@ -70,7 +74,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
     add_text(ctx, "mov rdi, [rsp]");
     add_text(ctx, "mov rsi, rsp");
     add_text(ctx, "add rsi, 8");
-    
+
     add_text(ctx, "call main");
     add_text(ctx, "mov rdi, 0");
     add_text(ctx, "call exit");

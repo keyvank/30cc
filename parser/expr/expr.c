@@ -13,6 +13,7 @@
 #include "deref.h"
 #include "index.h"
 #include "../type.h"
+#include "access.h"
 
 void binary_op_debug(int depth, parser_node *node)
 {
@@ -76,14 +77,6 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
             exit(1);
         }
         break;
-    case TKN_DOT:
-    case TKN_ARROW:
-        // TODO
-        // 1. Find the location of variable in the stack
-        // 2. Find the location of the field
-        // Return [rsp + stack_offset + field_offset]?
-        printf("Unimplemented!\n");
-        exit(1);
     case TKN_PLUS:
         add_text(ctx, "add rax, rbx");
         break;
@@ -319,6 +312,13 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
     {
         while (1)
         {
+            parser_node *acc = parse_access(&tkn, curr);
+            if (acc)
+            {
+                curr = acc;
+                continue;
+            }
+
             parser_node *func_call = parse_func_call(&tkn, curr);
             if (func_call)
             {
@@ -349,9 +349,6 @@ int op_prec(int op)
     case TKN_L_BRACK:
     case TKN_L_PAREN:
         return 100;
-    case TKN_DOT:
-    case TKN_ARROW:
-        return 60;
     case TKN_STAR:
     case TKN_DIV:
     case TKN_MOD:
