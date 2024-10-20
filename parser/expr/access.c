@@ -26,8 +26,15 @@ apply_result *access_apply(parser_node *node, context *ctx)
     node_access *acc = (node_access *)node->data;
 
     apply_result *obj = acc->object->apply(acc->object, ctx);
-
-    char *struct_name = ((struct_type *)obj->type->data)->struct_name;
+    char *struct_name = NULL;
+    if (acc->is_ptr)
+    {
+        struct_name = ((struct_type *)((pointer_type *)obj->type->data)->of->data)->struct_name;
+    }
+    else
+    {
+        struct_name = ((struct_type *)obj->type->data)->struct_name;
+    }
     context_struct *ctx_struct = find_struct(ctx, struct_name);
 
     int offset = 0;
@@ -44,14 +51,18 @@ apply_result *access_apply(parser_node *node, context *ctx)
     if (field_type)
     {
         symbol *sym_addr = new_temp_symbol(ctx, field_type);
-        add_text(ctx, "mov rax, %s", obj->addr_code);
+        add_text(ctx, ";;;");
+        if (acc->is_ptr)
+            add_text(ctx, "mov rax, %s", obj->code);
+        else
+            add_text(ctx, "mov rax, %s", obj->addr_code);
         add_text(ctx, "add rax, %u", offset);
         add_text(ctx, "mov %s, rax", sym_addr->repl);
 
         symbol *sym_val = new_temp_symbol(ctx, field_type);
         add_text(ctx, "mov rax, [rax]", sym_val->repl);
         add_text(ctx, "mov %s, rax", sym_val->repl);
-
+        add_text(ctx, ";;;");
         apply_result *res = new_result(sym_val->repl, field_type);
         res->addr_code = sym_addr->repl;
         return res;

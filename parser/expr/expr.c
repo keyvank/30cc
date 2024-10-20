@@ -37,7 +37,7 @@ void move_reg_to_var(context *ctx, apply_result *var, char *reg)
     }
     else
     {
-        printf("Cannot assign!\n");
+        fprintf(stderr, "Left-hand-side is not assignable!\n");
         exit(1);
     }
 }
