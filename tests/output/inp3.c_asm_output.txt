@@ -858,6 +858,10 @@ ret
 extern exit
 global _start
 _start:
+; Pass argc and argv
+mov rdi, [rsp]
+mov rsi, rsp
+add rsi, 8
 call main
 mov rdi, 0
 call exit

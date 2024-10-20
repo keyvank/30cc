@@ -21,7 +21,43 @@ Program(
     Returns:
       Type(TKN_INT)
     Params:
+      Param: argc
+        Type(TKN_INT)
+      Param: argv
+        Type(TKN_CHAR**)
     Statements:
+      For(
+        Init:
+          VarDecl(i):
+            Type(TKN_INT)
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Variable(argc)
+        Act:
+          BinaryOp(Op: 74)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: Arg %u: %s
+)
+                Variable(i)
+                Access:
+                  In:
+                    Variable(argv)
+                  Index:
+                    Variable(i)
       VarDecl(a):
         Type(TKN_INT[10])
       For(

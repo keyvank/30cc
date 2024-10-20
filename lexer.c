@@ -1,4 +1,5 @@
 
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -183,10 +184,16 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '&')
     {
-        if (*(inp + 1) == '&')
+        char peeked = *(inp +1);
+        if (peeked == '&')
         {
             *inp_ptr += 2;
             return new_simp_tkn(TKN_ANDAND);
+        }
+        else if (peeked == '=')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_ANDEQ);
         }
         else
         {
@@ -196,10 +203,16 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '|')
     {
-        if (*(inp + 1) == '|')
+        char peeked = *(inp + 1);
+        if (peeked == '|')
         {
             *inp_ptr += 2;
             return new_simp_tkn(TKN_OROR);
+        }
+        if (peeked == '=')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_OREQ);
         }
         else
         {
@@ -400,6 +413,32 @@ typed_token *next_op(char **inp_ptr)
             return new_simp_tkn(TKN_STAR);
         }
     }
+    if (*inp == '/')
+    {
+        if (*(inp + 1) == '=')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_DIVEQ);
+        }
+        else
+        {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_DIV);
+        }
+    }
+    if (*inp == '%')
+    {
+        if (*(inp + 1) == '=')
+        {
+            *inp_ptr += 2;
+            return new_simp_tkn(TKN_MODEQ);
+        }
+        else
+        {
+            *inp_ptr += 1;
+            return new_simp_tkn(TKN_MOD);
+        }
+    }
     if (*inp == '.')
     {
         if (*(inp + 1) == '.' && *(inp + 2) == '.')
@@ -445,7 +484,7 @@ typed_token *next_token(char **inp_ptr)
     }
     else
     {
-        perror("Unexpected character: %c");
+        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno)); 
         exit(0);
     }
 }

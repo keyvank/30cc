@@ -27,6 +27,20 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
+void move_reg_to_var(context *ctx, apply_result *var, char* reg) 
+{
+        if (var->addr_code)
+        {
+            add_text(ctx, "mov rbx, %s", var->addr_code);
+            add_text(ctx, "mov [rbx], %s", reg);
+        }
+        else
+        {
+            printf("Cannot assign!\n");
+            exit(1);
+        }
+}
+
 apply_result *binary_op_apply(parser_node *node, context *ctx)
 {
     node_binary_op *binop = (node_binary_op *)node->data;
@@ -62,19 +76,6 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
             exit(1);
         }
         break;
-    case TKN_PLUSEQ:
-        add_text(ctx, "add rax, rbx");
-        if (left->addr_code)
-        {
-            add_text(ctx, "mov rbx, %s", left->addr_code);
-            add_text(ctx, "mov [rbx], rax");
-        }
-        else
-        {
-            printf("Cannot assign!\n");
-            exit(1);
-        }
-        break;
     case TKN_DOT:
     case TKN_ARROW:
         // TODO
@@ -86,11 +87,42 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_PLUS:
         add_text(ctx, "add rax, rbx");
         break;
+    case TKN_PLUSEQ:
+        add_text(ctx, "add rax, rbx");
+        move_reg_to_var(ctx, left, "rax");
+        break;
     case TKN_MIN:
         add_text(ctx, "sub rax, rbx");
         break;
+    case TKN_MINEQ:
+        add_text(ctx, "sub rax, rbx");
+        move_reg_to_var(ctx, left, "rax");
+        break;
     case TKN_STAR:
+        // TODO: check sign for mul/imul
         add_text(ctx, "mul rbx");
+        break;
+    case TKN_STAREQ:
+        add_text(ctx, "mul rbx");
+        move_reg_to_var(ctx, left, "rax");
+        break;
+    case TKN_DIV:
+        add_text(ctx, "div rbx");
+        break;
+    case TKN_DIVEQ:
+        add_text(ctx, "div rbx");
+        move_reg_to_var(ctx, left, "rax");
+        break;
+    case TKN_MOD:
+        add_text(ctx, "move rdx, 0");
+        add_text(ctx, "div rbx");
+        add_text(ctx, "move rax, rdx");
+        break;
+    case TKN_AND:
+        add_text(ctx, "and rax, rbx");
+        break;
+    case TKN_OR:
+        add_text(ctx, "or rax, rbx");
         break;
     case TKN_ANDAND:
     case TKN_OROR:
@@ -142,7 +174,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "%s:", l2);
         break;
     default:
-        printf("Invalid op!\n");
+        printf("Invalid op '%d'\n", binop->op);
         exit(1);
     }
 
@@ -300,6 +332,8 @@ int op_prec(int op)
     case TKN_ARROW:
         return 60;
     case TKN_STAR:
+    case TKN_DIV:
+    case TKN_MOD:
         return 50;
     case TKN_PLUS:
     case TKN_MIN:
@@ -311,11 +345,21 @@ int op_prec(int op)
     case TKN_EQ:
     case TKN_NEQ:
         return 30;
+    case TKN_OR:
+        return 11;
     case TKN_OROR:
-        return 20;
-    case TKN_ANDAND:
         return 10;
+    case TKN_AND:
+        return 21;
+    case TKN_ANDAND:
+        return 20;
     case TKN_PLUSEQ:
+    case TKN_MINEQ:
+    case TKN_STAREQ:
+    case TKN_DIVEQ:
+    case TKN_MODEQ:
+    case TKN_OREQ:
+    case TKN_ANDEQ:
     case TKN_ASSIGN:
         return 5;
     default:
