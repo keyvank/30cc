@@ -76,7 +76,8 @@ Program(
                     Left:
                       Literal(Type: 34, Value: 10)
                     Right:
-                      Literal(Type: 34, Value: 8)
+                      SizeOf:
+                        TKN_INT
             Type:
               Pointer of:
                 TKN_INT
@@ -161,7 +162,8 @@ Program(
                     Left:
                       Literal(Type: 34, Value: 1024)
                     Right:
-                      Literal(Type: 34, Value: 8)
+                      SizeOf:
+                        TKN_INT
             Type:
               Pointer of:
                 Pointer of:
@@ -216,7 +218,12 @@ Program(
                 Function:
                   Variable(malloc)
                 Args:
-                  Literal(Type: 34, Value: 20)
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 20)
+                    Right:
+                      SizeOf:
+                        TKN_CHAR
             Type:
               Pointer of:
                 TKN_CHAR

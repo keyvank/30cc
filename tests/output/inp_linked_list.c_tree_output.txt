@@ -35,7 +35,8 @@ Program(
                 Function:
                   Variable(malloc)
                 Args:
-                  Literal(Type: 34, Value: 8)
+                  SizeOf:
+                    struct linked_list
             Type:
               Pointer of:
                 struct linked_list
@@ -64,7 +65,8 @@ Program(
                 Function:
                   Variable(malloc)
                 Args:
-                  Literal(Type: 34, Value: 16)
+                  SizeOf:
+                    struct node
             Type:
               Pointer of:
                 struct node

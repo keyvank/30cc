@@ -14,13 +14,13 @@ struct linked_list
 
 struct linked_list *new_list()
 {
-    struct linked_list *ret = (struct linked_list *)malloc(8);
+    struct linked_list *ret = (struct linked_list *)malloc(sizeof(struct linked_list));
     return ret;
 }
 
 void add_val(struct linked_list *lst, int val)
 {
-    struct node *new = (struct node *)malloc(16);
+    struct node *new = (struct node *)malloc(sizeof(struct node));
     *((int *)(&new->next)) = 0;
     new->val = val;
     if (lst->first)
