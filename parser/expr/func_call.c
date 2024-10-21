@@ -32,6 +32,11 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
     for (int i = 0; i < call->num_args; i++)
     {
         apply_result *regval = call->args[i]->apply(call->args[i], ctx);
+        if (regval->type->kind == TYPE_STRUCT)
+        {
+            fprintf(stderr, "Passing structs to functions is unsupported!\n");
+            exit(1);
+        }
 
         symbol *tmp = new_temp_symbol(ctx, regval->type);
         add_text(ctx, "mov rax, %s", regval->code);

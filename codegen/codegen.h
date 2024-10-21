@@ -16,6 +16,7 @@ typedef struct
 
 typedef struct general_type_
 {
+    int kind;
     void *data;
     void (*debug)(struct general_type_ *self, context *ctx, int depth);
     int (*size)(struct general_type_ *self, context *ctx);
@@ -29,6 +30,11 @@ typedef struct
     char **field_names;
     general_type **fields;
 } context_struct;
+
+#define TYPE_PRIMITIVE 0
+#define TYPE_POINTER 1
+#define TYPE_FUNC_POINTER 2
+#define TYPE_STRUCT 3
 
 typedef struct
 {

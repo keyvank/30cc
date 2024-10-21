@@ -238,6 +238,7 @@ general_type *new_primitive_type(char *type_name)
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     primitive_type *data = (primitive_type *)malloc(sizeof(primitive_type));
     data->type_name = type_name;
+    ret->kind = TYPE_PRIMITIVE;
     ret->data = data;
     ret->debug = primitive_type_debug;
     ret->size = primitive_type_size;
@@ -250,6 +251,7 @@ general_type *new_pointer_type(general_type *of)
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     pointer_type *data = (pointer_type *)malloc(sizeof(pointer_type));
     data->of = of;
+    ret->kind = TYPE_POINTER;
     ret->data = data;
     ret->debug = pointer_type_debug;
     ret->size = pointer_type_size;
@@ -262,6 +264,7 @@ general_type *new_func_pointer_type(general_type *return_type)
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     func_pointer_type *data = (func_pointer_type *)malloc(sizeof(func_pointer_type));
     data->return_type = return_type;
+    ret->kind = TYPE_FUNC_POINTER;
     ret->data = data;
     ret->debug = func_pointer_type_debug;
     ret->size = func_pointer_type_size;
@@ -274,6 +277,7 @@ general_type *new_struct_type(char *struct_name)
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     struct_type *data = (struct_type *)malloc(sizeof(struct_type));
     data->struct_name = struct_name;
+    ret->kind = TYPE_STRUCT;
     ret->data = data;
     ret->debug = struct_type_debug;
     ret->size = struct_type_size;
