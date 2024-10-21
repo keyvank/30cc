@@ -49,8 +49,8 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
             regname = "r9";
         else
         {
-            printf("More than 6 args!");
-            exit(0);
+            fprintf(stderr, "Cannot define a function with more than 6 args!");
+            exit(1);
         }
 
         symbol *sym = new_symbol(ctx, par->identity, ((node_type *)par->type->data)->type);

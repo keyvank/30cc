@@ -56,8 +56,8 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
             regname = "r9";
         else
         {
-            printf("More than 6 args!");
-            exit(0);
+            fprintf(stderr, "Cannot provide more than 6 args!\n");
+            exit(1);
         }
         add_text(ctx, "mov %s, %s", regname, argvals[i]);
     }

@@ -87,7 +87,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         }
         else
         {
-            printf("Cannot assign!\n");
+            fprintf(stderr, "Left-hand-side is not assignable!\n");
             exit(1);
         }
         break;
@@ -181,7 +181,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "%s:", l2);
         break;
     default:
-        printf("Invalid op '%d'\n", binop->op);
+        fprintf(stderr, "Invalid op '%d'\n", binop->op);
         exit(1);
     }
 
