@@ -83,7 +83,7 @@ Program(
                 Pointer of:
                   TKN_INT
         Right:
-          Variable(new)
+          Literal(Type: 34, Value: 0)
       BinaryOp(Op: 64)
         Left:
           Access:

@@ -21,7 +21,7 @@ struct linked_list *new_list()
 void add_val(struct linked_list *lst, int val)
 {
     struct node *new = (struct node *)malloc(16);
-    *((int *)(&new->next)) = new;
+    *((int *)(&new->next)) = 0;
     new->val = val;
     if (lst->first)
     {
