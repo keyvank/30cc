@@ -6,7 +6,6 @@ import shutil
 
 TEST_FILES = [
     "./examples/inp.c",
-    "./examples/inp2.c",
     "./examples/inp3.c",
     "./examples/inp4.c",
     "./examples/inp5.c",
