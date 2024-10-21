@@ -20,6 +20,16 @@ typedef struct
     parser_node *exp;
 } node_unary_op;
 
+parser_node *parse_unary(typed_token **tkns_ptr);
+
+typedef struct
+{
+    int op;
+    parser_node *exp;
+} node_postfix;
+
+parser_node *parse_postfix(typed_token **tkns_ptr, parser_node *curr);
+
 typedef struct
 {
     parser_node *type;

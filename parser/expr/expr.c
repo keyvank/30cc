@@ -15,19 +15,6 @@
 #include "../type.h"
 #include "access.h"
 
-void binary_op_debug(int depth, parser_node *node)
-{
-    node_binary_op *binop = (node_binary_op *)node->data;
-    printtabs(depth);
-    printf("BinaryOp(Op: %d)\n", binop->op);
-    printtabs(depth + 1);
-    printf("Left:\n");
-    binop->left->debug(depth + 2, binop->left);
-    printtabs(depth + 1);
-    printf("Right:\n");
-    binop->right->debug(depth + 2, binop->right);
-}
-
 void move_reg_to_var(context *ctx, apply_result *var, char *reg)
 {
     if (var->addr_code)
@@ -41,6 +28,92 @@ void move_reg_to_var(context *ctx, apply_result *var, char *reg)
         exit(1);
     }
 }
+
+void postfix_op_debug(int depth, parser_node *node)
+{
+    node_postfix *postfix = (node_postfix *)node->data;
+    printtabs(depth);
+    printf("Postfix(Op: %d)\n", postfix->op);
+    printtabs(depth);
+    printf("expression:\n");
+    postfix->exp->debug(depth + 2, postfix->exp);
+}
+
+apply_result *postfix_op_apply(parser_node *node, context *ctx) {
+    add_text(ctx, "; postfix op apply");
+    node_postfix *postfix_op = (node_postfix *)node->data;
+    apply_result *operand = postfix_op->exp->apply(postfix_op->exp, ctx);
+    add_text(ctx, "mov rax, %s", operand->code);
+    symbol *tmp = new_temp_symbol(ctx, operand->type);
+
+    int op = postfix_op->op;
+
+    if (op == TKN_PLUSPLUS) {
+        add_text(ctx, "add rax, 1");
+    } else if (op == TKN_MINMIN) {
+        add_text(ctx, "sub rax, 1");
+    } else {
+        exit(1);
+    }
+
+    add_text(ctx, "mov %s, rax", tmp->repl);
+    add_text(ctx, "; postfix op finish");
+    return new_result(tmp->repl, tmp->type);
+}
+
+void unary_op_debug(int depth, parser_node *node)
+{
+    node_unary_op *unary_op = (node_unary_op *)node->data;
+    printtabs(depth);
+    printf("unaryOp(Op: %d)\n", unary_op->op);
+    printtabs(depth);
+    printf("expression:\n");
+    unary_op->exp->debug(depth + 2, unary_op->exp);
+}
+
+apply_result *unary_op_apply(parser_node *node, context *ctx) {
+    add_text(ctx, "; unary op apply");
+    node_unary_op *unary_op = (node_unary_op *)node->data;
+    apply_result *operand = unary_op->exp->apply(unary_op->exp, ctx);
+    add_text(ctx, "; operand code: %s", operand->code);
+    add_text(ctx, "mov rax, %s", operand->code);
+    symbol *tmp = new_temp_symbol(ctx, operand->type);
+
+    int op = unary_op->op;
+
+    if (op == TKN_MIN) {
+        add_text(ctx, "neg rax");
+    } else if (op == TKN_NOT) {   
+        add_text(ctx, "cmp rax, 0");
+        add_text(ctx, "sete al");
+        add_text(ctx, "movzx rax, al");
+    } else if (op == TKN_MINMIN) {
+        add_text(ctx,"sub rax, 1");
+        move_reg_to_var(ctx, operand, "rax");
+    } else if (op == TKN_PLUSPLUS) {
+        add_text(ctx,"add rax, 1");
+        move_reg_to_var(ctx, operand, "rax");
+    }
+
+
+    add_text(ctx, "mov %s, rax", tmp->repl);
+    add_text(ctx, "; unary op finish");
+    return new_result(tmp->repl, tmp->type);
+}
+
+void binary_op_debug(int depth, parser_node *node)
+{
+    node_binary_op *binop = (node_binary_op *)node->data;
+    printtabs(depth);
+    printf("BinaryOp(Op: %d)\n", binop->op);
+    printtabs(depth + 1);
+    printf("Left:\n");
+    binop->left->debug(depth + 2, binop->left);
+    printtabs(depth + 1);
+    printf("Right:\n");
+    binop->right->debug(depth + 2, binop->right);
+}
+
 
 apply_result *binary_op_apply(parser_node *node, context *ctx)
 {
@@ -322,6 +395,8 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
         curr = parse_ref(&tkn);
     if (!curr)
         curr = parse_deref(&tkn);
+    if (!curr)
+        curr = parse_unary(&tkn);
     if (curr)
     {
         while (1)
@@ -347,9 +422,16 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
                 continue;
             }
 
+            parser_node *postfix = parse_postfix(&tkn, curr);
+            if (postfix)
+            {   curr = postfix;
+                continue;
+            }
+
             break;
         }
     }
+
     if (curr)
         *tkns_ptr = tkn;
 
@@ -489,4 +571,62 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
     }
 
     return NULL;
+}
+
+parser_node *parse_unary(typed_token **tkns_ptr) {
+    typed_token *tkn = *tkns_ptr;
+    int unary_op = 0;
+    int tkn_type = tkn->type_id;
+    if (tkn_type == TKN_MIN || tkn_type == TKN_MINMIN || tkn_type == TKN_NOT ||
+        tkn_type == TKN_PLUS || tkn_type == TKN_PLUSPLUS) {
+      unary_op = tkn->type_id;
+      tkn = tkn->next;
+    }
+
+    if (!unary_op) {
+        return NULL;
+    }
+    parser_node *unary_expr = parse_terminal(&tkn);
+    if (!unary_expr) {
+        fprintf(stderr, "Unary expression with no operand");
+        return NULL;
+    }
+
+    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+    node->data = (void *)malloc(sizeof(node_unary_op));
+    node->debug = unary_op_debug;
+    node->apply = unary_op_apply;
+    node_unary_op *unary = (node_unary_op *)node->data;
+    unary->op = unary_op;
+    unary->exp = unary_expr;
+
+    *tkns_ptr = tkn;
+
+    return node;
+}
+
+parser_node *parse_postfix(typed_token **tkns_ptr, parser_node *curr) {
+    typed_token *tkn = *tkns_ptr;
+    
+    int postfix_unary_op = 0;
+    int tkn_type = tkn->type_id;
+    if (tkn_type == TKN_MINMIN || tkn_type == TKN_PLUSPLUS) {
+      postfix_unary_op = tkn->type_id;
+      tkn = tkn->next;
+    }
+    if (!postfix_unary_op) {
+        return NULL;
+    }
+
+    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+    node->data = (void *)malloc(sizeof(node_postfix));
+    node->debug = postfix_op_debug;
+    node->apply = postfix_op_apply;
+    node_postfix *postfix_op = (node_postfix *)node->data;
+    postfix_op->op = postfix_unary_op;
+    postfix_op->exp = curr;
+
+    *tkns_ptr = tkn;
+
+    return node;
 }
