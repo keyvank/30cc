@@ -21,7 +21,7 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
         apply_result *val = decl->value->apply(decl->value, ctx);
         if (!types_equal(tp->type, val->type))
         {
-            printf("Initializing '%s' with an incompatible type!\n", decl->identity);
+            fprintf(stderr, "Initializing '%s' with an incompatible type!\n", decl->identity);
             tp->type->debug(tp->type, ctx, 0);
             val->type->debug(val->type, ctx, 0);
             exit(1);

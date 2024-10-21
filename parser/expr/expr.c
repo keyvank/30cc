@@ -48,12 +48,26 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     apply_result *left = binop->left->apply(binop->left, ctx);
     apply_result *right = binop->right->apply(binop->right, ctx);
 
-    if (!types_equal(left->type, right->type))
+    if (binop->op == TKN_ASSIGN)
     {
-        printf("Cannot apply binary-operand on types!\n");
-        left->type->debug(left->type, ctx, 0);
-        right->type->debug(right->type, ctx, 0);
-        exit(1);
+        if (!types_equal(left->type, right->type))
+        {
+            fprintf(stderr, "Cannot assign with an invalid type!\n");
+            left->type->debug(left->type, ctx, 0);
+            right->type->debug(right->type, ctx, 0);
+            exit(1);
+        }
+    }
+    else
+    {
+        general_type *inttype = new_primitive_type("TKN_INT");
+        if (!types_equal(left->type, inttype) || !types_equal(right->type, inttype))
+        {
+            fprintf(stderr, "Binary-operators only valid for integer types!\n");
+            left->type->debug(left->type, ctx, 0);
+            right->type->debug(right->type, ctx, 0);
+            exit(1);
+        }
     }
 
     add_text(ctx, "mov rax, %s", left->code);
