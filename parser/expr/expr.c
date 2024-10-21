@@ -233,6 +233,22 @@ apply_result *cast_apply(parser_node *node, context *ctx)
     return new_result(cast->val->apply(cast->val, ctx)->code, cast_type);
 }
 
+void sizeof_debug(int depth, parser_node *node)
+{
+    node_sizeof *sz = (node_sizeof *)node->data;
+    printtabs(depth);
+    printf("SizeOf:\n");
+    sz->type->debug(depth + 1, sz->type);
+}
+
+apply_result *sizeof_apply(parser_node *node, context *ctx)
+{
+    node_sizeof *size_of = (node_sizeof *)node->data;
+    general_type *type = ((node_type *)size_of->type->data)->type;
+    int sz = type->size(type, ctx);
+    return new_result(cc_asprintf("%u",sz), new_primitive_type("TKN_INT"));
+}
+
 parser_node *parse_paren(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
@@ -256,6 +272,36 @@ parser_node *parse_paren(typed_token **tkns_ptr)
         }
     }
 
+    return NULL;
+}
+
+parser_node *parse_sizeof(typed_token **tkns_ptr)
+{
+    typed_token *tkn = *tkns_ptr;
+    if (tkn->type_id == TKN_SIZEOF)
+    {
+        tkn = tkn->next;
+        if (tkn->type_id == TKN_L_PAREN)
+        {
+            tkn = tkn->next;
+            parser_node *type = parse_type(&tkn);
+            if (type)
+            {
+                if (tkn->type_id == TKN_R_PAREN)
+                {
+                    tkn = tkn->next;
+                    *tkns_ptr = tkn;
+                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                    node->data = (void *)malloc(sizeof(node_sizeof));
+                    node->debug = sizeof_debug;
+                    node->apply = sizeof_apply;
+                    node_sizeof *cast = (node_sizeof *)node->data;
+                    cast->type = type;
+                    return node;
+                }
+            }
+        }
+    }
     return NULL;
 }
 
@@ -296,6 +342,8 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
 
     parser_node *curr = NULL;
 
+    if (!curr)
+        curr = parse_sizeof(&tkn);
     if (!curr)
         curr = parse_cast(&tkn);
     if (!curr)

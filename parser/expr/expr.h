@@ -16,6 +16,11 @@ typedef struct
 
 typedef struct
 {
+    parser_node *type;
+} node_sizeof;
+
+typedef struct
+{
     int op;
     parser_node *exp;
 } node_unary_op;

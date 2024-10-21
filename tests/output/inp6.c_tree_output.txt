@@ -34,7 +34,8 @@ Program(
                 Function:
                   Variable(malloc)
                 Args:
-                  Literal(Type: 34, Value: 16)
+                  SizeOf:
+                    struct MyStruct
             Type:
               Pointer of:
                 struct MyStruct
