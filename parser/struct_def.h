@@ -8,7 +8,8 @@ parser_node *parse_struct_def(typed_token **tkns_ptr);
 
 typedef struct
 {
-    char *name;
+    char *struct_name;
+    char *typedef_name;
     int num_fields;
     parser_node **fields;
 } node_struct_def;

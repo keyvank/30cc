@@ -76,7 +76,7 @@ Program(
       Return:
         Literal(Type: 34, Value: 0)
   )
-  Struct(MyStruct)
+  Struct(Name: (null), Typedef: MyStruct)
     VarDecl(a):
       TKN_INT
     VarDecl(b):

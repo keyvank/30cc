@@ -230,13 +230,13 @@ Program(
                     Pointer of:
                       struct node
   )
-  Struct(node)
+  Struct(Name: node, Typedef: (null))
     VarDecl(val):
       TKN_INT
     VarDecl(next):
       Pointer of:
         TKN_VOID
-  Struct(linked_list)
+  Struct(Name: linked_list, Typedef: (null))
     VarDecl(first):
       Pointer of:
         struct node

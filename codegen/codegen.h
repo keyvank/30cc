@@ -25,7 +25,8 @@ typedef struct general_type_
 
 typedef struct
 {
-    char *name;
+    char *struct_name;
+    char *typedef_name;
     int num_fields;
     char **field_names;
     general_type **fields;

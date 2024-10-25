@@ -123,9 +123,19 @@ context_struct *find_struct(context *ctx, char *name)
     while (curr)
     {
         context_struct *s = (context_struct *)curr->value;
-        if (strcmp(s->name, name) == 0)
+        if (s->struct_name)
         {
-            return s;
+            if (strcmp(s->struct_name, name) == 0)
+            {
+                return s;
+            }
+        }
+        if (s->typedef_name)
+        {
+            if (strcmp(s->typedef_name, name) == 0)
+            {
+                return s;
+            }
         }
         curr = curr->prev;
     }

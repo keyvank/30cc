@@ -36,21 +36,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
     node_program *prog = (node_program *)node->data;
     for (int i = 0; i < prog->num_struct_defs; i++)
     {
-        node_struct_def *sd = (node_struct_def *)prog->struct_defs[i]->data;
-        general_type **fields = (general_type **)malloc(sizeof(general_type *) * sd->num_fields);
-        char **field_names = (char **)malloc(sizeof(char *) * sd->num_fields);
-        for (int j = 0; j < sd->num_fields; j++)
-        {
-            node_var_decl *var_decl = (node_var_decl *)sd->fields[j]->data;
-            field_names[j] = var_decl->identity;
-            fields[j] = ((node_type *)var_decl->type->data)->type;
-        }
-        context_struct *cs = (context_struct *)malloc(sizeof(context_struct));
-        cs->num_fields = sd->num_fields;
-        cs->fields = fields;
-        cs->field_names = field_names;
-        cs->name = sd->name;
-        new_struct(ctx, cs);
+        prog->struct_defs[i]->apply(prog->struct_defs[i], ctx);
     }
     for (int i = 0; i < prog->num_functions; i++)
     {

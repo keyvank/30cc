@@ -27,9 +27,12 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node_type *par = (node_type *)node->data;
         par->type = new_primitive_type(ret_type_tkn->data);
     }
-    else if (tkn->type_id == TKN_STRUCT)
+    else if (tkn->type_id == TKN_STRUCT || tkn->type_id == TKN_ID)
     {
-        tkn = tkn->next;
+        if (tkn->type_id == TKN_STRUCT)
+        {
+            tkn = tkn->next;
+        }
         typed_token *struct_name_tkn = tkn;
         // TODO: maybe error?
         if (struct_name_tkn == NULL)
