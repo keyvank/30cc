@@ -39,7 +39,8 @@ void postfix_op_debug(int depth, parser_node *node)
     postfix->exp->debug(depth + 2, postfix->exp);
 }
 
-apply_result *postfix_op_apply(parser_node *node, context *ctx) {
+apply_result *postfix_op_apply(parser_node *node, context *ctx)
+{
     add_text(ctx, "; postfix op apply");
     node_postfix *postfix_op = (node_postfix *)node->data;
     apply_result *operand = postfix_op->exp->apply(postfix_op->exp, ctx);
@@ -48,11 +49,16 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx) {
 
     int op = postfix_op->op;
 
-    if (op == TKN_PLUSPLUS) {
+    if (op == TKN_PLUSPLUS)
+    {
         add_text(ctx, "add rax, 1");
-    } else if (op == TKN_MINMIN) {
+    }
+    else if (op == TKN_MINMIN)
+    {
         add_text(ctx, "sub rax, 1");
-    } else {
+    }
+    else
+    {
         exit(1);
     }
 
@@ -71,7 +77,8 @@ void unary_op_debug(int depth, parser_node *node)
     unary_op->exp->debug(depth + 2, unary_op->exp);
 }
 
-apply_result *unary_op_apply(parser_node *node, context *ctx) {
+apply_result *unary_op_apply(parser_node *node, context *ctx)
+{
     add_text(ctx, "; unary op apply");
     node_unary_op *unary_op = (node_unary_op *)node->data;
     apply_result *operand = unary_op->exp->apply(unary_op->exp, ctx);
@@ -81,20 +88,26 @@ apply_result *unary_op_apply(parser_node *node, context *ctx) {
 
     int op = unary_op->op;
 
-    if (op == TKN_MIN) {
+    if (op == TKN_MIN)
+    {
         add_text(ctx, "neg rax");
-    } else if (op == TKN_NOT) {   
+    }
+    else if (op == TKN_NOT)
+    {
         add_text(ctx, "cmp rax, 0");
         add_text(ctx, "sete al");
         add_text(ctx, "movzx rax, al");
-    } else if (op == TKN_MINMIN) {
-        add_text(ctx,"sub rax, 1");
-        move_reg_to_var(ctx, operand, "rax");
-    } else if (op == TKN_PLUSPLUS) {
-        add_text(ctx,"add rax, 1");
+    }
+    else if (op == TKN_MINMIN)
+    {
+        add_text(ctx, "sub rax, 1");
         move_reg_to_var(ctx, operand, "rax");
     }
-
+    else if (op == TKN_PLUSPLUS)
+    {
+        add_text(ctx, "add rax, 1");
+        move_reg_to_var(ctx, operand, "rax");
+    }
 
     add_text(ctx, "mov %s, rax", tmp->repl);
     add_text(ctx, "; unary op finish");
@@ -114,7 +127,6 @@ void binary_op_debug(int depth, parser_node *node)
     binop->right->debug(depth + 2, binop->right);
 }
 
-
 apply_result *binary_op_apply(parser_node *node, context *ctx)
 {
     node_binary_op *binop = (node_binary_op *)node->data;
@@ -123,7 +135,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
     if (binop->op == TKN_ASSIGN)
     {
-        if (!types_equal(left->type, right->type))
+        if (!types_equal(left->type, right->type, ctx))
         {
             fprintf(stderr, "Cannot assign with an invalid type!\n");
             left->type->debug(left->type, ctx, 0);
@@ -134,7 +146,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     else
     {
         general_type *inttype = new_primitive_type("TKN_INT");
-        if (!types_equal(left->type, inttype) || !types_equal(right->type, inttype))
+        if (!types_equal(left->type, inttype, ctx) || !types_equal(right->type, inttype, ctx))
         {
             fprintf(stderr, "Binary-operators only valid for integer types!\n");
             left->type->debug(left->type, ctx, 0);
@@ -333,7 +345,7 @@ apply_result *sizeof_apply(parser_node *node, context *ctx)
     node_sizeof *size_of = (node_sizeof *)node->data;
     general_type *type = ((node_type *)size_of->type->data)->type;
     int sz = type->size(type, ctx);
-    return new_result(cc_asprintf("%u",sz), new_primitive_type("TKN_INT"));
+    return new_result(cc_asprintf("%u", sz), new_primitive_type("TKN_INT"));
 }
 
 parser_node *parse_paren(typed_token **tkns_ptr)
@@ -472,7 +484,8 @@ parser_node *parse_terminal(typed_token **tkns_ptr)
 
             parser_node *postfix = parse_postfix(&tkn, curr);
             if (postfix)
-            {   curr = postfix;
+            {
+                curr = postfix;
                 continue;
             }
 
@@ -621,21 +634,25 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
     return NULL;
 }
 
-parser_node *parse_unary(typed_token **tkns_ptr) {
+parser_node *parse_unary(typed_token **tkns_ptr)
+{
     typed_token *tkn = *tkns_ptr;
     int unary_op = 0;
     int tkn_type = tkn->type_id;
     if (tkn_type == TKN_MIN || tkn_type == TKN_MINMIN || tkn_type == TKN_NOT ||
-        tkn_type == TKN_PLUS || tkn_type == TKN_PLUSPLUS) {
-      unary_op = tkn->type_id;
-      tkn = tkn->next;
+        tkn_type == TKN_PLUS || tkn_type == TKN_PLUSPLUS)
+    {
+        unary_op = tkn->type_id;
+        tkn = tkn->next;
     }
 
-    if (!unary_op) {
+    if (!unary_op)
+    {
         return NULL;
     }
     parser_node *unary_expr = parse_terminal(&tkn);
-    if (!unary_expr) {
+    if (!unary_expr)
+    {
         fprintf(stderr, "Unary expression with no operand");
         return NULL;
     }
@@ -653,16 +670,19 @@ parser_node *parse_unary(typed_token **tkns_ptr) {
     return node;
 }
 
-parser_node *parse_postfix(typed_token **tkns_ptr, parser_node *curr) {
+parser_node *parse_postfix(typed_token **tkns_ptr, parser_node *curr)
+{
     typed_token *tkn = *tkns_ptr;
-    
+
     int postfix_unary_op = 0;
     int tkn_type = tkn->type_id;
-    if (tkn_type == TKN_MINMIN || tkn_type == TKN_PLUSPLUS) {
-      postfix_unary_op = tkn->type_id;
-      tkn = tkn->next;
+    if (tkn_type == TKN_MINMIN || tkn_type == TKN_PLUSPLUS)
+    {
+        postfix_unary_op = tkn->type_id;
+        tkn = tkn->next;
     }
-    if (!postfix_unary_op) {
+    if (!postfix_unary_op)
+    {
         return NULL;
     }
 

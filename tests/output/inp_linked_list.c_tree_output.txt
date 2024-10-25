@@ -144,12 +144,7 @@ Program(
                   Field: next
                   IsPtr: 1
               Right:
-                Cast:
-                  Val:
-                    Variable(new)
-                  Type:
-                    Pointer of:
-                      TKN_VOID
+                Variable(new)
   )
   Function(
     Name:
@@ -230,12 +225,12 @@ Program(
                     Pointer of:
                       struct node
   )
-  Struct(Name: node, Typedef: (null))
+  Struct(Name: node_, Typedef: node)
     VarDecl(val):
       TKN_INT
     VarDecl(next):
       Pointer of:
-        TKN_VOID
+        struct node_
   Struct(Name: linked_list, Typedef: (null))
     VarDecl(first):
       Pointer of:

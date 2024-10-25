@@ -31,6 +31,7 @@ apply_result *struct_def_apply(parser_node *node, context *ctx)
         fields[j] = ((node_type *)var_decl->type->data)->type;
     }
     context_struct *cs = (context_struct *)malloc(sizeof(context_struct));
+    cs->struct_id = ctx->structs.count;
     cs->num_fields = sd->num_fields;
     cs->fields = fields;
     cs->field_names = field_names;
