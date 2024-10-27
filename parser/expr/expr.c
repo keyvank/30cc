@@ -45,18 +45,20 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx) {
     apply_result *operand = postfix_op->exp->apply(postfix_op->exp, ctx);
     add_text(ctx, "mov rax, %s", operand->code);
     symbol *tmp = new_temp_symbol(ctx, operand->type);
+    add_text(ctx, "mov %s, rax", tmp->repl);
 
     int op = postfix_op->op;
 
     if (op == TKN_PLUSPLUS) {
         add_text(ctx, "add rax, 1");
+        move_reg_to_var(ctx, operand, "rax");
     } else if (op == TKN_MINMIN) {
         add_text(ctx, "sub rax, 1");
+        move_reg_to_var(ctx, operand, "rax");
     } else {
         exit(1);
     }
 
-    add_text(ctx, "mov %s, rax", tmp->repl);
     add_text(ctx, "; postfix op finish");
     return new_result(tmp->repl, tmp->type);
 }
