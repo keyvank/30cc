@@ -1,0 +1,124 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      VarDecl(a):
+        TKN_INT
+        Value:
+          Literal(Type: 34, Value: 2)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 75)
+          expression:
+              Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 76)
+          expression:
+              Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 70)
+          expression:
+              Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 70)
+          expression:
+              unaryOp(Op: 70)
+              expression:
+                  Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 72)
+          expression:
+              unaryOp(Op: 75)
+              expression:
+                  Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          unaryOp(Op: 73)
+          expression:
+              Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          Postfix(Op: 73)
+          expression:
+              Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %d
+)
+          Postfix(Op: 76)
+          expression:
+              Variable(a)
+      For(
+        Init:
+          VarDecl(i):
+            TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 5)
+        Act:
+          Postfix(Op: 73)
+          expression:
+              Variable(i)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: %d
+)
+                Variable(i)
+  )
+)
