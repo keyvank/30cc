@@ -1,0 +1,195 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      strcmp
+    Returns:
+      TKN_INT
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      strcat
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      strcpy
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Pointer of:
+        TKN_VOID
+    ParamTypes:
+      TKN_INT
+  )
+  FunctionDecl(
+    Name:
+      fprintf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        struct FILE
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      fopen
+    Returns:
+      Pointer of:
+        struct FILE
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+      Pointer of:
+        TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      fclose
+    Returns:
+      TKN_INT
+    ParamTypes:
+      Pointer of:
+        struct FILE
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      VarDecl(a):
+        Pointer of:
+          TKN_CHAR
+        Value:
+          Literal(Type: 33, Value: salam )
+      VarDecl(b):
+        Pointer of:
+          TKN_CHAR
+        Value:
+          Literal(Type: 33, Value: khubi)
+      VarDecl(c):
+        Pointer of:
+          TKN_CHAR
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 100)
+            Type:
+              Pointer of:
+                TKN_CHAR
+      FunctionCall:
+        Function:
+          Variable(strcpy)
+        Args:
+          Variable(c)
+          Variable(a)
+      FunctionCall:
+        Function:
+          Variable(strcat)
+        Args:
+          Variable(c)
+          Variable(b)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %s
+)
+          Variable(c)
+      VarDecl(file_ptr):
+        Pointer of:
+          struct FILE
+      BinaryOp(Op: 64)
+        Left:
+          Variable(file_ptr)
+        Right:
+          FunctionCall:
+            Function:
+              Variable(fopen)
+            Args:
+              Literal(Type: 33, Value: output.txt)
+              Literal(Type: 33, Value: w)
+      If(
+        Cond:
+          unaryOp(Op: 70)
+          expression:
+              Variable(file_ptr)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: Error opening file!)
+            Return:
+              Literal(Type: 34, Value: 1)
+      FunctionCall:
+        Function:
+          Variable(fprintf)
+        Args:
+          Variable(file_ptr)
+          Literal(Type: 33, Value: Hello, World!
+)
+      FunctionCall:
+        Function:
+          Variable(fclose)
+        Args:
+          Variable(file_ptr)
+  )
+  Struct(Name: (null), Typedef: FILE)
+    VarDecl(_ptr):
+      Pointer of:
+        TKN_CHAR
+    VarDecl(_cnt):
+      TKN_INT
+    VarDecl(_base):
+      Pointer of:
+        TKN_CHAR
+    VarDecl(_flag):
+      TKN_INT
+    VarDecl(_file):
+      TKN_INT
+    VarDecl(_charbuf):
+      TKN_INT
+    VarDecl(_bufsiz):
+      TKN_INT
+    VarDecl(_tmpfname):
+      Pointer of:
+        TKN_CHAR
+)
