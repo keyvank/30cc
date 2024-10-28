@@ -54,10 +54,14 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx)
     {
         add_text(ctx, "add rax, 1");
         move_reg_to_var(ctx, operand, "rax");
-    } else if (op == TKN_MINMIN) {
+    }
+    else if (op == TKN_MINMIN)
+    {
         add_text(ctx, "sub rax, 1");
         move_reg_to_var(ctx, operand, "rax");
-    } else {
+    }
+    else
+    {
         exit(1);
     }
 
@@ -143,10 +147,9 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
     else
     {
-        general_type *inttype = new_primitive_type("TKN_INT");
-        if (!types_equal(left->type, inttype, ctx) || !types_equal(right->type, inttype, ctx))
+        if (left->type->kind != TYPE_PRIMITIVE || left->type->kind != TYPE_PRIMITIVE)
         {
-            fprintf(stderr, "Binary-operators only valid for integer types!\n");
+            fprintf(stderr, "Binary-operators only valid for primitive types!\n");
             left->type->debug(left->type, ctx, 0);
             right->type->debug(right->type, ctx, 0);
             exit(1);
