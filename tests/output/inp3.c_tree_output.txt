@@ -434,7 +434,7 @@ DONE!
                 Right:
                   Literal(Type: 34, Value: 1)
   )
-  Struct(MyStruct)
+  Struct(Name: MyStruct, Typedef: (null))
     VarDecl(a):
       Pointer of:
         Pointer of:

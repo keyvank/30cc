@@ -123,9 +123,19 @@ context_struct *find_struct(context *ctx, char *name)
     while (curr)
     {
         context_struct *s = (context_struct *)curr->value;
-        if (strcmp(s->name, name) == 0)
+        if (s->struct_name)
         {
-            return s;
+            if (strcmp(s->struct_name, name) == 0)
+            {
+                return s;
+            }
+        }
+        if (s->typedef_name)
+        {
+            if (strcmp(s->typedef_name, name) == 0)
+            {
+                return s;
+            }
         }
         curr = curr->prev;
     }
@@ -285,7 +295,7 @@ general_type *new_struct_type(char *struct_name)
     return ret;
 }
 
-int types_equal(general_type *a, general_type *b)
+int types_equal(general_type *a, general_type *b, context *ctx)
 {
     if ((a->debug != b->debug) || (a->named_offset != b->named_offset) || (a->size != b->size))
     {
@@ -301,19 +311,25 @@ int types_equal(general_type *a, general_type *b)
     {
         char *a_name = ((struct_type *)a->data)->struct_name;
         char *b_name = ((struct_type *)b->data)->struct_name;
-        return strcmp(a_name, b_name) == 0;
+        context_struct *a_struct = find_struct(ctx, a_name);
+        context_struct *b_struct = find_struct(ctx, b_name);
+        if (!a_struct)
+            return 0;
+        if (!b_struct)
+            return 0;
+        return a_struct->struct_id == b_struct->struct_id;
     }
     else if (a->size == pointer_type_size)
     {
         general_type *a_of = ((pointer_type *)a->data)->of;
         general_type *b_of = ((pointer_type *)b->data)->of;
-        return types_equal(a_of, b_of);
+        return types_equal(a_of, b_of, ctx);
     }
     else if (a->size == func_pointer_type_size)
     {
         general_type *a_ret = ((func_pointer_type *)a->data)->return_type;
         general_type *b_ret = ((func_pointer_type *)b->data)->return_type;
-        return types_equal(a_ret, b_ret);
+        return types_equal(a_ret, b_ret, ctx);
     }
     return 0;
 }

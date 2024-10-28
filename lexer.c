@@ -98,6 +98,8 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_STRUCT);
         else if (strcmp(val, "sizeof") == 0)
             return new_simp_tkn(TKN_SIZEOF);
+        else if (strcmp(val, "typedef") == 0)
+            return new_simp_tkn(TKN_TYPEDEF);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
@@ -186,7 +188,7 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '&')
     {
-        char peeked = *(inp +1);
+        char peeked = *(inp + 1);
         if (peeked == '&')
         {
             *inp_ptr += 2;
@@ -486,7 +488,7 @@ typed_token *next_token(char **inp_ptr)
     }
     else
     {
-        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno)); 
+        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno));
         exit(0);
     }
 }

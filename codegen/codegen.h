@@ -25,7 +25,9 @@ typedef struct general_type_
 
 typedef struct
 {
-    char *name;
+    int struct_id;
+    char *struct_name;
+    char *typedef_name;
     int num_fields;
     char **field_names;
     general_type **fields;
@@ -60,7 +62,7 @@ general_type *new_primitive_type(char *type_name);
 general_type *new_struct_type(char *struct_name);
 general_type *new_pointer_type(general_type *of);
 general_type *new_func_pointer_type(general_type *return_type);
-int types_equal(general_type *a, general_type *b);
+int types_equal(general_type *a, general_type *b, context *ctx);
 
 context new_context();
 void add_text(context *ctx, char *fmt, ...);

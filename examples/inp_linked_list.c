@@ -1,15 +1,15 @@
 void *malloc(int sz);
 void printf(char *s, ...);
 
-struct node
+typedef struct node_
 {
     int val;
-    void *next;
-};
+    struct node_ *next;
+} node;
 
 struct linked_list
 {
-    struct node *first;
+    node *first;
 };
 
 struct linked_list *new_list()
@@ -20,17 +20,17 @@ struct linked_list *new_list()
 
 void add_val(struct linked_list *lst, int val)
 {
-    struct node *new = (struct node *)malloc(sizeof(struct node));
+    node *new = (node *)malloc(sizeof(node));
     *((int *)(&new->next)) = 0;
     new->val = val;
     if (lst->first)
     {
-        struct node *curr = lst->first;
+        node *curr = lst->first;
         while (curr->next)
         {
             curr = (struct node *)curr->next;
         }
-        curr->next = (void *)new;
+        curr->next = new;
     }
     else
     {
@@ -45,7 +45,7 @@ int main()
     add_val(lst, 432);
     add_val(lst, 999);
     add_val(lst, 873);
-    struct node *curr = lst->first;
+    node *curr = lst->first;
     while (curr)
     {
         printf("%u\n", curr->val);
