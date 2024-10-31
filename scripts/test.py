@@ -14,6 +14,7 @@ TEST_FILES = [
     "./examples/inp_linked_list.c",
     "./examples/inp_unary_op.c",
     "./examples/lib_usage.c",
+    "./examples/inp_include.c",
 ]
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"

@@ -8,6 +8,8 @@
 #include "preprocess.h"
 
 char *read_source_file(FILE *fp);
+
+#define MAX_INCLUDE_DEPTH 8
 /**
  * free() ignores NULL pointer by default. set each pointer to NULL
  * after calling free() to avoid double free error.
@@ -18,6 +20,54 @@ char *read_source_file(FILE *fp);
         free((p));  \
         (p) = NULL; \
     } while (0)
+
+int lex = 0;
+
+typed_token *process(const char *filename, int depth)
+{
+    typed_token *tkn = NULL;
+    char *content = NULL;
+    FILE *fp = NULL;
+
+    if (depth > MAX_INCLUDE_DEPTH)
+    {
+        fprintf(stderr, "exceeded maximum include depth (%d)\n", MAX_INCLUDE_DEPTH);
+        goto cleanup;
+    }
+
+    fp = fopen(filename, "rb");
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Error opening file: %s\n", filename);
+        goto cleanup;
+    }
+    content = read_source_file(fp);
+
+    if (!content)
+    {
+        fprintf(stderr, "failed to read source file: read_source_file returned NULL\n");
+        goto cleanup;
+    }
+
+    tkn = tokenize(content);
+    if (lex)
+    {
+        typed_token *t = tkn;
+        while (t)
+        {
+            t->debug(t);
+            t = t->next;
+        }
+    }
+    tkn = preprocess(tkn, filename, depth);
+
+cleanup:
+    if (fp)
+        fclose(fp);
+    if (content)
+        xfree(content);
+    return tkn;
+}
 
 int main(int argc, char *argv[])
 {
@@ -32,38 +82,13 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    int ret = 0;
-    char *content = NULL;
-    const char *filename = argv[1];
+    lex = !strcmp(argv[2], "--lex");
 
-    FILE *fp = fopen(filename, "rb");
-    if (fp == NULL)
+    typed_token *tkn = process(argv[1], 0);
+    if (tkn == NULL)
     {
-        fprintf(stderr, "Error opening file: %s\n", filename);
         return 1;
     }
-    content = read_source_file(fp);
-
-    if (!content)
-    {
-        fprintf(stderr, "failed to read source file: read_source_file returned NULL\n");
-        ret = 1;
-        goto defer_exit;
-    }
-
-    typed_token *tkn = tokenize(content);
-
-    if (strcmp(argv[2], "--lex") == 0)
-    {
-        typed_token *t = tkn;
-        while (t)
-        {
-            t->debug(t);
-            t = t->next;
-        }
-    }
-
-    tkn = preprocess(tkn);
 
     parser_node *prog = parse_program(&tkn);
     if (prog)
@@ -71,14 +96,13 @@ int main(int argc, char *argv[])
         if (strcmp(argv[2], "--tree") == 0)
         {
             prog->debug(0, prog);
-            exit(0);
+            return 0;
         }
     }
     else
     {
         fprintf(stderr, "Parse failed!\n");
-        ret = 1;
-        goto defer_exit;
+        return 1;
     }
 
     if (strcmp(argv[2], "--asm") == 0)
@@ -101,12 +125,7 @@ int main(int argc, char *argv[])
         }
     }
 
-defer_exit:
-    if (fp)
-        fclose(fp);
-    if (content)
-        xfree(content);
-    return ret;
+    return 0;
 }
 
 char *read_source_file(FILE *fp)

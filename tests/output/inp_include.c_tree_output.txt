@@ -1,0 +1,61 @@
+Program(
+  Function(
+    Name:
+      function2
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      Return:
+        Literal(Type: 34, Value: 13)
+  )
+  Function(
+    Name:
+      function
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      Return:
+        Literal(Type: 34, Value: 69)
+  )
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      TKN_VOID
+    ParamTypes:
+      Pointer of:
+        TKN_CHAR
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      TKN_INT
+    Params:
+    Statements:
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: function: %d
+)
+          FunctionCall:
+            Function:
+              Variable(function)
+            Args:
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: function2: %d
+)
+          FunctionCall:
+            Function:
+              Variable(function2)
+            Args:
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
