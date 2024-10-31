@@ -501,7 +501,9 @@ typed_token *next_token(char **inp_ptr)
 typed_token *tokenize(char *inp)
 {
     char **ptr = &inp;
-    typed_token *t = next_token(ptr);
+    typed_token *t;
+    while ((t = next_token(ptr))->type_id == TKN_COMMENT) {}
+
     typed_token *first = t;
 
     while (t)
