@@ -73,7 +73,68 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
             par->type = new_pointer_type(par->type);
             par->name = NULL;
         }
-        *tkns_ptr = tkn;
+    }
+
+    if (node != NULL && tkn->type_id == TKN_L_PAREN)
+    {
+        int num_fun_ptr = 0;
+        char *fun_name = NULL;
+
+        tkn = tkn->next;
+        while (tkn->type_id == TKN_STAR)
+        {
+            num_fun_ptr++;
+            tkn = tkn->next;
+        }
+
+        if (allow_naming && tkn->type_id == TKN_ID)
+        {
+            fun_name = tkn->data;
+            tkn = tkn->next;
+        }
+
+        if (tkn->type_id == TKN_R_PAREN)
+        {
+            tkn = tkn->next;
+            if (tkn->type_id == TKN_L_PAREN)
+            {
+                tkn = tkn->next;
+                parser_node **arg_types = malloc(sizeof(parser_node *) * 128);
+                int arg_count = 0;
+                while (1)
+                {
+                    parser_node *arg_type = parse_type(&tkn, 1);
+                    if (arg_type)
+                    {
+                        arg_types[arg_count++] = arg_type;
+                    }
+                    if (tkn->type_id == TKN_R_PAREN)
+                    {
+                        tkn = tkn->next;
+                        break;
+                    }
+                    else if (arg_type && tkn->type_id == TKN_COMMA)
+                    {
+                        tkn = tkn->next;
+                        continue;
+                    }
+                    else
+                    {
+                        return NULL;
+                    }
+                }
+                node_type *par = (node_type *)node->data;
+                linked_list *args = new_linked_list();
+                for (int i = 0; i < arg_count; i++)
+                {
+                    add_to_list(args, ((node_type *)arg_types[i]->data)->type);
+                }
+                par->type = new_func_type(par->type, args);
+                for (int i = 0; i < num_fun_ptr; i++)
+                    par->type = new_pointer_type(par->type);
+                par->name = fun_name;
+            }
+        }
     }
 
     if (allow_naming && tkn->type_id == TKN_ID)
@@ -81,6 +142,10 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
         node_type *par = (node_type *)node->data;
         par->name = tkn->data;
         tkn = tkn->next;
+    }
+
+    if (node)
+    {
         *tkns_ptr = tkn;
     }
 

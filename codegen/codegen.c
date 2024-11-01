@@ -342,7 +342,24 @@ int types_equal(general_type *a, general_type *b, context *ctx)
     {
         general_type *a_ret = ((func_type *)a->data)->return_type;
         general_type *b_ret = ((func_type *)b->data)->return_type;
-        return types_equal(a_ret, b_ret, ctx);
+        if (!types_equal(a_ret, b_ret, ctx))
+            return 0;
+        linked_list *a_args = ((func_type *)a->data)->arg_types;
+        linked_list *b_args = ((func_type *)b->data)->arg_types;
+        if (a_args->count != b_args->count)
+            return 0;
+        list_node *a_curr = a_args->first;
+        list_node *b_curr = b_args->first;
+        for (int i = 0; i < a_args->count; i++)
+        {
+            general_type *a_arg = (general_type *)a_curr->value;
+            general_type *b_arg = (general_type *)b_curr->value;
+            if (!types_equal(a_arg, b_arg, ctx))
+                return 0;
+            a_curr = a_curr->next;
+            b_curr = b_curr->next;
+        }
+        return 1;
     }
     return 0;
 }
