@@ -16,12 +16,4 @@ typedef struct
     parser_node **statements;
 } node_func_def;
 
-typedef struct
-{
-    char *identity;
-    parser_node *return_type;
-    int num_params;
-    parser_node **param_types;
-} node_func_decl;
-
 #endif

@@ -49,14 +49,11 @@ void var_decl_debug(int depth, parser_node *node)
 parser_node *parse_var_decl(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-    parser_node *tp = parse_type(&tkn);
+    parser_node *tp = parse_type(&tkn, 1);
     if (tp)
     {
-        if (tkn->type_id == TKN_ID)
+        if (((node_type *)tp->data)->name)
         {
-            typed_token *name_tkn = tkn;
-            tkn = tkn->next;
-
             parser_node *val_expr = NULL;
 
             if (tkn->type_id == TKN_SEMICOLON)
@@ -91,7 +88,7 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             node_var_decl *decl = (node_var_decl *)node->data;
             decl->type = tp;
             decl->identity = malloc(128);
-            strcpy(decl->identity, name_tkn->data);
+            strcpy(decl->identity, ((node_type *)tp->data)->name);
             decl->value = val_expr;
 
             return node;

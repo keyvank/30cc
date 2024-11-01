@@ -3,105 +3,130 @@ Program(
     Name:
       printf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       strcmp
     Returns:
-      TKN_INT
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       strcat
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       strcpy
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       malloc
     Returns:
-      Pointer of:
-        TKN_VOID
-    ParamTypes:
-      TKN_INT
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: (null)):
+        TKN_INT
   )
   FunctionDecl(
     Name:
       fprintf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        struct FILE
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          struct FILE
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       fopen
     Returns:
-      Pointer of:
-        struct FILE
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          struct FILE
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       fclose
     Returns:
-      TKN_INT
-    ParamTypes:
-      Pointer of:
-        struct FILE
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          struct FILE
   )
   Function(
     Name:
       main
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
     Statements:
       VarDecl(a):
-        Pointer of:
-          TKN_CHAR
+        Type(Name: a):
+          Pointer of:
+            TKN_CHAR
         Value:
           Literal(Type: 33, Value: salam )
       VarDecl(b):
-        Pointer of:
-          TKN_CHAR
+        Type(Name: b):
+          Pointer of:
+            TKN_CHAR
         Value:
           Literal(Type: 33, Value: khubi)
       VarDecl(c):
-        Pointer of:
-          TKN_CHAR
+        Type(Name: c):
+          Pointer of:
+            TKN_CHAR
         Value:
           Cast:
             Val:
@@ -111,8 +136,9 @@ Program(
                 Args:
                   Literal(Type: 34, Value: 100)
             Type:
-              Pointer of:
-                TKN_CHAR
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_CHAR
       FunctionCall:
         Function:
           Variable(strcpy)
@@ -133,8 +159,9 @@ Program(
 )
           Variable(c)
       VarDecl(file_ptr):
-        Pointer of:
-          struct FILE
+        Type(Name: file_ptr):
+          Pointer of:
+            struct FILE
       BinaryOp(Op: 64)
         Left:
           Variable(file_ptr)
@@ -174,22 +201,30 @@ Program(
   )
   Struct(Name: (null), Typedef: FILE)
     VarDecl(_ptr):
-      Pointer of:
-        TKN_CHAR
+      Type(Name: _ptr):
+        Pointer of:
+          TKN_CHAR
     VarDecl(_cnt):
-      TKN_INT
+      Type(Name: _cnt):
+        TKN_INT
     VarDecl(_base):
-      Pointer of:
-        TKN_CHAR
+      Type(Name: _base):
+        Pointer of:
+          TKN_CHAR
     VarDecl(_flag):
-      TKN_INT
+      Type(Name: _flag):
+        TKN_INT
     VarDecl(_file):
-      TKN_INT
+      Type(Name: _file):
+        TKN_INT
     VarDecl(_charbuf):
-      TKN_INT
+      Type(Name: _charbuf):
+        TKN_INT
     VarDecl(_bufsiz):
-      TKN_INT
+      Type(Name: _bufsiz):
+        TKN_INT
     VarDecl(_tmpfname):
-      Pointer of:
-        TKN_CHAR
+      Type(Name: _tmpfname):
+        Pointer of:
+          TKN_CHAR
 )

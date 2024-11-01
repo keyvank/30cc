@@ -5,11 +5,11 @@
 
 typedef struct
 {
-    linked_list data;
-    linked_list text;
-    linked_list symbol_table;
-    linked_list global_table;
-    linked_list structs;
+    linked_list *data;
+    linked_list *text;
+    linked_list *symbol_table;
+    linked_list *global_table;
+    linked_list *structs;
     int label_counter;
     int stack_size;
 } context;
@@ -56,12 +56,13 @@ typedef struct
 typedef struct
 {
     general_type *return_type;
+    linked_list *arg_types;
 } func_pointer_type;
 
 general_type *new_primitive_type(char *type_name);
 general_type *new_struct_type(char *struct_name);
 general_type *new_pointer_type(general_type *of);
-general_type *new_func_pointer_type(general_type *return_type);
+general_type *new_func_pointer_type(general_type *return_type, linked_list *arg_types);
 int types_equal(general_type *a, general_type *b, context *ctx);
 
 context new_context();

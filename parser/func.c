@@ -5,24 +5,20 @@
 #include "../lexer.h"
 #include "parser.h"
 #include "func.h"
-#include "param.h"
 #include "type.h"
 #include "statement.h"
 #include "../codegen/codegen.h"
 #include "../linked_list.h"
 
-apply_result *func_decl_apply(parser_node *node, context *ctx)
-{
-    node_func_decl *func = (node_func_decl *)node->data;
-    char *ext = malloc(128);
-    sprintf(ext, "extern %s", func->identity);
-    add_to_list(&ctx->text, ext);
-    return NULL;
-}
-
 apply_result *func_def_apply(parser_node *node, context *ctx)
 {
     node_func_def *func = (node_func_def *)node->data;
+
+    if (!func->statements)
+    {
+        add_text(ctx, "extern %s", func->identity);
+        return NULL;
+    }
 
     add_text(ctx, "global %s", func->identity);
     add_text(ctx, "%s:", func->identity);
@@ -32,7 +28,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
 
     for (int i = 0; i < func->num_params; i++)
     {
-        node_param *par = (node_param *)func->params[i]->data;
+        node_type *par = (node_type *)func->params[i]->data;
 
         char *regname = NULL;
         if (i == 0)
@@ -53,7 +49,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
             exit(1);
         }
 
-        symbol *sym = new_symbol(ctx, par->identity, ((node_type *)par->type->data)->type);
+        symbol *sym = new_symbol(ctx, par->name, par->type);
         add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 
@@ -73,7 +69,14 @@ void func_def_debug(int depth, parser_node *node)
 {
     node_func_def *func = (node_func_def *)node->data;
     printtabs(depth);
-    printf("Function(\n");
+    if (func->statements)
+    {
+        printf("Function(\n");
+    }
+    else
+    {
+        printf("FunctionDecl(\n");
+    }
     printtabs(depth + 1);
     printf("Name:\n");
     printtabs(depth + 2);
@@ -89,36 +92,16 @@ void func_def_debug(int depth, parser_node *node)
         parser_node *node = func->params[i];
         node->debug(depth + 2, node);
     }
-    printtabs(depth + 1);
-    printf("Statements:\n");
-    for (int i = 0; i < func->num_statements; i++)
-    {
-        parser_node *node = func->statements[i];
-        node->debug(depth + 2, node);
-    }
-    printtabs(depth);
-    printf(")\n");
-}
 
-void func_decl_debug(int depth, parser_node *node)
-{
-    node_func_def *func = (node_func_def *)node->data;
-    printtabs(depth);
-    printf("FunctionDecl(\n");
-    printtabs(depth + 1);
-    printf("Name:\n");
-    printtabs(depth + 2);
-    printf("%s\n", func->identity);
-    printtabs(depth + 1);
-    printf("Returns:\n");
-    func->return_type->debug(depth + 2, func->return_type);
-
-    printtabs(depth + 1);
-    printf("ParamTypes:\n");
-    for (int i = 0; i < func->num_params; i++)
+    if (func->statements)
     {
-        parser_node *node = func->params[i];
-        node->debug(depth + 2, node);
+        printtabs(depth + 1);
+        printf("Statements:\n");
+        for (int i = 0; i < func->num_statements; i++)
+        {
+            parser_node *node = func->statements[i];
+            node->debug(depth + 2, node);
+        }
     }
     printtabs(depth);
     printf(")\n");
@@ -127,7 +110,7 @@ void func_decl_debug(int depth, parser_node *node)
 parser_node *parse_function(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-    parser_node *return_type = parse_type(&tkn);
+    parser_node *return_type = parse_type(&tkn, 0);
     if (return_type)
     {
         if (tkn->type_id == TKN_ID)
@@ -162,7 +145,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         tkn = tkn->next;
                         break;
                     }
-                    parser_node *p = parse_param(&tkn);
+                    parser_node *p = parse_type(&tkn, 1);
                     if (p)
                     {
                         params[params_count++] = p;
@@ -192,20 +175,19 @@ parser_node *parse_function(typed_token **tkns_ptr)
                     *tkns_ptr = tkn;
 
                     parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_func_decl));
-                    node->debug = func_decl_debug;
-                    node->apply = func_decl_apply;
-                    node_func_decl *decl = (node_func_decl *)node->data;
+                    node->data = (void *)malloc(sizeof(node_func_def));
+                    node->debug = func_def_debug;
+                    node->apply = func_def_apply;
+                    node_func_def *decl = (node_func_def *)node->data;
 
                     decl->identity = malloc(128);
                     strcpy(decl->identity, (char *)name_tkn->data);
                     decl->return_type = return_type;
                     decl->num_params = params_count;
-                    decl->param_types = (parser_node **)malloc(sizeof(parser_node *) * 32);
-                    for (int i = 0; i < params_count; i++)
-                    {
-                        decl->param_types[i] = ((node_param *)params[i]->data)->type;
-                    }
+                    decl->params = params;
+                    decl->num_statements = 0;
+                    decl->statements = NULL;
+
                     return node;
                 }
                 if (tkn->type_id != TKN_L_BRACE)
@@ -214,7 +196,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                 }
                 for (int i = 0; i < params_count; i++)
                 {
-                    if (((node_param *)params[i]->data)->identity == NULL)
+                    if (((node_type *)params[i]->data)->name == NULL)
                     {
                         return NULL;
                     }

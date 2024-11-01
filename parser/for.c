@@ -14,7 +14,7 @@ apply_result *for_apply(parser_node *node, context *ctx)
 {
     node_for *forn = (node_for *)node->data;
 
-    int num_syms = ctx->symbol_table.count;
+    int num_syms = ctx->symbol_table->count;
 
     forn->init->apply(forn->init, ctx);
 
@@ -31,9 +31,9 @@ apply_result *for_apply(parser_node *node, context *ctx)
     add_text(ctx, "jmp %s", start_for);
     add_text(ctx, "%s:", end_for);
 
-    while (ctx->symbol_table.count > num_syms)
+    while (ctx->symbol_table->count > num_syms)
     {
-        pop_list(&ctx->symbol_table);
+        pop_list(ctx->symbol_table);
     }
 
     return NULL;

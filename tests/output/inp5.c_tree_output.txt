@@ -3,29 +3,34 @@ Program(
     Name:
       printf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       malloc
     Returns:
-      Pointer of:
-        TKN_VOID
-    ParamTypes:
-      TKN_INT
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: sz):
+        TKN_INT
   )
   Function(
     Name:
       main
     Returns:
-      TKN_INT
-    Params:
-      Param: argc
+      Type(Name: (null)):
         TKN_INT
-      Param: argv
+    Params:
+      Type(Name: argc):
+        TKN_INT
+      Type(Name: argv):
         Pointer of:
           Pointer of:
             TKN_CHAR
@@ -33,7 +38,8 @@ Program(
       For(
         Init:
           VarDecl(i):
-            TKN_INT
+            Type(Name: i):
+              TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -63,8 +69,9 @@ Program(
                   Index:
                     Variable(i)
       VarDecl(a):
-        Pointer of:
-          TKN_INT
+        Type(Name: a):
+          Pointer of:
+            TKN_INT
         Value:
           Cast:
             Val:
@@ -77,14 +84,17 @@ Program(
                       Literal(Type: 34, Value: 10)
                     Right:
                       SizeOf:
-                        TKN_INT
+                        Type(Name: (null)):
+                          TKN_INT
             Type:
-              Pointer of:
-                TKN_INT
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
       For(
         Init:
           VarDecl(i):
-            TKN_INT
+            Type(Name: i):
+              TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -120,7 +130,8 @@ Program(
       For(
         Init:
           VarDecl(i):
-            TKN_INT
+            Type(Name: i):
+              TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -148,9 +159,10 @@ Program(
                 Index:
                   Variable(i)
       VarDecl(b):
-        Pointer of:
+        Type(Name: b):
           Pointer of:
-            TKN_INT
+            Pointer of:
+              TKN_INT
         Value:
           Cast:
             Val:
@@ -163,13 +175,16 @@ Program(
                       Literal(Type: 34, Value: 1024)
                     Right:
                       SizeOf:
-                        TKN_INT
+                        Type(Name: (null)):
+                          TKN_INT
             Type:
-              Pointer of:
+              Type(Name: (null)):
                 Pointer of:
-                  TKN_INT
+                  Pointer of:
+                    TKN_INT
       VarDecl(c):
-        TKN_INT
+        Type(Name: c):
+          TKN_INT
         Value:
           Literal(Type: 34, Value: 123)
       BinaryOp(Op: 64)
@@ -209,8 +224,9 @@ Program(
 )
           Variable(c)
       VarDecl(str):
-        Pointer of:
-          TKN_CHAR
+        Type(Name: str):
+          Pointer of:
+            TKN_CHAR
         Value:
           Cast:
             Val:
@@ -223,10 +239,12 @@ Program(
                       Literal(Type: 34, Value: 20)
                     Right:
                       SizeOf:
-                        TKN_CHAR
+                        Type(Name: (null)):
+                          TKN_CHAR
             Type:
-              Pointer of:
-                TKN_CHAR
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_CHAR
       BinaryOp(Op: 64)
         Left:
           Access:

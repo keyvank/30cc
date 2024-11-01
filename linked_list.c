@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include "linked_list.h"
 
-linked_list new_linked_list()
+linked_list *new_linked_list()
 {
-    linked_list l;
-    l.first = NULL;
-    l.last = NULL;
-    l.count = 0;
+    linked_list *l = (linked_list *)malloc(sizeof(linked_list));
+    l->first = NULL;
+    l->last = NULL;
+    l->count = 0;
     return l;
 }
 

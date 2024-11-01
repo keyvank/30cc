@@ -31,13 +31,15 @@ apply_result *struct_def_apply(parser_node *node, context *ctx)
         fields[j] = ((node_type *)var_decl->type->data)->type;
     }
     context_struct *cs = (context_struct *)malloc(sizeof(context_struct));
-    cs->struct_id = ctx->structs.count;
+    cs->struct_id = ctx->structs->count;
     cs->num_fields = sd->num_fields;
     cs->fields = fields;
     cs->field_names = field_names;
     cs->struct_name = sd->struct_name;
     cs->typedef_name = sd->typedef_name;
     new_struct(ctx, cs);
+
+    return NULL;
 }
 
 parser_node *parse_struct_def(typed_token **tkns_ptr)

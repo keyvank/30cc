@@ -44,8 +44,18 @@ apply_result *program_apply(parser_node *node, context *ctx)
         ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
         char *func_name = ((node_func_def *)node->data)->identity;
-        general_type *func_ret = ((node_type *)((node_func_def *)node->data)->return_type->data)->type;
-        new_global_symbol(ctx, func_name, func_name, new_func_pointer_type(func_ret));
+        node_func_def *nfd = ((node_func_def *)node->data);
+        general_type *func_ret = ((node_type *)nfd->return_type->data)->type;
+        linked_list *arg_types = new_linked_list();
+        for (int j = 0; j < nfd->num_params; j++)
+        {
+            general_type *tp = ((node_type *)nfd->params[j]->data)->type;
+            //tp->debug(tp, ctx, 0);
+            add_to_list(arg_types, tp);
+        }
+        general_type *func_type = new_func_pointer_type(func_ret, arg_types);
+        //func_type->debug(func_type, ctx, 0);
+        new_global_symbol(ctx, func_name, func_name, func_type);
         node->apply(node, ctx);
         int total = ctx->stack_size;
         // 16 byte stack alignment

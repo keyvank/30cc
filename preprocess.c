@@ -72,7 +72,7 @@ typed_token *preprocess(typed_token *tkns,
 {
     char *filename = NULL;
 
-    linked_list defines = new_linked_list();
+    linked_list *defines = new_linked_list();
 
     typed_token *first = NULL;
     typed_token *last = NULL;
@@ -90,7 +90,7 @@ typed_token *preprocess(typed_token *tkns,
                 define *def = (define *)malloc(sizeof(define));
                 def->id = name;
                 def->replace = clone(tkn);
-                add_to_list(&defines, (void *)def);
+                add_to_list(defines, (void *)def);
                 tkn = tkn->next;
                 continue;
             }
@@ -98,7 +98,7 @@ typed_token *preprocess(typed_token *tkns,
 
         if (tkn->type_id == TKN_ID)
         {
-            define *def = find_def(&defines, (char *)tkn->data);
+            define *def = find_def(defines, (char *)tkn->data);
             if (def)
             {
 

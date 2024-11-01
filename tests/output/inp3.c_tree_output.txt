@@ -3,18 +3,21 @@ Program(
     Name:
       printf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   Function(
     Name:
       doub
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
-      Param: k
+      Type(Name: k):
         TKN_INT
     Statements:
       Return:
@@ -28,9 +31,10 @@ Program(
     Name:
       fact
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
-      Param: a
+      Type(Name: a):
         TKN_INT
     Statements:
       FunctionCall:
@@ -64,9 +68,10 @@ Program(
     Name:
       fibo
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
-      Param: n
+      Type(Name: n):
         TKN_INT
     Statements:
       If(
@@ -85,11 +90,13 @@ Program(
     Name:
       main
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
     Statements:
       VarDecl(i2):
-        TKN_INT
+        Type(Name: i2):
+          TKN_INT
         Value:
           Literal(Type: 34, Value: 0)
       While(
@@ -132,15 +139,18 @@ Program(
           Literal(Type: 33, Value: 
 )
       VarDecl(a):
-        TKN_INT
+        Type(Name: a):
+          TKN_INT
         Value:
           Literal(Type: 34, Value: 10)
       VarDecl(b):
-        TKN_INT
+        Type(Name: b):
+          TKN_INT
         Value:
           Literal(Type: 34, Value: 20)
       VarDecl(c):
-        TKN_INT
+        Type(Name: c):
+          TKN_INT
         Value:
           BinaryOp(Op: 78)
             Left:
@@ -148,7 +158,8 @@ Program(
             Right:
               Variable(b)
       VarDecl(d):
-        TKN_INT
+        Type(Name: d):
+          TKN_INT
         Value:
           BinaryOp(Op: 78)
             Left:
@@ -187,8 +198,9 @@ Program(
                 Right:
                   Variable(a)
       VarDecl(cc):
-        Pointer of:
-          TKN_INT
+        Type(Name: cc):
+          Pointer of:
+            TKN_INT
         Value:
           Ref:
             Variable(c)
@@ -376,7 +388,8 @@ Program(
       For(
         Init:
           VarDecl(i):
-            TKN_INT
+            Type(Name: i):
+              TKN_INT
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
@@ -436,11 +449,14 @@ DONE!
   )
   Struct(Name: MyStruct, Typedef: (null))
     VarDecl(a):
-      Pointer of:
+      Type(Name: a):
         Pointer of:
-          TKN_INT
+          Pointer of:
+            TKN_INT
     VarDecl(b):
-      TKN_CHAR
+      Type(Name: b):
+        TKN_CHAR
     VarDecl(c):
-      TKN_INT
+      Type(Name: c):
+        TKN_INT
 )

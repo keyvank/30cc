@@ -3,29 +3,35 @@ Program(
     Name:
       printf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       malloc
     Returns:
-      Pointer of:
-        TKN_VOID
-    ParamTypes:
-      TKN_INT
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: sz):
+        TKN_INT
   )
   Function(
     Name:
       main
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
     Statements:
       VarDecl(m):
-        struct MyStruct
+        Type(Name: m):
+          struct MyStruct
       BinaryOp(Op: 64)
         Left:
           Access:
@@ -139,8 +145,9 @@ Program(
             Field: e
             IsPtr: 0
       VarDecl(salam):
-        Pointer of:
-          TKN_INT
+        Type(Name: salam):
+          Pointer of:
+            TKN_INT
         Value:
           Cast:
             Val:
@@ -154,8 +161,9 @@ Program(
                     Right:
                       Literal(Type: 34, Value: 8)
             Type:
-              Pointer of:
-                TKN_INT
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
       BinaryOp(Op: 64)
         Left:
           Access:
@@ -166,8 +174,9 @@ Program(
         Right:
           Literal(Type: 34, Value: 987)
       VarDecl(s5):
-        Pointer of:
-          TKN_INT
+        Type(Name: s5):
+          Pointer of:
+            TKN_INT
         Value:
           Ref:
             Access:
@@ -188,16 +197,22 @@ Program(
   )
   Struct(Name: MyStruct2, Typedef: (null))
     VarDecl(e):
-      TKN_INT
+      Type(Name: e):
+        TKN_INT
     VarDecl(f):
-      TKN_INT
+      Type(Name: f):
+        TKN_INT
   Struct(Name: MyStruct, Typedef: (null))
     VarDecl(c):
-      TKN_INT
+      Type(Name: c):
+        TKN_INT
     VarDecl(d):
-      TKN_INT
+      Type(Name: d):
+        TKN_INT
     VarDecl(hi):
-      struct MyStruct2
+      Type(Name: hi):
+        struct MyStruct2
     VarDecl(e):
-      TKN_INT
+      Type(Name: e):
+        TKN_INT
 )

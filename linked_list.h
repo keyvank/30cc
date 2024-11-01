@@ -15,7 +15,7 @@ typedef struct
     list_node *last;
 } linked_list;
 
-linked_list new_linked_list();
+linked_list *new_linked_list();
 void free_list(linked_list *l);
 void pop_list(linked_list *l);
 

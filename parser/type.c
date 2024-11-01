@@ -10,10 +10,12 @@
 void type_debug(int depth, parser_node *node)
 {
     node_type *tp = (node_type *)node->data;
-    tp->type->debug(tp->type, NULL, depth);
+    printtabs(depth);
+    printf("Type(Name: %s):\n", tp->name);
+    tp->type->debug(tp->type, NULL, depth + 1);
 }
 
-parser_node *parse_type(typed_token **tkns_ptr)
+parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
 {
     typed_token *tkn = *tkns_ptr;
     parser_node *node = NULL;
@@ -26,6 +28,7 @@ parser_node *parse_type(typed_token **tkns_ptr)
         node->debug = type_debug;
         node_type *par = (node_type *)node->data;
         par->type = new_primitive_type(ret_type_tkn->data);
+        par->name = NULL;
     }
     else if (tkn->type_id == TKN_STRUCT || tkn->type_id == TKN_ID)
     {
@@ -57,6 +60,7 @@ parser_node *parse_type(typed_token **tkns_ptr)
         char *tp_name = malloc(128);
         strcpy(tp_name, struct_name_tkn->data);
         par->type = new_struct_type(tp_name);
+        par->name = NULL;
         tkn = struct_name_tkn->next;
     }
 
@@ -67,8 +71,18 @@ parser_node *parse_type(typed_token **tkns_ptr)
         {
             tkn = tkn->next;
             par->type = new_pointer_type(par->type);
+            par->name = NULL;
         }
         *tkns_ptr = tkn;
     }
+
+    if (allow_naming && tkn->type_id == TKN_ID)
+    {
+        node_type *par = (node_type *)node->data;
+        par->name = tkn->data;
+        tkn = tkn->next;
+        *tkns_ptr = tkn;
+    }
+
     return node;
 }

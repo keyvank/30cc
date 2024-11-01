@@ -36,7 +36,7 @@ void add_data(context *ctx, char *fmt, ...)
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
     va_end(args);
-    add_to_list(&ctx->data, txt);
+    add_to_list(ctx->data, txt);
 }
 
 void add_text(context *ctx, char *fmt, ...)
@@ -46,12 +46,12 @@ void add_text(context *ctx, char *fmt, ...)
     va_start(args, fmt);
     vsprintf(txt, fmt, args);
     va_end(args);
-    add_to_list(&ctx->text, txt);
+    add_to_list(ctx->text, txt);
 }
 
 symbol *find_symbol(context *ctx, char *name)
 {
-    list_node *curr = ctx->symbol_table.last;
+    list_node *curr = ctx->symbol_table->last;
     while (curr)
     {
         symbol *sym = (symbol *)curr->value;
@@ -61,7 +61,7 @@ symbol *find_symbol(context *ctx, char *name)
         }
         curr = curr->prev;
     }
-    curr = ctx->global_table.last;
+    curr = ctx->global_table->last;
     while (curr)
     {
         symbol *sym = (symbol *)curr->value;
@@ -91,7 +91,7 @@ symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *ty
     newsym->repl = repl;
     newsym->offset = 0;
     newsym->type = type;
-    add_to_list(&ctx->global_table, newsym);
+    add_to_list(ctx->global_table, newsym);
     return newsym;
 }
 
@@ -101,13 +101,13 @@ symbol *new_symbol(context *ctx, char *name, general_type *type)
     newsym->name = name;
     newsym->offset = 0;
     newsym->type = type;
-    if (ctx->symbol_table.last)
+    if (ctx->symbol_table->last)
     {
-        symbol *lastsym = ((symbol *)ctx->symbol_table.last->value);
+        symbol *lastsym = ((symbol *)ctx->symbol_table->last->value);
         newsym->offset = lastsym->offset + lastsym->type->size(lastsym->type, ctx);
     }
     newsym->repl = cc_asprintf("[rsp+%u]", newsym->offset);
-    add_to_list(&ctx->symbol_table, newsym);
+    add_to_list(ctx->symbol_table, newsym);
     ctx->stack_size += newsym->type->size(newsym->type, ctx);
     return newsym;
 }
@@ -119,7 +119,7 @@ symbol *new_temp_symbol(context *ctx, general_type *type)
 
 context_struct *find_struct(context *ctx, char *name)
 {
-    list_node *curr = ctx->structs.last;
+    list_node *curr = ctx->structs->last;
     while (curr)
     {
         context_struct *s = (context_struct *)curr->value;
@@ -145,7 +145,7 @@ context_struct *find_struct(context *ctx, char *name)
 }
 void new_struct(context *ctx, context_struct *s)
 {
-    add_to_list(&ctx->structs, s);
+    add_to_list(ctx->structs, s);
 }
 
 void printtabs(int depth);
@@ -215,8 +215,19 @@ void func_pointer_type_debug(general_type *self, context *ctx, int depth)
 {
     func_pointer_type *p = (func_pointer_type *)self->data;
     printtabs(depth);
-    printf("FuncPointer, returns:\n");
-    p->return_type->debug(p->return_type, ctx, depth + 1);
+    printf("FuncPointer:\n");
+    printtabs(depth + 1);
+    printf("Returns:\n");
+    p->return_type->debug(p->return_type, ctx, depth + 2);
+    printtabs(depth + 1);
+    printf("Args:\n");
+    list_node *curr = p->arg_types->first;
+    while (curr)
+    {
+        general_type *tp = ((general_type *)curr->value);
+        tp->debug(tp, ctx, depth + 2);
+        curr = curr->next;
+    }
 }
 
 int func_pointer_type_size(general_type *self, context *ctx)
@@ -269,11 +280,12 @@ general_type *new_pointer_type(general_type *of)
     return ret;
 }
 
-general_type *new_func_pointer_type(general_type *return_type)
+general_type *new_func_pointer_type(general_type *return_type, linked_list *arg_types)
 {
     general_type *ret = (general_type *)malloc(sizeof(general_type));
     func_pointer_type *data = (func_pointer_type *)malloc(sizeof(func_pointer_type));
     data->return_type = return_type;
+    data->arg_types = arg_types;
     ret->kind = TYPE_FUNC_POINTER;
     ret->data = data;
     ret->debug = func_pointer_type_debug;

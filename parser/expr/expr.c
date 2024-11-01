@@ -241,7 +241,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_GTE:
     case TKN_EQ:
     case TKN_NEQ:
-        add_to_list(&ctx->text, "cmp rax, rbx");
+        add_to_list(ctx->text, "cmp rax, rbx");
         l1 = new_label(ctx);
         l2 = new_label(ctx);
 
@@ -384,7 +384,7 @@ parser_node *parse_sizeof(typed_token **tkns_ptr)
         if (tkn->type_id == TKN_L_PAREN)
         {
             tkn = tkn->next;
-            parser_node *type = parse_type(&tkn);
+            parser_node *type = parse_type(&tkn, 0);
             if (type)
             {
                 if (tkn->type_id == TKN_R_PAREN)
@@ -411,7 +411,7 @@ parser_node *parse_cast(typed_token **tkns_ptr)
     if (tkn->type_id == TKN_L_PAREN)
     {
         tkn = tkn->next;
-        parser_node *tp = parse_type(&tkn);
+        parser_node *tp = parse_type(&tkn, 0);
         if (tp)
         {
             if (tkn->type_id == TKN_R_PAREN)

@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
     {
         context ctx = new_context();
         prog->apply(prog, &ctx);
-        list_node *curr = ctx.data.first;
+        list_node *curr = ctx.data->first;
         printf("section .data\n");
         while (curr)
         {
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
             curr = curr->next;
         }
         printf("section .text\n");
-        curr = ctx.text.first;
+        curr = ctx.text->first;
         while (curr)
         {
             printf("%s\n", (char *)curr->value);

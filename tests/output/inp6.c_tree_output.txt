@@ -3,30 +3,36 @@ Program(
     Name:
       printf
     Returns:
-      TKN_VOID
-    ParamTypes:
-      Pointer of:
-        TKN_CHAR
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
   )
   FunctionDecl(
     Name:
       malloc
     Returns:
-      Pointer of:
-        TKN_VOID
-    ParamTypes:
-      TKN_INT
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: sz):
+        TKN_INT
   )
   Function(
     Name:
       main
     Returns:
-      TKN_INT
+      Type(Name: (null)):
+        TKN_INT
     Params:
     Statements:
       VarDecl(m):
-        Pointer of:
-          struct MyStruct
+        Type(Name: m):
+          Pointer of:
+            struct MyStruct
         Value:
           Cast:
             Val:
@@ -35,10 +41,12 @@ Program(
                   Variable(malloc)
                 Args:
                   SizeOf:
-                    struct MyStruct
+                    Type(Name: (null)):
+                      struct MyStruct
             Type:
-              Pointer of:
-                struct MyStruct
+              Type(Name: (null)):
+                Pointer of:
+                  struct MyStruct
       BinaryOp(Op: 64)
         Left:
           Access:
@@ -78,7 +86,9 @@ Program(
   )
   Struct(Name: (null), Typedef: MyStruct)
     VarDecl(a):
-      TKN_INT
+      Type(Name: a):
+        TKN_INT
     VarDecl(b):
-      TKN_INT
+      Type(Name: b):
+        TKN_INT
 )
