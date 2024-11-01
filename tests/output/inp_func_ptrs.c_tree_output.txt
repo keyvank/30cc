@@ -10,6 +10,17 @@ Program(
         Pointer of:
           TKN_CHAR
   )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: sz):
+        TKN_INT
+  )
   Function(
     Name:
       sum
@@ -84,35 +95,105 @@ Program(
         TKN_INT
     Params:
     Statements:
-      VarDecl(res_sum):
-        Type(Name: res_sum):
-          TKN_INT
+      VarDecl(funcs):
+        Type(Name: funcs):
+          Pointer of:
+            Pointer of:
+              Func:
+                Returns:
+                  TKN_INT
+                Args:
+                  TKN_INT
+                  TKN_INT
         Value:
-          FunctionCall:
-            Function:
-              Variable(handle)
-            Args:
-              Literal(Type: 34, Value: 10)
-              Literal(Type: 34, Value: 20)
-              Variable(sum)
-      VarDecl(res_mul):
-        Type(Name: res_mul):
-          TKN_INT
-        Value:
-          FunctionCall:
-            Function:
-              Variable(handle)
-            Args:
-              Literal(Type: 34, Value: 10)
-              Literal(Type: 34, Value: 20)
-              Variable(mul)
-      FunctionCall:
-        Function:
-          Variable(printf)
-        Args:
-          Literal(Type: 33, Value: %u %u
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      SizeOf:
+                        Type(Name: (null)):
+                          Pointer of:
+                            Func:
+                              Returns:
+                                TKN_INT
+                              Args:
+                                TKN_INT
+                                TKN_INT
+                    Right:
+                      Literal(Type: 34, Value: 2)
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  Pointer of:
+                    Func:
+                      Returns:
+                        TKN_INT
+                      Args:
+                        TKN_INT
+                        TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(funcs)
+            Index:
+              Literal(Type: 34, Value: 0)
+        Right:
+          Variable(sum)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(funcs)
+            Index:
+              Literal(Type: 34, Value: 1)
+        Right:
+          Variable(mul)
+      For(
+        Init:
+          VarDecl(i):
+            Type(Name: i):
+              TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 2)
+        Act:
+          Postfix(Op: 73)
+          expression:
+              Variable(i)
+        Body:
+          CompoundStatement
+            VarDecl(res):
+              Type(Name: res):
+                TKN_INT
+              Value:
+                FunctionCall:
+                  Function:
+                    Variable(handle)
+                  Args:
+                    Literal(Type: 34, Value: 10)
+                    Literal(Type: 34, Value: 20)
+                    Access:
+                      In:
+                        Variable(funcs)
+                      Index:
+                        Variable(i)
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: Func #%u result: %u
 )
-          Variable(res_sum)
-          Variable(res_mul)
+                Variable(i)
+                Variable(res)
   )
 )
