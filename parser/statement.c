@@ -9,6 +9,7 @@
 #include "for.h"
 #include "if.h"
 #include "while.h"
+#include "goto.h"
 
 apply_result *compound_statement_apply(parser_node *node, context *ctx)
 {
@@ -197,6 +198,20 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_return(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_label(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_goto(&tkn);
     if (ret)
     {
         *tkns_ptr = tkn;
