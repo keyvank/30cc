@@ -53,7 +53,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
             //tp->debug(tp, ctx, 0);
             add_to_list(arg_types, tp);
         }
-        general_type *func_type = new_func_pointer_type(func_ret, arg_types);
+        general_type *func_type = new_pointer_type(new_func_type(func_ret, arg_types));
         //func_type->debug(func_type, ctx, 0);
         new_global_symbol(ctx, func_name, func_name, func_type);
         node->apply(node, ctx);

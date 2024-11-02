@@ -35,7 +35,7 @@ typedef struct
 
 #define TYPE_PRIMITIVE 0
 #define TYPE_POINTER 1
-#define TYPE_FUNC_POINTER 2
+#define TYPE_FUNC 2
 #define TYPE_STRUCT 3
 
 typedef struct
@@ -57,12 +57,12 @@ typedef struct
 {
     general_type *return_type;
     linked_list *arg_types;
-} func_pointer_type;
+} func_type;
 
 general_type *new_primitive_type(char *type_name);
 general_type *new_struct_type(char *struct_name);
 general_type *new_pointer_type(general_type *of);
-general_type *new_func_pointer_type(general_type *return_type, linked_list *arg_types);
+general_type *new_func_type(general_type *return_type, linked_list *arg_types);
 int types_equal(general_type *a, general_type *b, context *ctx);
 
 context new_context();

@@ -67,10 +67,22 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", regname, argvals[i]);
     }
 
-    apply_result *fun = call->func->apply(call->func, ctx);
-    general_type *ret_type = ((func_pointer_type *)fun->type->data)->return_type;
+    apply_result *fun_obj = call->func->apply(call->func, ctx);
+    if (fun_obj->type->kind != TYPE_POINTER)
+    {
+        fprintf(stderr, "Expected a pointer to function!");
+        exit(1);
+    }
+    general_type *fun_type = ((pointer_type *)fun_obj->type->data)->of;
 
-    add_text(ctx, "call %s", fun->code);
+    if (fun_type->kind != TYPE_FUNC)
+    {
+        fprintf(stderr, "Expected a pointer to function!");
+        exit(1);
+    }
+    general_type *ret_type = ((func_type *)fun_type->data)->return_type;
+
+    add_text(ctx, "call %s", fun_obj->code);
     symbol *tmp = new_temp_symbol(ctx, ret_type);
     add_text(ctx, "mov %s, rax", tmp->repl);
 

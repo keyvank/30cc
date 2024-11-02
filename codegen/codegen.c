@@ -184,7 +184,7 @@ int pointer_type_named_offset(general_type *self, context *ctx, char *idx)
     return 0;
 }
 
-int func_pointer_type_named_offset(general_type *self, context *ctx, char *idx)
+int func_type_named_offset(general_type *self, context *ctx, char *idx)
 {
     fprintf(stderr, "Cannot access fields within a function pointer type!\n");
     exit(1);
@@ -211,11 +211,11 @@ int pointer_type_size(general_type *self, context *ctx)
     return 8;
 }
 
-void func_pointer_type_debug(general_type *self, context *ctx, int depth)
+void func_type_debug(general_type *self, context *ctx, int depth)
 {
-    func_pointer_type *p = (func_pointer_type *)self->data;
+    func_type *p = (func_type *)self->data;
     printtabs(depth);
-    printf("FuncPointer:\n");
+    printf("Func:\n");
     printtabs(depth + 1);
     printf("Returns:\n");
     p->return_type->debug(p->return_type, ctx, depth + 2);
@@ -230,9 +230,10 @@ void func_pointer_type_debug(general_type *self, context *ctx, int depth)
     }
 }
 
-int func_pointer_type_size(general_type *self, context *ctx)
+int func_type_size(general_type *self, context *ctx)
 {
-    return 8;
+    fprintf(stderr, "Function-type has no size!\n");
+    exit(1);
 }
 
 void struct_type_debug(general_type *self, context *ctx, int depth)
@@ -280,17 +281,17 @@ general_type *new_pointer_type(general_type *of)
     return ret;
 }
 
-general_type *new_func_pointer_type(general_type *return_type, linked_list *arg_types)
+general_type *new_func_type(general_type *return_type, linked_list *arg_types)
 {
     general_type *ret = (general_type *)malloc(sizeof(general_type));
-    func_pointer_type *data = (func_pointer_type *)malloc(sizeof(func_pointer_type));
+    func_type *data = (func_type *)malloc(sizeof(func_type));
     data->return_type = return_type;
     data->arg_types = arg_types;
-    ret->kind = TYPE_FUNC_POINTER;
+    ret->kind = TYPE_FUNC;
     ret->data = data;
-    ret->debug = func_pointer_type_debug;
-    ret->size = func_pointer_type_size;
-    ret->named_offset = func_pointer_type_named_offset;
+    ret->debug = func_type_debug;
+    ret->size = func_type_size;
+    ret->named_offset = func_type_named_offset;
     return ret;
 }
 
@@ -337,11 +338,28 @@ int types_equal(general_type *a, general_type *b, context *ctx)
         general_type *b_of = ((pointer_type *)b->data)->of;
         return types_equal(a_of, b_of, ctx);
     }
-    else if (a->size == func_pointer_type_size)
+    else if (a->size == func_type_size)
     {
-        general_type *a_ret = ((func_pointer_type *)a->data)->return_type;
-        general_type *b_ret = ((func_pointer_type *)b->data)->return_type;
-        return types_equal(a_ret, b_ret, ctx);
+        general_type *a_ret = ((func_type *)a->data)->return_type;
+        general_type *b_ret = ((func_type *)b->data)->return_type;
+        if (!types_equal(a_ret, b_ret, ctx))
+            return 0;
+        linked_list *a_args = ((func_type *)a->data)->arg_types;
+        linked_list *b_args = ((func_type *)b->data)->arg_types;
+        if (a_args->count != b_args->count)
+            return 0;
+        list_node *a_curr = a_args->first;
+        list_node *b_curr = b_args->first;
+        for (int i = 0; i < a_args->count; i++)
+        {
+            general_type *a_arg = (general_type *)a_curr->value;
+            general_type *b_arg = (general_type *)b_curr->value;
+            if (!types_equal(a_arg, b_arg, ctx))
+                return 0;
+            a_curr = a_curr->next;
+            b_curr = b_curr->next;
+        }
+        return 1;
     }
     return 0;
 }
