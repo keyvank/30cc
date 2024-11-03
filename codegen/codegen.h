@@ -11,6 +11,8 @@ typedef struct
     linked_list *global_table;
     linked_list *structs;
     int label_counter;
+    int current_loop_end_label_index;
+    int current_loop_start_label_index;
     int stack_size;
 } context;
 
@@ -83,6 +85,10 @@ symbol *new_symbol(context *ctx, char *name, general_type *type);
 symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *type);
 symbol *new_temp_symbol(context *ctx, general_type *type);
 char *new_label(context *ctx);
+char *new_loop_end_label(context *ctx);
+char *get_current_loop_end_label_counter(context *ctx, char* name);
+char *new_loop_start_label(context *ctx);
+char *get_current_loop_start_label_counter(context *ctx, char* name);
 
 context_struct *find_struct(context *ctx, char *name);
 void new_struct(context *ctx, context_struct *s);

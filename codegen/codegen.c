@@ -15,6 +15,8 @@ context new_context()
     ctx.symbol_table = new_linked_list();
     ctx.structs = new_linked_list();
     ctx.label_counter = 0;
+    ctx.current_loop_end_label_index = 0;
+    ctx.current_loop_start_label_index = 0;
     ctx.stack_size = 0;
     return ctx;
 }
@@ -81,6 +83,32 @@ char *new_label(context *ctx)
     char *name = (char *)malloc(128);
     sprintf(name, "__tmp_label_%u", ctx->label_counter);
     ctx->label_counter++;
+    return name;
+}
+
+char *new_loop_end_label(context *ctx)
+{
+    char *name = new_label(ctx);
+    ctx->current_loop_end_label_index = ctx->label_counter-1;
+    return name;
+}
+
+char* get_current_loop_end_label_counter(context *ctx, char *name)
+{
+    sprintf(name, "__tmp_label_%u", ctx->current_loop_end_label_index);
+    return name;
+}
+
+char *new_loop_start_label(context *ctx)
+{
+    char *name = new_label(ctx);
+    ctx->current_loop_start_label_index = ctx->label_counter-1;
+    return name;
+}
+
+char* get_current_loop_start_label_counter(context *ctx, char *name)
+{
+    sprintf(name, "__tmp_label_%u", ctx->current_loop_start_label_index);
     return name;
 }
 

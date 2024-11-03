@@ -13,8 +13,8 @@ apply_result *while_apply(parser_node *node, context *ctx)
 {
     node_while *w = (node_while *)node->data;
 
-    char *start_while = new_label(ctx);
-    char *end_while = new_label(ctx);
+    char *start_while = new_loop_start_label(ctx);
+    char *end_while = new_loop_end_label(ctx);
 
     add_text(ctx, "%s:", start_while);
     apply_result *condv = w->cond->apply(w->cond, ctx);
