@@ -12,7 +12,7 @@ void type_debug(int depth, parser_node *node)
     node_type *tp = (node_type *)node->data;
     printtabs(depth);
     printf("Type(Name: %s):\n", tp->name);
-    tp->type->debug(tp->type, NULL, depth + 1);
+    tp->type->debug(tp->type, depth + 1);
 }
 
 parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
