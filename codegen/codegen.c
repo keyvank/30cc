@@ -102,8 +102,8 @@ char* get_current_loop_end_label_counter(context *ctx, char *name)
         fprintf(stderr, "Not inside loop\n");
         return NULL;
     }
-    int *value = (int *)ctx->loop_end_labels->last->value;
-    sprintf(name, "__tmp_label_%u", *value);
+    int value = *(int *)ctx->loop_end_labels->last->value;
+    sprintf(name, "__tmp_label_%u", value);
     return name;
 }
 
@@ -124,8 +124,8 @@ char* get_current_loop_start_label_counter(context *ctx, char *name)
         fprintf(stderr, "Not inside loop\n");
         return NULL;
     }
-    int *value = (int *)ctx->loop_start_labels->last->value;
-    sprintf(name, "__tmp_label_%u", *value);
+    int value = *(int *)ctx->loop_start_labels->last->value;
+    sprintf(name, "__tmp_label_%u", value);
     return name;
 }
 

@@ -30,12 +30,12 @@ apply_result *for_apply(parser_node *node, context *ctx)
     forn->act->apply(forn->act, ctx);
     add_text(ctx, "jmp %s", start_for);
     add_text(ctx, "%s:", end_for);
-    exit_loop(ctx);
-
     while (ctx->symbol_table->count > num_syms)
     {
         pop_list(ctx->symbol_table);
     }
+
+    exit_loop(ctx);
 
     return NULL;
 }
