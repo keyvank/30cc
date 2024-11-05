@@ -132,15 +132,35 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '#')
     {
-        if (inp[1] == 'd' && inp[2] == 'e' && inp[3] == 'f' && inp[4] == 'i' && inp[5] == 'n' && inp[6] == 'e')
+        char c;
+        char *val = (char *)malloc(128);
+        char *val_ptr = val;
+
+        while (*++inp && (c = is_letter_or_num(*inp)))
         {
-            *inp_ptr += 7;
+            *val_ptr++ = c;
+        }
+        *val_ptr = '\0';
+
+        if (strcmp(val, "define") == 0)
+        {
+            *inp_ptr = inp;
             return new_simp_tkn(TKN_MACRO_DEFINE);
         }
-        if (inp[1] == 'i' && inp[2] == 'n' && inp[3] == 'c' && inp[4] == 'l' && inp[5] == 'u' && inp[6] == 'd' && inp[7] == 'e')
+        else if (strcmp(val, "include") == 0)
         {
-            *inp_ptr += 8;
+            *inp_ptr = inp;
             return new_simp_tkn(TKN_MACRO_INCLUDE);
+        }
+        else if (strcmp(val, "ifdef") == 0)
+        {
+            *inp_ptr = inp;
+            return new_simp_tkn(TKN_MACRO_IFDEF);
+        }
+        else if (strcmp(val, "endif") == 0)
+        {
+            *inp_ptr = inp;
+            return new_simp_tkn(TKN_MACRO_ENDIF);
         }
     }
     if (*inp == '?')
