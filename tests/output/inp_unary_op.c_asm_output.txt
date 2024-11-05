@@ -204,6 +204,7 @@ call printf
 mov [rsp+344], rax
 mov rax, 0
 mov [rsp+344], rax
+; enter loop
 __tmp_label_0:
 mov rax, rsp
 add rax, 344
@@ -247,6 +248,7 @@ mov [rbx], rax
 ; postfix op finish
 jmp __tmp_label_0
 __tmp_label_1:
+; exit loop
 mov rsp, rbp
 pop rbp
 ret

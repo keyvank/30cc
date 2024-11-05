@@ -150,6 +150,7 @@ mov [rbx], rax
 mov [rsp+112], rax
 mov rax, 0
 mov [rsp+120], rax
+; enter loop
 __tmp_label_0:
 mov rax, rsp
 add rax, 120
@@ -229,6 +230,7 @@ mov [rbx], rax
 ; postfix op finish
 jmp __tmp_label_0
 __tmp_label_1:
+; exit loop
 mov rsp, rbp
 pop rbp
 ret

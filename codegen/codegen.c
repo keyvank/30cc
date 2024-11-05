@@ -113,6 +113,8 @@ char *new_loop_start_label(context *ctx)
     int *label_id = malloc(sizeof(int));
     *label_id = ctx->label_counter-1;
     add_to_list(ctx->loop_start_labels, label_id);
+
+    add_text(ctx, "; enter loop");
     return name;
 }
 
