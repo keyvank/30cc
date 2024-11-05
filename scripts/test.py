@@ -17,6 +17,7 @@ TEST_FILES = [
     "./examples/inp_include.c",
     "./examples/inp_func_ptrs.c",
     "./examples/inp_goto.c",
+    "./examples/inp_break.c",
 ]
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"
@@ -30,7 +31,7 @@ def run(input_file, mode):
         )
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"Error: Failed to run {C_PROGRAM_NAME} with input {input_file}")
+        print(f"Error: Failed to run {C_PROGRAM_NAME} with input `{input_file} --{mode}`")
         print(f"Error message: {e.stderr}")
         return None
 

@@ -22,18 +22,16 @@ apply_result *break_apply(parser_node *node, context *ctx)
 parser_node *parse_break(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-    if (tkn->type_id == TKN_ID)
+    if (tkn->type_id == TKN_BREAK)
     {
-        if (strcmp((char *)tkn->data, "break") == 0) {
-            if (tkn->next->type_id != TKN_SEMICOLON) {
-                return NULL;
-            }
-            parser_node *break_node = (parser_node *)malloc(sizeof(parser_node));
-            break_node->debug = break_debug;
-            break_node->apply = break_apply;
-            *tkns_ptr = tkn->next->next;
-            return break_node;
+        if (tkn->next->type_id != TKN_SEMICOLON) {
+            return NULL;
         }
+        parser_node *break_node = (parser_node *)malloc(sizeof(parser_node));
+        break_node->debug = break_debug;
+        break_node->apply = break_apply;
+        *tkns_ptr = tkn->next->next;
+        return break_node;
     }
 
     return NULL;
@@ -57,18 +55,16 @@ apply_result *continue_apply(parser_node *node, context *ctx)
 parser_node *parse_continue(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-    if (tkn->type_id == TKN_ID)
+    if (tkn->type_id == TKN_CONTINUE)
     {
-        if (strcmp((char *)tkn->data, "continue") == 0) {
-            if (tkn->next->type_id != TKN_SEMICOLON) {
-                return NULL;
-            }
-            parser_node *continue_node = (parser_node *)malloc(sizeof(parser_node));
-            continue_node->debug = break_debug;
-            continue_node->apply = break_apply;
-            *tkns_ptr = tkn->next->next;
-            return continue_node;
+        if (tkn->next->type_id != TKN_SEMICOLON) {
+            return NULL;
         }
+        parser_node *continue_node = (parser_node *)malloc(sizeof(parser_node));
+        continue_node->debug = break_debug;
+        continue_node->apply = break_apply;
+        *tkns_ptr = tkn->next->next;
+        return continue_node;
     }
 
     return NULL;

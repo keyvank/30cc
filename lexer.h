@@ -72,6 +72,8 @@ typed_token *tokenize(char *inp);
 #define TKN_MODEQ 92
 #define TKN_OREQ 93
 #define TKN_ANDEQ 94
+#define TKN_BREAK 96
+#define TKN_CONTINUE 96
 
 #define TKN_COMMENT 128
 #define TKN_MACRO_DEFINE 129
