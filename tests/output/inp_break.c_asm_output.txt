@@ -2,7 +2,9 @@ section .data
 __printf_size: equ 16
 __temp_str_1 db `i is 0\n`, 0
 __temp_str_2 db `i is 0\n`, 0
-__main_size: equ 160
+__temp_str_3 db `i is %d\n`, 0
+__temp_str_4 db `j is %d\n`, 0
+__main_size: equ 336
 section .text
 extern printf
 global main
@@ -126,6 +128,121 @@ mov [rbx], rax
 mov [rsp+56], rax
 jmp __tmp_label_5
 __tmp_label_6:
+mov rax, 0
+mov [rsp+8], rax
+__tmp_label_15:
+mov rax, rsp
+add rax, 8
+mov [rsp+16], rax
+mov rax, [rsp+8]
+mov rbx, 0
+cmp rax, rbx
+jge __tmp_label_17
+mov rax, 0
+jmp __tmp_label_18
+__tmp_label_17:
+mov rax, 1
+__tmp_label_18:
+mov [rsp+24], rax
+mov rax, [rsp+24]
+cmp rax, 0
+je __tmp_label_16
+mov rax, __temp_str_3
+mov [rsp+32], rax
+mov rax, rsp
+add rax, 8
+mov [rsp+40], rax
+mov rax, [rsp+8]
+mov [rsp+48], rax
+mov rdi, [rsp+32]
+mov rsi, [rsp+48]
+mov rax, rsp
+add rax, 0
+mov [rsp+56], rax
+call printf
+mov [rsp+64], rax
+mov rax, 0
+mov [rsp+64], rax
+__tmp_label_19:
+mov rax, rsp
+add rax, 64
+mov [rsp+72], rax
+mov rax, [rsp+64]
+mov rbx, 10
+cmp rax, rbx
+jl __tmp_label_21
+mov rax, 0
+jmp __tmp_label_22
+__tmp_label_21:
+mov rax, 1
+__tmp_label_22:
+mov [rsp+80], rax
+mov rax, [rsp+80]
+cmp rax, 0
+je __tmp_label_20
+mov rax, __temp_str_4
+mov [rsp+88], rax
+mov rax, rsp
+add rax, 64
+mov [rsp+96], rax
+mov rax, [rsp+64]
+mov [rsp+104], rax
+mov rdi, [rsp+88]
+mov rsi, [rsp+104]
+mov rax, rsp
+add rax, 0
+mov [rsp+112], rax
+call printf
+mov [rsp+120], rax
+mov rax, rsp
+add rax, 64
+mov [rsp+120], rax
+mov rax, [rsp+64]
+mov rbx, 5
+cmp rax, rbx
+je __tmp_label_23
+mov rax, 0
+jmp __tmp_label_24
+__tmp_label_23:
+mov rax, 1
+__tmp_label_24:
+mov [rsp+128], rax
+mov rax, 0
+cmp rax, [rsp+128]
+je __tmp_label_25
+jmp __tmp_label_20
+__tmp_label_25:
+; postfix op apply
+mov rax, rsp
+add rax, 64
+mov [rsp+88], rax
+mov rax, [rsp+64]
+mov [rsp+96], rax
+add rax, 1
+mov rbx, [rsp+88]
+mov [rbx], rax
+; postfix op finish
+jmp __tmp_label_19
+__tmp_label_20:
+jmp __tmp_label_20
+mov rax, rsp
+add rax, 8
+mov [rsp+32], rax
+mov rax, rsp
+add rax, 8
+mov [rsp+40], rax
+mov rax, [rsp+8]
+mov rbx, 1
+add rax, rbx
+mov [rsp+48], rax
+mov rax, [rsp+8]
+mov rbx, [rsp+48]
+mov rax, [rsp+48]
+mov rbx, [rsp+32]
+mov [rbx], rax
+mov [rsp+56], rax
+jmp __tmp_label_15
+__tmp_label_16:
 mov rax, 0
 mov rsp, rbp
 pop rbp

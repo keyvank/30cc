@@ -18,6 +18,7 @@ apply_result *for_apply(parser_node *node, context *ctx)
 
     forn->init->apply(forn->init, ctx);
 
+    add_text(ctx, "; enter loop");
     char *start_for = new_loop_start_label(ctx);
     char *end_for = new_loop_end_label(ctx);
 
@@ -30,6 +31,7 @@ apply_result *for_apply(parser_node *node, context *ctx)
     forn->act->apply(forn->act, ctx);
     add_text(ctx, "jmp %s", start_for);
     add_text(ctx, "%s:", end_for);
+    // exit_loop(ctx);
 
     while (ctx->symbol_table->count > num_syms)
     {
