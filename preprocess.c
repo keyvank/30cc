@@ -96,6 +96,30 @@ typed_token *preprocess(typed_token *tkns,
             }
         }
 
+        if (tkn->type_id == TKN_MACRO_IFDEF)
+        {
+            tkn = tkn->next;
+            if (tkn->type_id == TKN_ID)
+            {
+                char *name = cc_asprintf("%s", (char *)tkn->data);
+                define *def = find_def(defines, name);
+                if (!def)
+                {
+                    while (tkn && tkn->type_id != TKN_MACRO_ENDIF)
+                    {
+                        tkn = tkn->next;
+                    }
+                }
+                tkn = tkn->next;
+                continue;
+            }
+        }
+        if (tkn->type_id == TKN_MACRO_ENDIF)
+        {
+            tkn = tkn->next;
+            continue;
+        }
+
         if (tkn->type_id == TKN_ID)
         {
             define *def = find_def(defines, (char *)tkn->data);

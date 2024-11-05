@@ -6,6 +6,7 @@
 
 #include "codegen.h"
 #include "../linked_list.h"
+#define UNUSED(x) (void)(x)
 
 context new_context()
 {
@@ -204,7 +205,7 @@ void new_struct(context *ctx, context_struct *s)
 }
 
 void printtabs(int depth);
-void primitive_type_debug(general_type *self, context *ctx, int depth)
+void primitive_type_debug(general_type *self, int depth)
 {
     primitive_type *p = (primitive_type *)self->data;
     printtabs(depth);
@@ -213,6 +214,7 @@ void primitive_type_debug(general_type *self, context *ctx, int depth)
 
 int primitive_type_size(general_type *self, context *ctx)
 {
+    UNUSED(ctx);
     primitive_type *p = (primitive_type *)self->data;
     if (strcmp(p->type_name, "TKN_INT") == 0)
         return 8;
@@ -225,73 +227,49 @@ int primitive_type_size(general_type *self, context *ctx)
     return 0;
 }
 
-int primitive_type_named_offset(general_type *self, context *ctx, char *idx)
-{
-    fprintf(stderr, "Cannot access fields within a primitive type!\n");
-    exit(1);
-    return 0;
-}
-
-int pointer_type_named_offset(general_type *self, context *ctx, char *idx)
-{
-    fprintf(stderr, "Cannot access fields within a pointer type!\n");
-    exit(1);
-    return 0;
-}
-
-int func_type_named_offset(general_type *self, context *ctx, char *idx)
-{
-    fprintf(stderr, "Cannot access fields within a function pointer type!\n");
-    exit(1);
-    return 0;
-}
-
-int struct_type_named_offset(general_type *self, context *ctx, char *idx)
-{
-    fprintf(stderr, "Cannot access fields within a struct type!\n");
-    exit(1);
-    return 0;
-}
-
-void pointer_type_debug(general_type *self, context *ctx, int depth)
+void pointer_type_debug(general_type *self, int depth)
 {
     pointer_type *p = (pointer_type *)self->data;
     printtabs(depth);
     printf("Pointer of:\n");
-    p->of->debug(p->of, ctx, depth + 1);
+    p->of->debug(p->of, depth + 1);
 }
 
 int pointer_type_size(general_type *self, context *ctx)
 {
+    UNUSED(self);
+    UNUSED(ctx);
     return 8;
 }
 
-void func_type_debug(general_type *self, context *ctx, int depth)
+void func_type_debug(general_type *self, int depth)
 {
     func_type *p = (func_type *)self->data;
     printtabs(depth);
     printf("Func:\n");
     printtabs(depth + 1);
     printf("Returns:\n");
-    p->return_type->debug(p->return_type, ctx, depth + 2);
+    p->return_type->debug(p->return_type, depth + 2);
     printtabs(depth + 1);
     printf("Args:\n");
     list_node *curr = p->arg_types->first;
     while (curr)
     {
         general_type *tp = ((general_type *)curr->value);
-        tp->debug(tp, ctx, depth + 2);
+        tp->debug(tp, depth + 2);
         curr = curr->next;
     }
 }
 
 int func_type_size(general_type *self, context *ctx)
 {
+    UNUSED(self);
+    UNUSED(ctx);
     fprintf(stderr, "Function-type has no size!\n");
     exit(1);
 }
 
-void struct_type_debug(general_type *self, context *ctx, int depth)
+void struct_type_debug(general_type *self, int depth)
 {
     struct_type *p = (struct_type *)self->data;
     printtabs(depth);
@@ -319,7 +297,6 @@ general_type *new_primitive_type(char *type_name)
     ret->data = data;
     ret->debug = primitive_type_debug;
     ret->size = primitive_type_size;
-    ret->named_offset = primitive_type_named_offset;
     return ret;
 }
 
@@ -332,7 +309,6 @@ general_type *new_pointer_type(general_type *of)
     ret->data = data;
     ret->debug = pointer_type_debug;
     ret->size = pointer_type_size;
-    ret->named_offset = pointer_type_named_offset;
     return ret;
 }
 
@@ -346,7 +322,6 @@ general_type *new_func_type(general_type *return_type, linked_list *arg_types)
     ret->data = data;
     ret->debug = func_type_debug;
     ret->size = func_type_size;
-    ret->named_offset = func_type_named_offset;
     return ret;
 }
 
@@ -359,13 +334,12 @@ general_type *new_struct_type(char *struct_name)
     ret->data = data;
     ret->debug = struct_type_debug;
     ret->size = struct_type_size;
-    ret->named_offset = struct_type_named_offset;
     return ret;
 }
 
 int types_equal(general_type *a, general_type *b, context *ctx)
 {
-    if ((a->debug != b->debug) || (a->named_offset != b->named_offset) || (a->size != b->size))
+    if ((a->debug != b->debug) || (a->size != b->size))
     {
         return 0;
     }

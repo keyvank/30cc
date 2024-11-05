@@ -18,6 +18,7 @@ TEST_FILES = [
     "./examples/inp_func_ptrs.c",
     "./examples/inp_goto.c",
     "./examples/inp_break.c",
+    "./examples/inp_preprocess.c",
 ]
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"

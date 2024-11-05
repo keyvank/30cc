@@ -140,8 +140,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         if (!types_equal(left->type, right->type, ctx))
         {
             fprintf(stderr, "Cannot assign with an invalid type!\n");
-            left->type->debug(left->type, ctx, 0);
-            right->type->debug(right->type, ctx, 0);
+            left->type->debug(left->type, 0);
+            right->type->debug(right->type, 0);
             exit(1);
         }
     }
@@ -150,8 +150,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         if (left->type->kind != TYPE_PRIMITIVE || left->type->kind != TYPE_PRIMITIVE)
         {
             fprintf(stderr, "Binary-operators only valid for primitive types!\n");
-            left->type->debug(left->type, ctx, 0);
-            right->type->debug(right->type, ctx, 0);
+            left->type->debug(left->type, 0);
+            right->type->debug(right->type, 0);
             exit(1);
         }
     }

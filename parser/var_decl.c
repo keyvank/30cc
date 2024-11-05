@@ -22,8 +22,8 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
         if (!types_equal(tp->type, val->type, ctx))
         {
             fprintf(stderr, "Initializing '%s' with an incompatible type!\n", decl->identity);
-            tp->type->debug(tp->type, ctx, 0);
-            val->type->debug(val->type, ctx, 0);
+            tp->type->debug(tp->type, 0);
+            val->type->debug(val->type, 0);
             exit(1);
         }
         add_text(ctx, "mov rax, %s", val->code);
