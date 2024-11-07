@@ -40,6 +40,9 @@ void pop_list(linked_list *l)
             new_last->next = NULL;
         l->last = new_last;
         l->count--;
+        // When we pop the last element also set the first to null
+        if (l->count == 0)
+            l->first = NULL;
     }
 }
 

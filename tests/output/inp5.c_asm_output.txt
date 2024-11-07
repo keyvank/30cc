@@ -81,6 +81,7 @@ mov [rbx], rax
 mov [rsp+56], rax
 jmp __tmp_label_0
 __tmp_label_1:
+; exit loop
 mov rax, 10
 mov rbx, 8
 mul rbx
@@ -160,6 +161,7 @@ mov [rbx], rax
 mov [rsp+160], rax
 jmp __tmp_label_4
 __tmp_label_5:
+; exit loop
 mov rax, 0
 mov [rsp+56], rax
 ; enter loop
@@ -216,6 +218,7 @@ mov [rbx], rax
 mov [rsp+144], rax
 jmp __tmp_label_8
 __tmp_label_9:
+; exit loop
 mov rax, 1024
 mov rbx, 8
 mul rbx

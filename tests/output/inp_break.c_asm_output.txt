@@ -14,6 +14,7 @@ mov rbp, rsp
 sub rsp, __main_size
 mov rax, 0
 mov [rsp+0], rax
+; enter loop
 __tmp_label_0:
 mov rax, 1
 cmp rax, 0
@@ -47,8 +48,10 @@ __tmp_label_4:
 jmp __tmp_label_1
 jmp __tmp_label_0
 __tmp_label_1:
+; exit loop
 mov rax, 0
 mov [rsp+8], rax
+; enter loop
 __tmp_label_5:
 mov rax, rsp
 add rax, 8
@@ -128,8 +131,10 @@ mov [rbx], rax
 mov [rsp+56], rax
 jmp __tmp_label_5
 __tmp_label_6:
+; exit loop
 mov rax, 0
 mov [rsp+8], rax
+; enter loop
 __tmp_label_15:
 mov rax, rsp
 add rax, 8
@@ -163,6 +168,7 @@ call printf
 mov [rsp+64], rax
 mov rax, 0
 mov [rsp+64], rax
+; enter loop
 __tmp_label_19:
 mov rax, rsp
 add rax, 64
@@ -224,7 +230,8 @@ mov [rbx], rax
 ; postfix op finish
 jmp __tmp_label_19
 __tmp_label_20:
-jmp __tmp_label_20
+; exit loop
+jmp __tmp_label_16
 mov rax, rsp
 add rax, 8
 mov [rsp+32], rax
@@ -243,6 +250,7 @@ mov [rbx], rax
 mov [rsp+56], rax
 jmp __tmp_label_15
 __tmp_label_16:
+; exit loop
 mov rax, 0
 mov rsp, rbp
 pop rbp
