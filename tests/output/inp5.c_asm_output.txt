@@ -18,6 +18,7 @@ mov [rsp+0], rdi
 mov [rsp+8], rsi
 mov rax, 0
 mov [rsp+16], rax
+; enter loop
 __tmp_label_0:
 mov rax, rsp
 add rax, 16
@@ -80,6 +81,7 @@ mov [rbx], rax
 mov [rsp+56], rax
 jmp __tmp_label_0
 __tmp_label_1:
+; exit loop
 mov rax, 10
 mov rbx, 8
 mul rbx
@@ -96,6 +98,7 @@ mov rax, [rsp+48]
 mov [rsp+16], rax
 mov rax, 0
 mov [rsp+56], rax
+; enter loop
 __tmp_label_4:
 mov rax, rsp
 add rax, 56
@@ -158,8 +161,10 @@ mov [rbx], rax
 mov [rsp+160], rax
 jmp __tmp_label_4
 __tmp_label_5:
+; exit loop
 mov rax, 0
 mov [rsp+56], rax
+; enter loop
 __tmp_label_8:
 mov rax, rsp
 add rax, 56
@@ -213,6 +218,7 @@ mov [rbx], rax
 mov [rsp+144], rax
 jmp __tmp_label_8
 __tmp_label_9:
+; exit loop
 mov rax, 1024
 mov rbx, 8
 mul rbx

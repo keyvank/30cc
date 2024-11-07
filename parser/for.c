@@ -18,8 +18,8 @@ apply_result *for_apply(parser_node *node, context *ctx)
 
     forn->init->apply(forn->init, ctx);
 
-    char *start_for = new_label(ctx);
-    char *end_for = new_label(ctx);
+    char *start_for = new_loop_start_label(ctx);
+    char *end_for = new_loop_end_label(ctx);
 
     add_text(ctx, "%s:", start_for);
     apply_result *condv = forn->cond->apply(forn->cond, ctx);
@@ -30,11 +30,12 @@ apply_result *for_apply(parser_node *node, context *ctx)
     forn->act->apply(forn->act, ctx);
     add_text(ctx, "jmp %s", start_for);
     add_text(ctx, "%s:", end_for);
-
     while (ctx->symbol_table->count > num_syms)
     {
         pop_list(ctx->symbol_table);
     }
+
+    exit_loop(ctx);
 
     return NULL;
 }

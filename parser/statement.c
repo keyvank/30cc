@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "../lexer.h"
+#include "break.h"
 #include "parser.h"
 #include "statement.h"
 #include "var_decl.h"
@@ -165,6 +166,18 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     ret = parse_var_decl(&tkn);
     if (ret)
     {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_break(&tkn);
+    if (ret) {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
+    ret = parse_continue(&tkn);
+    if (ret) {
         *tkns_ptr = tkn;
         return ret;
     }

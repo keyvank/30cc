@@ -102,6 +102,10 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_TYPEDEF);
         else if (strcmp(val, "goto") == 0)
             return new_simp_tkn(TKN_GOTO);
+        else if (strcmp(val, "break") == 0)
+            return new_simp_tkn(TKN_BREAK);
+        else if (strcmp(val, "continue") == 0)
+            return new_simp_tkn(TKN_CONTINUE);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }

@@ -7,14 +7,13 @@
 #include "statement.h"
 #include "expr/expr.h"
 #include "../codegen/codegen.h"
-#include "../linked_list.h"
 
 apply_result *while_apply(parser_node *node, context *ctx)
 {
     node_while *w = (node_while *)node->data;
 
-    char *start_while = new_label(ctx);
-    char *end_while = new_label(ctx);
+    char *start_while = new_loop_start_label(ctx);
+    char *end_while = new_loop_end_label(ctx);
 
     add_text(ctx, "%s:", start_while);
     apply_result *condv = w->cond->apply(w->cond, ctx);
@@ -24,6 +23,8 @@ apply_result *while_apply(parser_node *node, context *ctx)
     w->body->apply(w->body, ctx);
     add_text(ctx, "jmp %s", start_while);
     add_text(ctx, "%s:", end_while);
+
+    exit_loop(ctx);
 
     return NULL;
 }

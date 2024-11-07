@@ -1,0 +1,171 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+    Statements:
+      VarDecl(i):
+        Type(Name: i):
+          TKN_INT
+        Value:
+          Literal(Type: 34, Value: 0)
+      While(
+        Cond:
+          Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            If(
+              Cond:
+                BinaryOp(Op: 65)
+                  Left:
+                    Variable(i)
+                  Right:
+                    Literal(Type: 34, Value: 0)
+              Body:
+                CompoundStatement
+                  FunctionCall:
+                    Function:
+                      Variable(printf)
+                    Args:
+                      Literal(Type: 33, Value: i is 0
+)
+                  Break
+            Break
+      For(
+        Init:
+          VarDecl(i):
+            Type(Name: i):
+              TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 69)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 0)
+        Act:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            If(
+              Cond:
+                BinaryOp(Op: 65)
+                  Left:
+                    Variable(i)
+                  Right:
+                    Literal(Type: 34, Value: 0)
+              Body:
+                CompoundStatement
+                  FunctionCall:
+                    Function:
+                      Variable(printf)
+                    Args:
+                      Literal(Type: 33, Value: i is 0
+)
+                  Break
+            If(
+              Cond:
+                BinaryOp(Op: 65)
+                  Left:
+                    Variable(i)
+                  Right:
+                    Literal(Type: 34, Value: 1)
+              Body:
+                CompoundStatement
+                  Break
+      For(
+        Init:
+          VarDecl(i):
+            Type(Name: i):
+              TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 69)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 0)
+        Act:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: i is %d
+)
+                Variable(i)
+            For(
+              Init:
+                VarDecl(j):
+                  Type(Name: j):
+                    TKN_INT
+                  Value:
+                    Literal(Type: 34, Value: 0)
+              Cond:
+                BinaryOp(Op: 66)
+                  Left:
+                    Variable(j)
+                  Right:
+                    Literal(Type: 34, Value: 10)
+              Act:
+                Postfix(Op: 73)
+                expression:
+                    Variable(j)
+              Body:
+                CompoundStatement
+                  FunctionCall:
+                    Function:
+                      Variable(printf)
+                    Args:
+                      Literal(Type: 33, Value: j is %d
+)
+                      Variable(j)
+                  If(
+                    Cond:
+                      BinaryOp(Op: 65)
+                        Left:
+                          Variable(j)
+                        Right:
+                          Literal(Type: 34, Value: 5)
+                    Body:
+                      CompoundStatement
+                        Break
+            Break
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
