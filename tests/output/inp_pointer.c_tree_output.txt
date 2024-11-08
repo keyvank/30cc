@@ -126,6 +126,26 @@ Program(
                   Postfix(Op: 73)
                   expression:
                       Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: *--a %d
+)
+          Deref:
+            unaryOp(Op: 76)
+            expression:
+                Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: *--a %d
+)
+          Deref:
+            unaryOp(Op: 76)
+            expression:
+                Variable(a)
       VarDecl(s):
         Type(Name: s):
           Pointer of:

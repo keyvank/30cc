@@ -110,6 +110,13 @@ apply_result *unary_op_apply(parser_node *node, context *ctx)
 
     int op = unary_op->op;
 
+    int unit = 1;
+    if (operand->type->kind == TYPE_POINTER)
+    {
+        general_type *type = ((node_type *)operand->type->data)->type;
+        unit = type->size(type, ctx);
+    }
+
     if (op == TKN_MIN)
     {
         add_text(ctx, "neg rax");
@@ -122,12 +129,12 @@ apply_result *unary_op_apply(parser_node *node, context *ctx)
     }
     else if (op == TKN_MINMIN)
     {
-        add_text(ctx, "sub rax, 1");
+        add_text(ctx, "sub rax, %d", unit);
         move_reg_to_var(ctx, operand, "rax");
     }
     else if (op == TKN_PLUSPLUS)
     {
-        add_text(ctx, "add rax, 1");
+        add_text(ctx, "add rax, %d", unit);
         move_reg_to_var(ctx, operand, "rax");
     }
 

@@ -14,6 +14,9 @@ int main()
         printf("*a: %d\n", *a++);
     }
 
+    printf("*--a %d\n", *--a);
+    printf("*--a %d\n", *--a);
+
     char *s = (char *)malloc(10 * sizeof(char));
     s[0] = '1';
     s[1] = 'h';
