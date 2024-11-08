@@ -14,7 +14,14 @@ int function() {
 }
 #endif
 
+#ifndef RELEASE
+int function2() {
+    return 99;
+}
+#endif
+
 int main() {
-    printf("value is %d\n", function());
+    printf("function(): %d\n", function());
+    printf("function2(): %d\n", function2());
     return 0;
 }

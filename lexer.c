@@ -161,6 +161,11 @@ typed_token *next_op(char **inp_ptr)
             *inp_ptr = inp;
             return new_simp_tkn(TKN_MACRO_IFDEF);
         }
+        else if (strcmp(val, "ifndef") == 0)
+        {
+            *inp_ptr = inp;
+            return new_simp_tkn(TKN_MACRO_IFNDEF);
+        }
         else if (strcmp(val, "endif") == 0)
         {
             *inp_ptr = inp;
