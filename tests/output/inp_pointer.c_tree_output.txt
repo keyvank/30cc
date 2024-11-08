@@ -1,0 +1,426 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: sz):
+        TKN_INT
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+    Statements:
+      VarDecl(a):
+        Type(Name: a):
+          Pointer of:
+            TKN_INT
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          TKN_INT
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
+      For(
+        Init:
+          VarDecl(i):
+            Type(Name: i):
+              TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 10)
+        Act:
+          BinaryOp(Op: 64)
+            Left:
+              Variable(i)
+            Right:
+              BinaryOp(Op: 72)
+                Left:
+                  Variable(i)
+                Right:
+                  Literal(Type: 34, Value: 1)
+        Body:
+          BinaryOp(Op: 64)
+            Left:
+              Access:
+                In:
+                  Variable(a)
+                Index:
+                  Variable(i)
+            Right:
+              BinaryOp(Op: 78)
+                Left:
+                  Literal(Type: 34, Value: 2)
+                Right:
+                  Variable(i)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: a[4] %d
+)
+          Deref:
+            BinaryOp(Op: 72)
+              Left:
+                Literal(Type: 34, Value: 4)
+              Right:
+                Variable(a)
+      VarDecl(i):
+        Type(Name: i):
+          TKN_INT
+        Value:
+          Literal(Type: 34, Value: 0)
+      While(
+        Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Postfix(Op: 73)
+              expression:
+                  Variable(i)
+            Right:
+              Literal(Type: 34, Value: 10)
+        Body:
+          CompoundStatement
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: *a: %d
+)
+                Deref:
+                  Postfix(Op: 73)
+                  expression:
+                      Variable(a)
+      VarDecl(s):
+        Type(Name: s):
+          Pointer of:
+            TKN_CHAR
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          TKN_CHAR
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_CHAR
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 0)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 1)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 2)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 3)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 4)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 5)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 6)
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(s)
+            Index:
+              Literal(Type: 34, Value: 7)
+        Right:
+          Literal(Type: 35)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: s %c
+)
+          Deref:
+            unaryOp(Op: 73)
+            expression:
+                Variable(s)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: s %s)
+          Variable(s)
+      VarDecl(arr):
+        Type(Name: arr):
+          Pointer of:
+            Pointer of:
+              TKN_INT
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          Pointer of:
+                            TKN_INT
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  Pointer of:
+                    TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            Variable(arr)
+        Right:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          TKN_INT
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            BinaryOp(Op: 72)
+              Left:
+                Variable(arr)
+              Right:
+                Literal(Type: 34, Value: 1)
+        Right:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          TKN_INT
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Variable(arr)
+            Index:
+              Literal(Type: 34, Value: 2)
+        Right:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  BinaryOp(Op: 78)
+                    Left:
+                      Literal(Type: 34, Value: 10)
+                    Right:
+                      SizeOf:
+                        Type(Name: (null)):
+                          TKN_INT
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_INT
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            In:
+              Access:
+                In:
+                  Variable(arr)
+                Index:
+                  Literal(Type: 34, Value: 0)
+            Index:
+              Literal(Type: 34, Value: 0)
+        Right:
+          Literal(Type: 34, Value: 69)
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            Access:
+              In:
+                BinaryOp(Op: 72)
+                  Left:
+                    Variable(arr)
+                  Right:
+                    Literal(Type: 34, Value: 1)
+              Index:
+                Literal(Type: 34, Value: 0)
+        Right:
+          Literal(Type: 34, Value: 99)
+      BinaryOp(Op: 64)
+        Left:
+          Deref:
+            BinaryOp(Op: 72)
+              Left:
+                Deref:
+                  BinaryOp(Op: 72)
+                    Left:
+                      Variable(arr)
+                    Right:
+                      Literal(Type: 34, Value: 1)
+              Right:
+                Literal(Type: 34, Value: 1)
+        Right:
+          Literal(Type: 34, Value: 109)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: arr[0][0] %d
+)
+          Access:
+            In:
+              Access:
+                In:
+                  Variable(arr)
+                Index:
+                  Literal(Type: 34, Value: 0)
+            Index:
+              Literal(Type: 34, Value: 0)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: arr[1][0] %d
+)
+          Deref:
+            Access:
+              In:
+                BinaryOp(Op: 72)
+                  Left:
+                    Variable(arr)
+                  Right:
+                    Literal(Type: 34, Value: 1)
+              Index:
+                Literal(Type: 34, Value: 0)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: arr[1][1] %d
+)
+          Access:
+            In:
+              Access:
+                In:
+                  Variable(arr)
+                Index:
+                  Literal(Type: 34, Value: 1)
+            Index:
+              Literal(Type: 34, Value: 1)
+  )
+)
