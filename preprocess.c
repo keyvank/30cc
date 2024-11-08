@@ -96,14 +96,18 @@ typed_token *preprocess(typed_token *tkns,
             }
         }
 
-        if (tkn->type_id == TKN_MACRO_IFDEF)
+        if (tkn->type_id == TKN_MACRO_IFDEF || tkn->type_id == TKN_MACRO_IFNDEF)
         {
+            int type = tkn->type_id;
+
             tkn = tkn->next;
             if (tkn->type_id == TKN_ID)
             {
                 char *name = cc_asprintf("%s", (char *)tkn->data);
                 define *def = find_def(defines, name);
-                if (!def)
+
+                if ((!def && type == TKN_MACRO_IFDEF) ||
+                        (def && type == TKN_MACRO_IFNDEF))
                 {
                     while (tkn && tkn->type_id != TKN_MACRO_ENDIF)
                     {
