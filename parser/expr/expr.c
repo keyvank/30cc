@@ -191,7 +191,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         }
     }
 
-    if (binop->op != TKN_ASSIGN &&
+    // TODO: clag gives warning when comparing int* and int
+    if (binop->op != TKN_ASSIGN && binop->op != TKN_EQ &&
             (left->type->kind == TYPE_POINTER || right->type->kind == TYPE_POINTER))
     {
         switch (binop->op)

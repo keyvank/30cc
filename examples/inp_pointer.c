@@ -45,5 +45,5 @@ int main()
     // Can assign 0 or TODO: null to pointers
     int *b = 0;
     if (b == 0)
-        printf("b is null pointer");
+        printf("b is null pointer\n");
 }
