@@ -29,6 +29,19 @@ void move_reg_to_var(context *ctx, apply_result *var, char *reg)
     }
 }
 
+void advance_ptr(context *ctx, apply_result *ptr,
+        apply_result *primitive)
+{
+    general_type *type = ((node_type *)ptr->type->data)->type;
+    int sz = type->size(type, ctx);
+
+    add_text(ctx, "mov rax, %s", primitive->code);
+    add_text(ctx, "mov rbx, %u", sz);
+    add_text(ctx, "mul rbx");
+    add_text(ctx, "mov rbx, rax");
+    add_text(ctx, "mov rax, %s", ptr->code);
+}
+
 void postfix_op_debug(int depth, parser_node *node)
 {
     node_postfix *postfix = (node_postfix *)node->data;
@@ -50,14 +63,21 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx)
 
     int op = postfix_op->op;
 
+    int unit = 1;
+    if (operand->type->kind == TYPE_POINTER)
+    {
+        general_type *type = ((node_type *)operand->type->data)->type;
+        unit = type->size(type, ctx);
+    }
+
     if (op == TKN_PLUSPLUS)
     {
-        add_text(ctx, "add rax, 1");
+        add_text(ctx, "add rax, %d", unit);
         move_reg_to_var(ctx, operand, "rax");
     }
     else if (op == TKN_MINMIN)
     {
-        add_text(ctx, "sub rax, 1");
+        add_text(ctx, "sub rax, %d", unit);
         move_reg_to_var(ctx, operand, "rax");
     }
     else
@@ -147,17 +167,49 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
     else
     {
-        if (left->type->kind != TYPE_PRIMITIVE || left->type->kind != TYPE_PRIMITIVE)
+        if ((left->type->kind != TYPE_PRIMITIVE && left->type->kind != TYPE_POINTER)
+                || (right->type->kind != TYPE_PRIMITIVE && right->type->kind != TYPE_POINTER))
         {
-            fprintf(stderr, "Binary-operators only valid for primitive types!\n");
+            fprintf(stderr, "Binary-operators only valid for primitive and pointer types!\n");
             left->type->debug(left->type, 0);
             right->type->debug(right->type, 0);
             exit(1);
         }
+
+        if (left->type->kind == TYPE_POINTER && right->type->kind == TYPE_POINTER)
+        {
+            fprintf(stderr,
+                    "Left-hand-size and Right-hand-side can't be pointers at the same time!\n");
+            exit(1);
+        }
     }
 
-    add_text(ctx, "mov rax, %s", left->code);
-    add_text(ctx, "mov rbx, %s", right->code);
+    if (binop->op != TKN_ASSIGN &&
+            (left->type->kind == TYPE_POINTER || right->type->kind == TYPE_POINTER))
+    {
+        switch (binop->op)
+        {
+        case TKN_PLUS:
+        case TKN_PLUSEQ:
+        case TKN_MIN:
+        case TKN_MINEQ:
+        {
+            if (left->type->kind == TYPE_POINTER)
+                advance_ptr(ctx, left, right);
+            else
+                advance_ptr(ctx, right, left);
+            break;
+        }
+        default:
+            fprintf(stderr, "Invalid op on pointer '%d'\n", binop->op);
+            exit(1);
+        }
+    }
+    else
+    {
+        add_text(ctx, "mov rax, %s", left->code);
+        add_text(ctx, "mov rbx, %s", right->code);
+    }
 
     char *l1 = NULL;
     char *l2 = NULL;
@@ -271,7 +323,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         exit(1);
     }
 
-    symbol *tmp = new_temp_symbol(ctx, left->type);
+    symbol *tmp = right->type->kind == TYPE_POINTER ?
+        new_temp_symbol(ctx, right->type) : new_temp_symbol(ctx, left->type);
     add_text(ctx, "mov %s, rax", tmp->repl);
     return new_result(tmp->repl, tmp->type);
 }
