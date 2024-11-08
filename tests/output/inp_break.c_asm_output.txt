@@ -12,8 +12,10 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+;define variable i
 mov rax, 0
 mov [rsp+0], rax
+;end define variable i
 ; enter loop
 __tmp_label_0:
 mov rax, 1
@@ -49,8 +51,10 @@ jmp __tmp_label_1
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop
+;define variable i
 mov rax, 0
 mov [rsp+8], rax
+;end define variable i
 ; enter loop
 __tmp_label_5:
 mov rax, rsp
@@ -132,8 +136,10 @@ mov [rsp+56], rax
 jmp __tmp_label_5
 __tmp_label_6:
 ; exit loop
+;define variable i
 mov rax, 0
 mov [rsp+8], rax
+;end define variable i
 ; enter loop
 __tmp_label_15:
 mov rax, rsp
@@ -166,8 +172,10 @@ add rax, 0
 mov [rsp+56], rax
 call printf
 mov [rsp+64], rax
+;define variable j
 mov rax, 0
 mov [rsp+64], rax
+;end define variable j
 ; enter loop
 __tmp_label_19:
 mov rax, rsp

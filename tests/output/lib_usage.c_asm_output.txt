@@ -29,10 +29,14 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+;define variable a
 mov rax, __temp_str_8
 mov [rsp+0], rax
+;end define variable a
+;define variable b
 mov rax, __temp_str_9
 mov [rsp+8], rax
+;end define variable b
 mov rax, 100
 mov [rsp+24], rax
 mov rdi, [rsp+24]
@@ -41,8 +45,10 @@ add rax, 0
 mov [rsp+32], rax
 call malloc
 mov [rsp+40], rax
+;define variable c
 mov rax, [rsp+40]
 mov [rsp+16], rax
+;end define variable c
 mov rax, rsp
 add rax, 16
 mov [rsp+48], rax

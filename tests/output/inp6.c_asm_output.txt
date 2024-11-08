@@ -19,8 +19,10 @@ add rax, 0
 mov [rsp+16], rax
 call malloc
 mov [rsp+24], rax
+;define variable m
 mov rax, [rsp+24]
 mov [rsp+0], rax
+;end define variable m
 mov rax, rsp
 add rax, 0
 mov [rsp+32], rax

@@ -448,5 +448,19 @@ Program(
             TKN_INT
         Value:
           Literal(Type: 34, Value: 0)
+      If(
+        Cond:
+          BinaryOp(Op: 65)
+            Left:
+              Variable(b)
+            Right:
+              Literal(Type: 34, Value: 0)
+        Body:
+          FunctionCall:
+            Function:
+              Variable(printf)
+            Args:
+              Literal(Type: 33, Value: b is null pointer
+)
   )
 )
