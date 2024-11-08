@@ -13,6 +13,7 @@ extern typed_token *process(const char *filename, int depth);
 typedef struct
 {
     char *id;
+    linked_list *arg_names;
     typed_token *replace;
 } define;
 
@@ -95,8 +96,47 @@ typed_token *preprocess(typed_token *tkns,
                     {
                         char *name = cc_asprintf("%s", (char *)curr->data);
                         curr = curr->next;
+
+                        linked_list *arg_names = new_linked_list();
+
+                        if (curr->type_id == TKN_L_PAREN)
+                        {
+                            curr = curr->next;
+                            while (curr)
+                            {
+                                if (curr->type_id == TKN_R_PAREN)
+                                {
+                                    break;
+                                }
+                                if (curr->type_id == TKN_ID)
+                                {
+                                    add_to_list(arg_names, curr->data);
+                                    curr = curr->next;
+                                }
+                                else
+                                {
+                                    fprintf(stderr, "Unexpected input!");
+                                    exit(1);
+                                }
+
+                                if (curr->type_id == TKN_COMMA)
+                                {
+                                    curr = curr->next;
+                                }
+                                else
+                                {
+                                    if (curr->type_id != TKN_R_PAREN)
+                                    {
+                                        fprintf(stderr, "Unexpected input!");
+                                        exit(1);
+                                    }
+                                }
+                            }
+                        }
+
                         define *def = (define *)malloc(sizeof(define));
                         def->id = name;
+                        def->arg_names = arg_names;
                         def->replace = clone(curr);
                         add_to_list(defines, (void *)def);
                         curr = curr->next;
@@ -196,6 +236,53 @@ typed_token *preprocess(typed_token *tkns,
             define *def = find_def(defines, (char *)tkn->data);
             if (def)
             {
+                tkn = tkn->next;
+                if (tkn->type_id == TKN_L_PAREN)
+                {
+                    tkn = tkn->next;
+                    linked_list *args = new_linked_list();
+                    while (tkn)
+                    {
+                        if (tkn->type_id == TKN_R_PAREN)
+                        {
+                            break;
+                        }
+
+                        linked_list *arg = new_linked_list();
+                        while (tkn->type_id != TKN_R_PAREN && tkn->type_id != TKN_COMMA && tkn->type_id != TKN_EOF)
+                        {
+                            add_to_list(arg, tkn);
+                            tkn = tkn->next;
+                        }
+                        if (arg->count == 0)
+                        {
+                            fprintf(stderr, "Unexpected input!");
+                            exit(1);
+                        }
+                        else
+                        {
+                            add_to_list(args, arg);
+                        }
+
+                        if (tkn->type_id == TKN_COMMA)
+                        {
+                            tkn = tkn->next;
+                        }
+                        else
+                        {
+                            if (tkn->type_id != TKN_R_PAREN)
+                            {
+                                fprintf(stderr, "Unexpected input!");
+                                exit(1);
+                            }
+                        }
+                    }
+
+                    printf("ARGS COUNT: %u\n", args->count);
+                    exit(0);
+                }
+
+                
 
                 // Add tkn
                 if (!first)
@@ -209,7 +296,6 @@ typed_token *preprocess(typed_token *tkns,
                     last = last->next;
                 }
 
-                tkn = tkn->next;
                 continue;
             }
         }
