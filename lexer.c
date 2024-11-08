@@ -45,6 +45,17 @@ void str_tkn_debug(typed_token *tkn)
 {
     printf("%s(%s)\n", STR(TKN_LIT_STR), (char *)tkn->data);
 }
+void directive_tkn_debug(typed_token *tkn)
+{
+    typed_token *curr = tkn->data;
+    printf("%s:\n", STR(TKN_DIRECTIVE));
+    while (curr)
+    {
+        printf("  ");
+        curr->debug(curr);
+        curr = curr->next;
+    }
+}
 void char_tkn_debug(typed_token *tkn)
 {
     printf("%s(%c)\n", STR(TKN_LIT_CHAR), *((char *)tkn->data));
@@ -136,40 +147,22 @@ typed_token *next_op(char **inp_ptr)
     }
     if (*inp == '#')
     {
-        char c;
-        char *val = (char *)malloc(128);
-        char *val_ptr = val;
-
-        while (*++inp && (c = is_letter_or_num(*inp)))
+        char *line = (char *)malloc(256);
+        int sz = 0;
+        inp++;
+        while (*inp)
         {
-            *val_ptr++ = c;
-        }
-        *val_ptr = '\0';
-
-        if (strcmp(val, "define") == 0)
-        {
-            *inp_ptr = inp;
-            return new_simp_tkn(TKN_MACRO_DEFINE);
-        }
-        else if (strcmp(val, "include") == 0)
-        {
-            *inp_ptr = inp;
-            return new_simp_tkn(TKN_MACRO_INCLUDE);
-        }
-        else if (strcmp(val, "ifdef") == 0)
-        {
-            *inp_ptr = inp;
-            return new_simp_tkn(TKN_MACRO_IFDEF);
-        }
-        else if (strcmp(val, "ifndef") == 0)
-        {
-            *inp_ptr = inp;
-            return new_simp_tkn(TKN_MACRO_IFNDEF);
-        }
-        else if (strcmp(val, "endif") == 0)
-        {
-            *inp_ptr = inp;
-            return new_simp_tkn(TKN_MACRO_ENDIF);
+            if (*inp == '\n' || *inp == '\0')
+            {
+                inp += 1;
+                line[sz] = '\0';
+                *inp_ptr = inp;
+                typed_token *dir_tkns = tokenize(line);
+                return new_tkn(TKN_DIRECTIVE, dir_tkns, directive_tkn_debug);
+            }
+            line[sz] = *inp;
+            sz++;
+            inp++;
         }
     }
     if (*inp == '?')
@@ -533,7 +526,9 @@ typed_token *tokenize(char *inp)
 {
     char **ptr = &inp;
     typed_token *t;
-    while ((t = next_token(ptr))->type_id == TKN_COMMENT) {}
+    while ((t = next_token(ptr))->type_id == TKN_COMMENT)
+    {
+    }
 
     typed_token *first = t;
 

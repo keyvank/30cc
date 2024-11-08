@@ -1,9 +1,10 @@
 section .data
 __printf_size: equ 16
 __function_size: equ 16
+__function_size: equ 16
 __function2_size: equ 16
-__temp_str_3 db `function(): %d\n`, 0
-__temp_str_4 db `function2(): %d\n`, 0
+__temp_str_4 db `function(): %d\n`, 0
+__temp_str_5 db `function2(): %d\n`, 0
 __main_size: equ 96
 section .text
 extern printf
@@ -13,6 +14,18 @@ push rbp
 mov rbp, rsp
 sub rsp, __function_size
 mov rax, 69
+mov rsp, rbp
+pop rbp
+ret
+mov rsp, rbp
+pop rbp
+ret
+global function
+function:
+push rbp
+mov rbp, rsp
+sub rsp, __function_size
+mov rax, 13
 mov rsp, rbp
 pop rbp
 ret
@@ -36,7 +49,7 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
-mov rax, __temp_str_3
+mov rax, __temp_str_4
 mov [rsp+0], rax
 mov rax, rsp
 add rax, 0
@@ -52,7 +65,7 @@ add rax, 0
 mov [rsp+32], rax
 call printf
 mov [rsp+40], rax
-mov rax, __temp_str_4
+mov rax, __temp_str_5
 mov [rsp+40], rax
 mov rax, rsp
 add rax, 0

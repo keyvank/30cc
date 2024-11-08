@@ -76,10 +76,6 @@ typed_token *tokenize(char *inp);
 #define TKN_CONTINUE 96
 
 #define TKN_COMMENT 128
-#define TKN_MACRO_DEFINE 129
-#define TKN_MACRO_IFDEF 130
-#define TKN_MACRO_IFNDEF 131
-#define TKN_MACRO_ENDIF 132
-#define TKN_MACRO_INCLUDE 133
+#define TKN_DIRECTIVE 129
 
 #endif
