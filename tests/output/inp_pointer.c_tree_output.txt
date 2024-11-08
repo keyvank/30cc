@@ -442,5 +442,11 @@ Program(
                   Literal(Type: 34, Value: 1)
             Index:
               Literal(Type: 34, Value: 1)
+      VarDecl(b):
+        Type(Name: b):
+          Pointer of:
+            TKN_INT
+        Value:
+          Literal(Type: 34, Value: 0)
   )
 )
