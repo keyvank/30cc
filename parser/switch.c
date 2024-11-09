@@ -61,12 +61,12 @@ apply_result *switch_apply(parser_node *node, context *ctx) {
         parser_node *case_data = (parser_node*)stmt_case->value;
         apply_result *case_apply = case_data->apply(case_data, ctx);
         add_text(ctx, "cmp rax, %s", case_apply->code);
-        add_text(ctx, "je case_label_%d", (int)location->value);
+        add_text(ctx, "je case_%s_%d", end_switch_label, (int)location->value);
         stmt_case = stmt_case->next;
         location = location->next;
     }
 
-    add_text(ctx, "jmp case_label_%d", switch_node->default_location);
+    add_text(ctx, "jmp case_%s_%d", end_switch_label, switch_node->default_location);
 
     location = switch_node->case_locations->first;
     list_node *stmt = switch_node->statements->first;
@@ -75,13 +75,13 @@ apply_result *switch_apply(parser_node *node, context *ctx) {
         add_text(ctx, "; stmt loc %d", stmt_count);
         if (location != NULL) {
             while (stmt_count == (int) location->value) {
-                add_text(ctx, "case_label_%d:", (int) location->value);
+                add_text(ctx, "case_%s_%d:", end_switch_label, (int) location->value);
                 location = location->next;
                 if (location == NULL) break;
             }
         }
         if (stmt_count == switch_node->default_location) {
-            add_text(ctx, "case_label_%d:", switch_node->default_location);
+            add_text(ctx, "case_%s_%d:", end_switch_label, switch_node->default_location);
         }
         parser_node *stmt_data = (parser_node*)stmt->value;
         stmt_data->apply(stmt_data, ctx);
