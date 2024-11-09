@@ -10,7 +10,8 @@ __temp_str_7 db `s %s`, 0
 __temp_str_8 db `arr[0][0] %d\n`, 0
 __temp_str_9 db `arr[1][0] %d\n`, 0
 __temp_str_10 db `arr[1][1] %d\n`, 0
-__main_size: equ 1280
+__temp_str_11 db `b is null pointer\n`, 0
+__main_size: equ 1328
 section .text
 extern printf
 extern malloc
@@ -31,10 +32,14 @@ add rax, 0
 mov [rsp+24], rax
 call malloc
 mov [rsp+32], rax
+;define variable a
 mov rax, [rsp+32]
 mov [rsp+0], rax
+;end define variable a
+;define variable i
 mov rax, 0
 mov [rsp+40], rax
+;end define variable i
 ; enter loop
 __tmp_label_0:
 mov rax, rsp
@@ -124,8 +129,10 @@ add rax, 0
 mov [rsp+88], rax
 call printf
 mov [rsp+96], rax
+;define variable i
 mov rax, 0
 mov [rsp+96], rax
+;end define variable i
 ; enter loop
 __tmp_label_4:
 ; postfix op apply
@@ -243,8 +250,10 @@ add rax, 0
 mov [rsp+264], rax
 call malloc
 mov [rsp+272], rax
+;define variable s
 mov rax, [rsp+272]
 mov [rsp+240], rax
+;end define variable s
 mov rax, rsp
 add rax, 240
 mov [rsp+280], rax
@@ -433,8 +442,10 @@ add rax, 0
 mov [rsp+522], rax
 call malloc
 mov [rsp+530], rax
+;define variable arr
 mov rax, [rsp+530]
 mov [rsp+498], rax
+;end define variable arr
 mov rax, rsp
 add rax, 498
 mov [rsp+538], rax
@@ -698,6 +709,35 @@ add rax, 0
 mov [rsp+1098], rax
 call printf
 mov [rsp+1106], rax
+;define variable b
+mov rax, 0
+mov [rsp+1106], rax
+;end define variable b
+mov rax, rsp
+add rax, 1106
+mov [rsp+1114], rax
+mov rax, [rsp+1106]
+mov rbx, 0
+cmp rax, rbx
+je __tmp_label_8
+mov rax, 0
+jmp __tmp_label_9
+__tmp_label_8:
+mov rax, 1
+__tmp_label_9:
+mov [rsp+1122], rax
+mov rax, 0
+cmp rax, [rsp+1122]
+je __tmp_label_10
+mov rax, __temp_str_11
+mov [rsp+1130], rax
+mov rdi, [rsp+1130]
+mov rax, rsp
+add rax, 0
+mov [rsp+1138], rax
+call printf
+mov [rsp+1146], rax
+__tmp_label_10:
 mov rsp, rbp
 pop rbp
 ret

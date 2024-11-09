@@ -8,7 +8,6 @@
 #include "type.h"
 #include "expr/expr.h"
 #include "../codegen/codegen.h"
-#include "../linked_list.h"
 
 apply_result *var_decl_apply(parser_node *node, context *ctx)
 {
@@ -26,8 +25,10 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
             val->type->debug(val->type, 0);
             exit(1);
         }
+        add_text(ctx, ";define variable %s", decl->identity);
         add_text(ctx, "mov rax, %s", val->code);
         add_text(ctx, "mov %s, rax", sym->repl);
+        add_text(ctx, ";end define variable %s", decl->identity);
     }
     return NULL;
 }

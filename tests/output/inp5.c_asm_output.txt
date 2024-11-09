@@ -16,8 +16,10 @@ mov rbp, rsp
 sub rsp, __main_size
 mov [rsp+0], rdi
 mov [rsp+8], rsi
+;define variable i
 mov rax, 0
 mov [rsp+16], rax
+;end define variable i
 ; enter loop
 __tmp_label_0:
 mov rax, rsp
@@ -94,10 +96,14 @@ add rax, 0
 mov [rsp+40], rax
 call malloc
 mov [rsp+48], rax
+;define variable a
 mov rax, [rsp+48]
 mov [rsp+16], rax
+;end define variable a
+;define variable i
 mov rax, 0
 mov [rsp+56], rax
+;end define variable i
 ; enter loop
 __tmp_label_4:
 mov rax, rsp
@@ -162,8 +168,10 @@ mov [rsp+160], rax
 jmp __tmp_label_4
 __tmp_label_5:
 ; exit loop
+;define variable i
 mov rax, 0
 mov [rsp+56], rax
+;end define variable i
 ; enter loop
 __tmp_label_8:
 mov rax, rsp
@@ -231,10 +239,14 @@ add rax, 0
 mov [rsp+80], rax
 call malloc
 mov [rsp+88], rax
+;define variable b
 mov rax, [rsp+88]
 mov [rsp+56], rax
+;end define variable b
+;define variable c
 mov rax, 123
 mov [rsp+96], rax
+;end define variable c
 mov rax, rsp
 add rax, 56
 mov [rsp+104], rax
@@ -323,8 +335,10 @@ add rax, 0
 mov [rsp+304], rax
 call malloc
 mov [rsp+312], rax
+;define variable str
 mov rax, [rsp+312]
 mov [rsp+280], rax
+;end define variable str
 mov rax, rsp
 add rax, 280
 mov [rsp+320], rax

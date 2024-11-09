@@ -240,8 +240,10 @@ add rax, 0
 mov [rsp+1008], rax
 call malloc
 mov [rsp+1016], rax
+;define variable salam
 mov rax, [rsp+1016]
 mov [rsp+984], rax
+;end define variable salam
 mov rax, rsp
 add rax, 984
 mov [rsp+1024], rax
@@ -272,8 +274,10 @@ mov rax, [rbx]
 mov [rsp+1080], rax
 mov rax, [rsp+1072]
 mov [rsp+1088], rax
+;define variable s5
 mov rax, [rsp+1088]
 mov [rsp+1056], rax
+;end define variable s5
 mov rax, __temp_str_3
 mov [rsp+1096], rax
 mov rax, rsp

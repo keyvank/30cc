@@ -11,8 +11,10 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+;define variable a
 mov rax, 2
 mov [rsp+0], rax
+;end define variable a
 mov rax, __temp_str_1
 mov [rsp+8], rax
 mov rdi, [rsp+8]

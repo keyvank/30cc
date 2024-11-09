@@ -41,4 +41,9 @@ int main()
     printf("arr[0][0] %d\n", arr[0][0]);
     printf("arr[1][0] %d\n", *(arr+1)[0]);
     printf("arr[1][1] %d\n", arr[1][1]);
+
+    // Can assign 0 or TODO: null to pointers
+    int *b = 0;
+    if (b == 0)
+        printf("b is null pointer\n");
 }

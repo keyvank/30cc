@@ -6,10 +6,14 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+;define variable a
 mov rax, 2
 mov [rsp+0], rax
+;end define variable a
+;define variable b
 mov rax, 3
 mov [rsp+8], rax
+;end define variable b
 mov rax, rsp
 add rax, 0
 mov [rsp+16], rax
