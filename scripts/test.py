@@ -20,6 +20,7 @@ TEST_FILES = [
     "./examples/inp_break.c",
     "./examples/inp_preprocess.c",
     "./examples/inp_pointer.c",
+    "./examples/switch.c",
 ]
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"

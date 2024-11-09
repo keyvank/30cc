@@ -106,6 +106,12 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_BREAK);
         else if (strcmp(val, "continue") == 0)
             return new_simp_tkn(TKN_CONTINUE);
+        else if (strcmp(val, "switch") == 0)
+            return new_simp_tkn(TKN_SWITCH);
+        else if (strcmp(val, "case") == 0)
+            return new_simp_tkn(TKN_CASE);
+        else if (strcmp(val, "default") == 0)
+            return new_simp_tkn(TKN_DEFAULT);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
