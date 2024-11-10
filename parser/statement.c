@@ -5,6 +5,7 @@
 #include "break.h"
 #include "parser.h"
 #include "statement.h"
+#include "switch.h"
 #include "var_decl.h"
 #include "expr/expr.h"
 #include "for.h"
@@ -245,6 +246,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
             return NULL;
         }
     }
+
+    ret = parse_switch(&tkn);
+    if (ret)
+        {
+        *tkns_ptr = tkn;
+        return ret;
+        }
 
     return NULL;
 }
