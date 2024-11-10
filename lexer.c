@@ -132,7 +132,7 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
     }
 }
 
-typed_token *next_op(char **inp_ptr)
+typed_token *next_op(char **inp_ptr, int is_newline)
 {
     char *inp = *inp_ptr;
     if (is_num(*inp))
@@ -151,7 +151,7 @@ typed_token *next_op(char **inp_ptr)
         *val = a;
         return new_tkn(TKN_LIT_INT, (void *)val, int_lit_tkn_debug);
     }
-    if (*inp == '#')
+    if (is_newline && *inp == '#')
     {
         char *line = (char *)malloc(256);
         int sz = 0;
@@ -160,7 +160,6 @@ typed_token *next_op(char **inp_ptr)
         {
             if (*inp == '\n' || *inp == '\0')
             {
-                inp += 1;
                 line[sz] = '\0';
                 *inp_ptr = inp;
                 typed_token *dir_tkns = tokenize(line);
@@ -220,6 +219,11 @@ typed_token *next_op(char **inp_ptr)
     {
         *inp_ptr += 1;
         return new_simp_tkn(TKN_COMMA);
+    }
+    if (*inp == '#')
+    {
+        *inp_ptr += 1;
+        return new_simp_tkn(TKN_SHARP);
     }
     if (*inp == '&')
     {
@@ -494,19 +498,22 @@ typed_token *next_op(char **inp_ptr)
     return NULL;
 }
 
-void skip_whitespaces(char **inp_ptr)
+int skip_whitespaces(char **inp_ptr)
 {
     char *inp = *inp_ptr;
+    int is_newline = 1;
     while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
+        is_newline = (*inp == '\n');
         inp++;
     }
     *inp_ptr = inp;
+    return is_newline;
 }
 
 typed_token *next_token(char **inp_ptr)
 {
-    skip_whitespaces(inp_ptr);
+    int is_newline = skip_whitespaces(inp_ptr);
 
     char *inp = *inp_ptr;
 
@@ -516,7 +523,7 @@ typed_token *next_token(char **inp_ptr)
 
     typed_token *tkn = next_keyword_or_identifier(inp_ptr);
     if (!tkn)
-        tkn = next_op(inp_ptr);
+        tkn = next_op(inp_ptr, is_newline);
     if (tkn)
     {
         return tkn;

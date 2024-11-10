@@ -14,7 +14,7 @@ typedef struct
 {
     char *id;
     linked_list *arg_names;
-    typed_token *replace;
+    linked_list *replace;
 } define;
 
 typed_token *clone(typed_token *tkn)
@@ -104,6 +104,7 @@ typed_token *preprocess(typed_token *tkns,
                             {
                                 if (curr->type_id == TKN_R_PAREN)
                                 {
+                                    curr = curr->next;
                                     break;
                                 }
                                 if (curr->type_id == TKN_ID)
@@ -135,7 +136,16 @@ typed_token *preprocess(typed_token *tkns,
                         define *def = (define *)malloc(sizeof(define));
                         def->id = name;
                         def->arg_names = arg_names;
-                        def->replace = clone(curr);
+                        def->replace = new_linked_list();
+                        while (curr)
+                        {
+                            if (curr->type_id == TKN_EOF)
+                            {
+                                break;
+                            }
+                            add_to_list(def->replace, clone(curr));
+                            curr = curr->next;
+                        }
                         add_to_list(defines, (void *)def);
                         curr = curr->next;
                         tkn = tkn->next;
@@ -212,14 +222,15 @@ typed_token *preprocess(typed_token *tkns,
             if (def)
             {
                 tkn = tkn->next;
+                linked_list *args = new_linked_list();
                 if (tkn->type_id == TKN_L_PAREN)
                 {
                     tkn = tkn->next;
-                    linked_list *args = new_linked_list();
                     while (tkn)
                     {
                         if (tkn->type_id == TKN_R_PAREN)
                         {
+                            tkn = tkn->next;
                             break;
                         }
 
@@ -252,12 +263,88 @@ typed_token *preprocess(typed_token *tkns,
                             }
                         }
                     }
-
-                    printf("ARGS COUNT: %u\n", args->count);
-                    exit(0);
                 }
 
-                add_to_list(result, clone(def->replace));
+                list_node *repl_curr = def->replace->first;
+                while (repl_curr)
+                {
+                    typed_token *tkn = repl_curr->value;
+                    if (tkn->type_id == TKN_ID)
+                    {
+                        list_node *curr_arg = args->first;
+                        list_node *curr_arg_name = def->arg_names->first;
+                        int found = 0;
+                        while (curr_arg_name)
+                        {
+                            if (strcmp(curr_arg_name->value, tkn->data) == 0)
+                            {
+                                list_node *arg_tkn = ((linked_list *)curr_arg->value)->first;
+                                while (arg_tkn)
+                                {
+                                    add_to_list(result, arg_tkn->value);
+                                    arg_tkn = arg_tkn->next;
+                                }
+                                found = 1;
+                                break;
+                            }
+                            curr_arg_name = curr_arg_name->next;
+                            curr_arg = curr_arg->next;
+                        }
+                        if (!found)
+                        {
+                            add_to_list(result, tkn);
+                        }
+                    }
+                    else if (tkn->type_id == TKN_SHARP)
+                    {
+                        repl_curr = repl_curr->next;
+                        tkn = repl_curr->value;
+                        if (tkn->type_id != TKN_ID)
+                        {
+                            fprintf(stderr, "Expected identifier!\n");
+                            exit(1);
+                        }
+
+                        list_node *curr_arg = args->first;
+                        list_node *curr_arg_name = def->arg_names->first;
+                        int found = 0;
+                        while (curr_arg_name)
+                        {
+                            if (strcmp(curr_arg_name->value, tkn->data) == 0)
+                            {
+                                linked_list *subs_list = (linked_list *)curr_arg->value;
+                                if (subs_list->count != 1)
+                                {
+                                    fprintf(stderr, "Invalid stringified arg!");
+                                    exit(1);
+                                }
+                                typed_token *id = (typed_token *)subs_list->first->value;
+                                if (id->type_id != TKN_ID)
+                                {
+                                    fprintf(stderr, "Input must be an identifier!");
+                                    exit(1);
+                                }
+                                typed_token *str_tkn = new_tkn(TKN_LIT_STR, id->data, str_tkn_debug);
+                                add_to_list(result, str_tkn);
+                                found = 1;
+                                break;
+                            }
+                            curr_arg_name = curr_arg_name->next;
+                            curr_arg = curr_arg->next;
+                        }
+                        if (!found)
+                        {
+                            fprintf(stderr, "Stringified arg not provided!");
+                            exit(1);
+                        }
+                    }
+                    else
+                    {
+
+                        add_to_list(result, tkn);
+                    }
+                    repl_curr = repl_curr->next;
+                }
 
                 continue;
             }
