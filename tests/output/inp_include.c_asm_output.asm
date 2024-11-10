@@ -1,3 +1,13 @@
+TKN_INT
+TKN_ID(function2)
+TKN_L_PAREN
+TKN_R_PAREN
+TKN_L_BRACE
+TKN_RETURN
+TKN_LIT_INT(13)
+TKN_SEMICOLON
+TKN_R_BRACE
+TKN_EOF
 section .data
 __function2_size: equ 16
 __function_size: equ 16

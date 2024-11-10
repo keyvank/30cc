@@ -24,6 +24,7 @@ TEST_FILES = {
     "./examples/switch.c": [],
     "./examples/inp_loop.c": [],
     "./examples/lots_of_variables.c": [],
+    "./examples/inp_arg_macro.c": [],
 }
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"
@@ -118,7 +119,7 @@ def main():
     diff_count = 0
     failed = False
     for test_file in TEST_FILES.keys():
-        for mode in ["lex", "tree", "asm"]:
+        for mode in ['lex', 'prep', 'tree', 'asm']:
             extension = "txt"
             if mode == "asm":
                 extension = "asm"
