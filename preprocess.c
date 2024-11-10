@@ -74,9 +74,7 @@ typed_token *preprocess(typed_token *tkns,
     char *filename = NULL;
 
     linked_list *defines = new_linked_list();
-
-    typed_token *first = NULL;
-    typed_token *last = NULL;
+    linked_list *result = new_linked_list();
 
     typed_token *tkn = tkns;
     while (tkn)
@@ -188,39 +186,16 @@ typed_token *preprocess(typed_token *tkns,
                     if (curr->type_id == TKN_LIT_STR)
                     {
                         filename = get_path(path, curr->data);
-                        typed_token *next_tkn = process(filename, depth + 1);
+                        typed_token *new_tkn = process(filename, depth + 1);
 
-                        if (next_tkn == NULL)
+                        while (new_tkn)
                         {
-                            // cleanup
-                            while (first)
+                            if (new_tkn->type_id == TKN_EOF)
                             {
-                                typed_token *next = first->next;
-                                free(first);
-                                first = next;
-                            }
-                            goto cleanup;
-                        }
-
-                        if (!first)
-                        {
-                            first = next_tkn;
-                            last = first;
-                        }
-                        else
-                        {
-                            last->next = next_tkn;
-                        }
-
-                        while (last->next)
-                        {
-                            // ignore TKN_EOF for included files
-                            if (last->next->type_id == TKN_EOF)
-                            {
-                                free(last->next);
                                 break;
                             }
-                            last = last->next;
+                            add_to_list(result, new_tkn);
+                            new_tkn = new_tkn->next;
                         }
 
                         curr = curr->next;
@@ -282,35 +257,13 @@ typed_token *preprocess(typed_token *tkns,
                     exit(0);
                 }
 
-                
-
-                // Add tkn
-                if (!first)
-                {
-                    first = clone(def->replace);
-                    last = first;
-                }
-                else
-                {
-                    last->next = clone(def->replace);
-                    last = last->next;
-                }
+                add_to_list(result, clone(def->replace));
 
                 continue;
             }
         }
 
-        // Add tkn
-        if (!first)
-        {
-            first = clone(tkn);
-            last = first;
-        }
-        else
-        {
-            last->next = clone(tkn);
-            last = last->next;
-        }
+        add_to_list(result, clone(tkn));
 
         tkn = tkn->next;
     }
@@ -319,5 +272,18 @@ cleanup:
     if (filename)
         free(filename);
 
-    return first;
+    list_node *curr = result->first;
+    typed_token *res_first = (typed_token *)curr->value;
+    typed_token *curr_tkn = res_first;
+    while (curr)
+    {
+        curr = curr->next;
+        if (curr)
+        {
+            curr_tkn->next = (typed_token *)curr->value;
+            curr_tkn = curr_tkn->next;
+        }
+    }
+
+    return res_first;
 }
