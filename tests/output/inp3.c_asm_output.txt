@@ -212,8 +212,10 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
+;define variable i2
 mov rax, 0
 mov [rsp+0], rax
+;end define variable i2
 ; enter loop
 __tmp_label_10:
 mov rax, rsp
@@ -290,10 +292,14 @@ add rax, 0
 mov [rsp+58], rax
 call printf
 mov [rsp+66], rax
+;define variable a
 mov rax, 10
 mov [rsp+66], rax
+;end define variable a
+;define variable b
 mov rax, 20
 mov [rsp+74], rax
+;end define variable b
 mov rax, rsp
 add rax, 66
 mov [rsp+90], rax
@@ -304,8 +310,10 @@ mov rax, [rsp+66]
 mov rbx, [rsp+74]
 mul rbx
 mov [rsp+106], rax
+;define variable c
 mov rax, [rsp+106]
 mov [rsp+82], rax
+;end define variable c
 mov rax, rsp
 add rax, 82
 mov [rsp+122], rax
@@ -323,8 +331,10 @@ mov rax, [rsp+82]
 mov rbx, [rsp+146]
 mul rbx
 mov [rsp+154], rax
+;define variable d
 mov rax, [rsp+154]
 mov [rsp+114], rax
+;end define variable d
 mov rax, __temp_str_8
 mov [rsp+162], rax
 mov rax, rsp
@@ -379,8 +389,10 @@ add rax, 82
 mov [rsp+282], rax
 mov rax, [rsp+282]
 mov [rsp+290], rax
+;define variable cc
 mov rax, [rsp+290]
 mov [rsp+274], rax
+;end define variable cc
 mov rax, __temp_str_9
 mov [rsp+298], rax
 mov rax, rsp
@@ -713,8 +725,10 @@ add rax, 0
 mov [rsp+994], rax
 call printf
 mov [rsp+1002], rax
+;define variable i
 mov rax, 0
 mov [rsp+1002], rax
+;end define variable i
 ; enter loop
 __tmp_label_20:
 mov rax, rsp

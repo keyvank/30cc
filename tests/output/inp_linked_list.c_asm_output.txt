@@ -21,8 +21,10 @@ add rax, 0
 mov [rsp+16], rax
 call malloc
 mov [rsp+24], rax
+;define variable ret
 mov rax, [rsp+24]
 mov [rsp+0], rax
+;end define variable ret
 mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
@@ -48,8 +50,10 @@ add rax, 0
 mov [rsp+32], rax
 call malloc
 mov [rsp+40], rax
+;define variable new
 mov rax, [rsp+40]
 mov [rsp+16], rax
+;end define variable new
 mov rax, rsp
 add rax, 16
 mov [rsp+48], rax
@@ -114,8 +118,10 @@ mov [rsp+184], rax
 mov rax, [rax]
 mov [rsp+192], rax
 ;;;
+;define variable curr
 mov rax, [rsp+192]
 mov [rsp+168], rax
+;end define variable curr
 ; enter loop
 __tmp_label_2:
 mov rax, rsp
@@ -207,8 +213,10 @@ add rax, 0
 mov [rsp+8], rax
 call new_list
 mov [rsp+16], rax
+;define variable lst
 mov rax, [rsp+16]
 mov [rsp+0], rax
+;end define variable lst
 mov rax, rsp
 add rax, 0
 mov [rsp+24], rax
@@ -275,8 +283,10 @@ mov [rsp+168], rax
 mov rax, [rax]
 mov [rsp+176], rax
 ;;;
+;define variable curr
 mov rax, [rsp+176]
 mov [rsp+152], rax
+;end define variable curr
 ; enter loop
 __tmp_label_4:
 mov rax, rsp

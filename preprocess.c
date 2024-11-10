@@ -118,9 +118,16 @@ typed_token *preprocess(typed_token *tkns,
                         if ((!def && strcmp(dir_type, "ifdef") == 0) ||
                             (def && strcmp(dir_type, "ifndef") == 0))
                         {
-                            while (curr && strcmp(dir_type, "endif") != 0)
+                            while (tkn)
                             {
-                                curr = curr->next;
+                                if (tkn->type_id == TKN_DIRECTIVE)
+                                {
+                                    if (strcmp(((typed_token *)tkn->data)->data, "endif") == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                tkn = tkn->next;
                             }
                         }
                         curr = curr->next;

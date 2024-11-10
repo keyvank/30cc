@@ -339,6 +339,17 @@ general_type *new_struct_type(char *struct_name)
 
 int types_equal(general_type *a, general_type *b, context *ctx)
 {
+    // Special case for handling assigning NULL to pointers
+    if (a->kind == TYPE_POINTER)
+    {
+        if (b->kind == TYPE_PRIMITIVE)
+        {
+            char *type_name = ((primitive_type *)b->data)->type_name;
+            if (strcmp(type_name, "TKN_INT") == 0)
+                return 1;
+        }
+    }
+
     if ((a->debug != b->debug) || (a->size != b->size))
     {
         return 0;

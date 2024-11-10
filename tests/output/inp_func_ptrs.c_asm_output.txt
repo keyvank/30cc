@@ -106,8 +106,10 @@ add rax, 0
 mov [rsp+24], rax
 call malloc
 mov [rsp+32], rax
+;define variable funcs
 mov rax, [rsp+32]
 mov [rsp+0], rax
+;end define variable funcs
 mov rax, rsp
 add rax, 0
 mov [rsp+40], rax
@@ -148,8 +150,10 @@ mov rax, mul
 mov rbx, [rsp+88]
 mov [rbx], rax
 mov [rsp+112], rax
+;define variable i
 mov rax, 0
 mov [rsp+120], rax
+;end define variable i
 ; enter loop
 __tmp_label_0:
 mov rax, rsp
@@ -196,8 +200,10 @@ add rax, 0
 mov [rsp+208], rax
 call handle
 mov [rsp+216], rax
+;define variable res
 mov rax, [rsp+216]
 mov [rsp+144], rax
+;end define variable res
 mov rax, __temp_str_5
 mov [rsp+224], rax
 mov rax, rsp
