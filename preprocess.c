@@ -68,7 +68,7 @@ char *get_path(const char *path, const char *ipath)
 }
 
 typed_token *preprocess(typed_token *tkns,
-        const char *path, int depth)
+                        const char *path, int depth)
 {
     char *filename = NULL;
 
@@ -80,48 +80,115 @@ typed_token *preprocess(typed_token *tkns,
     typed_token *tkn = tkns;
     while (tkn)
     {
-        if (tkn->type_id == TKN_MACRO_DEFINE)
+        if (tkn->type_id == TKN_DIRECTIVE)
         {
-            tkn = tkn->next;
-            if (tkn->type_id == TKN_ID)
+            typed_token *curr = tkn->data;
+
+            if (curr->type_id == TKN_ID)
             {
-                char *name = cc_asprintf("%s", (char *)tkn->data);
-                tkn = tkn->next;
-                define *def = (define *)malloc(sizeof(define));
-                def->id = name;
-                def->replace = clone(tkn);
-                add_to_list(defines, (void *)def);
-                tkn = tkn->next;
-                continue;
-            }
-        }
+                char *dir_type = curr->data;
 
-        if (tkn->type_id == TKN_MACRO_IFDEF || tkn->type_id == TKN_MACRO_IFNDEF)
-        {
-            int type = tkn->type_id;
-
-            tkn = tkn->next;
-            if (tkn->type_id == TKN_ID)
-            {
-                char *name = cc_asprintf("%s", (char *)tkn->data);
-                define *def = find_def(defines, name);
-
-                if ((!def && type == TKN_MACRO_IFDEF) ||
-                        (def && type == TKN_MACRO_IFNDEF))
+                if (strcmp(dir_type, "define") == 0)
                 {
-                    while (tkn && tkn->type_id != TKN_MACRO_ENDIF)
+                    curr = curr->next;
+                    if (curr->type_id == TKN_ID)
                     {
+                        char *name = cc_asprintf("%s", (char *)curr->data);
+                        curr = curr->next;
+                        define *def = (define *)malloc(sizeof(define));
+                        def->id = name;
+                        def->replace = clone(curr);
+                        add_to_list(defines, (void *)def);
+                        curr = curr->next;
                         tkn = tkn->next;
+                        continue;
                     }
                 }
-                tkn = tkn->next;
-                continue;
+
+                if (strcmp(dir_type, "ifdef") == 0 || strcmp(dir_type, "ifndef") == 0)
+                {
+                    int type = curr->type_id;
+
+                    curr = curr->next;
+                    if (curr->type_id == TKN_ID)
+                    {
+                        char *name = cc_asprintf("%s", (char *)curr->data);
+                        define *def = find_def(defines, name);
+
+                        if ((!def && strcmp(dir_type, "ifdef") == 0) ||
+                            (def && strcmp(dir_type, "ifndef") == 0))
+                        {
+                            while (tkn)
+                            {
+                                if (tkn->type_id == TKN_DIRECTIVE)
+                                {
+                                    if (strcmp(((typed_token *)tkn->data)->data, "endif") == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                tkn = tkn->next;
+                            }
+                        }
+                        curr = curr->next;
+                        tkn = tkn->next;
+                        continue;
+                    }
+                }
+                if (strcmp(curr->data, "endif") == 0)
+                {
+                    curr = curr->next;
+                    tkn = tkn->next;
+                    continue;
+                }
+
+                if (strcmp(curr->data, "include") == 0)
+                {
+                    curr = curr->next;
+                    if (curr->type_id == TKN_LIT_STR)
+                    {
+                        filename = get_path(path, curr->data);
+                        typed_token *next_tkn = process(filename, depth + 1);
+
+                        if (next_tkn == NULL)
+                        {
+                            // cleanup
+                            while (first)
+                            {
+                                typed_token *next = first->next;
+                                free(first);
+                                first = next;
+                            }
+                            goto cleanup;
+                        }
+
+                        if (!first)
+                        {
+                            first = next_tkn;
+                            last = first;
+                        }
+                        else
+                        {
+                            last->next = next_tkn;
+                        }
+
+                        while (last->next)
+                        {
+                            // ignore TKN_EOF for included files
+                            if (last->next->type_id == TKN_EOF)
+                            {
+                                free(last->next);
+                                break;
+                            }
+                            last = last->next;
+                        }
+
+                        curr = curr->next;
+                        tkn = tkn->next;
+                        continue;
+                    }
+                }
             }
-        }
-        if (tkn->type_id == TKN_MACRO_ENDIF)
-        {
-            tkn = tkn->next;
-            continue;
         }
 
         if (tkn->type_id == TKN_ID)
@@ -139,51 +206,6 @@ typed_token *preprocess(typed_token *tkns,
                 else
                 {
                     last->next = clone(def->replace);
-                    last = last->next;
-                }
-
-                tkn = tkn->next;
-                continue;
-            }
-        }
-
-        if (tkn->type_id == TKN_MACRO_INCLUDE)
-        {
-            tkn = tkn->next;
-            if (tkn->type_id == TKN_LIT_STR)
-            {
-                filename = get_path(path, tkn->data);
-                typed_token *next_tkn = process(filename, depth+1);
-
-                if (next_tkn == NULL)
-                {
-                    // cleanup
-                    while (first)
-                    {
-                        typed_token *next = first->next;
-                        free(first);
-                        first = next;
-                    }
-                    goto cleanup;
-                }
-
-                if (!first)
-                {
-                    first = next_tkn;
-                    last = first;
-                }
-                else
-                {
-                    last->next = next_tkn;
-                }
-
-                while (last->next)
-                {
-                    // ignore TKN_EOF for included files
-                    if (last->next->type_id == TKN_EOF) {
-                        free(last->next);
-                        break;
-                    }
                     last = last->next;
                 }
 
