@@ -1,0 +1,116 @@
+Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+    Statements:
+      VarDecl(grade):
+        Type(Name: grade):
+          TKN_CHAR
+        Value:
+          Literal(Type: 35)
+      VarDecl(s):
+        Type(Name: s):
+          Pointer of:
+            TKN_CHAR
+      Swtich(
+        Cond:
+          Variable(grade)
+        Body:
+          Statements:
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: 1)
+            BinaryOp(Op: 64)
+              Left:
+                Variable(s)
+              Right:
+                Literal(Type: 33, Value: Excellent!
+)
+            Break
+            BinaryOp(Op: 64)
+              Left:
+                Variable(s)
+              Right:
+                Literal(Type: 33, Value: Well done
+)
+            Break
+            BinaryOp(Op: 64)
+              Left:
+                Variable(s)
+              Right:
+                Literal(Type: 33, Value: You passed
+)
+            Break
+            BinaryOp(Op: 64)
+              Left:
+                Variable(s)
+              Right:
+                Literal(Type: 33, Value: Better try again
+)
+            Break
+            BinaryOp(Op: 64)
+              Left:
+                Variable(s)
+              Right:
+                Literal(Type: 33, Value: Invalid grade
+)
+          Cases:
+1:             Literal(Type: 35)
+3:             Literal(Type: 35)
+3:             Literal(Type: 35)
+5:             Literal(Type: 35)
+7:             Literal(Type: 35)
+default location: 9
+      Swtich(
+        Cond:
+          Literal(Type: 34, Value: 1)
+        Body:
+          Statements:
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: default case
+)
+          Cases:
+      Swtich(
+        Cond:
+          Literal(Type: 34, Value: 2)
+        Body:
+          Statements:
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: is two
+)
+          Cases:
+0:             Literal(Type: 34, Value: 2)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %s
+)
+          Variable(s)
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
