@@ -72,7 +72,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
     add_text(ctx, "add rsi, 8");
 
     add_text(ctx, "call main");
-    add_text(ctx, "mov rdi, 0");
+    add_text(ctx, "mov rdi, rax");
     add_text(ctx, "call exit");
     return NULL;
 }

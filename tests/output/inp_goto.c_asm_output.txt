@@ -67,5 +67,5 @@ mov rdi, [rsp]
 mov rsi, rsp
 add rsi, 8
 call main
-mov rdi, 0
+mov rdi, rax
 call exit
