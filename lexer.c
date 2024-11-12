@@ -501,7 +501,7 @@ typed_token *next_op(char **inp_ptr, int is_newline)
 int skip_whitespaces(char **inp_ptr)
 {
     char *inp = *inp_ptr;
-    int is_newline = 1;
+    int is_newline = *inp == '\n';
     while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
         is_newline = (*inp == '\n');

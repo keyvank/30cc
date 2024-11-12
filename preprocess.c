@@ -68,6 +68,23 @@ char *get_path(const char *path, const char *ipath)
     return realpath;
 }
 
+typed_token *chain_tokens(linked_list *tkns)
+{
+    list_node *curr = tkns->first;
+    typed_token *res_first = (typed_token *)curr->value;
+    typed_token *curr_tkn = res_first;
+    while (curr)
+    {
+        curr = curr->next;
+        if (curr)
+        {
+            curr_tkn->next = (typed_token *)curr->value;
+            curr_tkn = curr_tkn->next;
+        }
+    }
+    return res_first;
+}
+
 typed_token *preprocess(typed_token *tkns,
                         const char *path, int depth)
 {
@@ -359,18 +376,5 @@ cleanup:
     if (filename)
         free(filename);
 
-    list_node *curr = result->first;
-    typed_token *res_first = (typed_token *)curr->value;
-    typed_token *curr_tkn = res_first;
-    while (curr)
-    {
-        curr = curr->next;
-        if (curr)
-        {
-            curr_tkn->next = (typed_token *)curr->value;
-            curr_tkn = curr_tkn->next;
-        }
-    }
-
-    return res_first;
+    return chain_tokens(result);
 }
