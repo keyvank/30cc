@@ -6,6 +6,7 @@
 #include "parser/program.h"
 #include "linked_list.h"
 #include "preprocess.h"
+#include "prep2.h"
 
 char *read_source_file(FILE *fp);
 
@@ -57,6 +58,8 @@ typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
             t = t->next;
         }
     }
+    prep(tkn);
+    exit(0);
     tkn = preprocess(tkn, filename, depth);
     if (log_prep)
     {
