@@ -1,4 +1,7 @@
 /temp_snapshots
+out
+out.asm
+output.txt
 
 # Prerequisites
 *.d

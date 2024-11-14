@@ -1,0 +1,11 @@
+./out ""
+-------------
+i is 0
+i is 0
+i is 0
+j is 0
+j is 1
+j is 2
+j is 3
+j is 4
+j is 5

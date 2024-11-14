@@ -1,0 +1,4 @@
+./out ""
+-------------
+Func #0 result: 30
+Func #1 result: 200
