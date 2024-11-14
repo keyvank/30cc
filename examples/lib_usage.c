@@ -38,4 +38,5 @@ int main()
     }
     fprintf(file_ptr, "Hello, World!\n");
     fclose(file_ptr);
+    return 0;
 }

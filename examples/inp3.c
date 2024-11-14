@@ -110,4 +110,5 @@ int main()
     printf("\nDONE!\n");
 
     printf("%u\n", (1 && 1) && (1 && 1));
+    return 0;
 }

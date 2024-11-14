@@ -169,6 +169,10 @@ add rax, 0
 mov [rsp+280], rax
 call fclose
 mov [rsp+288], rax
+mov rax, 0
+mov rsp, rbp
+pop rbp
+ret
 mov rsp, rbp
 pop rbp
 ret

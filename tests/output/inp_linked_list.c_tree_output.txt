@@ -243,6 +243,8 @@ Program(
                     Type(Name: (null)):
                       Pointer of:
                         struct node
+      Return:
+        Literal(Type: 34, Value: 0)
   )
   Struct(Name: node_, Typedef: node)
     VarDecl(val):

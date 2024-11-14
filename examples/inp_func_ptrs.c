@@ -27,4 +27,5 @@ int main()
         int res = handle(10, 20, funcs[i]);
         printf("Func #%u result: %u\n", i, res);
     }
+    return 0;
 }

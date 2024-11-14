@@ -139,7 +139,13 @@ def main():
             inputs = [""]
 
         for i, inp in enumerate(inputs):
-            command = subprocess.run(["make", "run", f"program={test_file}", f"arguments={inp}"],capture_output=True, text=True, check=True)
+            try:
+                command = subprocess.run(["make", "run", f"program={test_file}", f"arguments={inp}"],capture_output=True, text=True, check=True)
+                output = command.stdout
+            except subprocess.CalledProcessError as e:
+                print(f"Error: Failed to run {test_file} with input `{inp}`")
+                print(f"Error message: {e.stderr}")
+                continue
             if i == 0 and len(inputs) == 1:
                 output_file = os.path.join(
                     OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output.txt"
@@ -153,7 +159,6 @@ def main():
                 revert_snapshot(output_file)
                 continue
 
-            output = command.stdout
             if os.path.exists(output_file):
                 if not compare_outputs(output_file, output):
                     diff_count += 1

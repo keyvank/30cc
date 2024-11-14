@@ -738,6 +738,10 @@ mov [rsp+1138], rax
 call printf
 mov [rsp+1146], rax
 __tmp_label_10:
+mov rax, 0
+mov rsp, rbp
+pop rbp
+ret
 mov rsp, rbp
 pop rbp
 ret

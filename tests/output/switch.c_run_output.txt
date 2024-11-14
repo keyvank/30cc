@@ -1,0 +1,6 @@
+./out ""
+-------------
+default case
+is two
+Well done
+

@@ -837,6 +837,10 @@ add rax, 0
 mov [rsp+1058], rax
 call printf
 mov [rsp+1066], rax
+mov rax, 0
+mov rsp, rbp
+pop rbp
+ret
 mov rsp, rbp
 pop rbp
 ret

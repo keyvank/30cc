@@ -51,4 +51,5 @@ int main()
         printf("%u\n", curr->val);
         curr = (struct node *)curr->next;
     }
+    return 0;
 }

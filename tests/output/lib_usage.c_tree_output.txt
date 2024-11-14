@@ -198,6 +198,8 @@ Program(
           Variable(fclose)
         Args:
           Variable(file_ptr)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
   Struct(Name: (null), Typedef: FILE)
     VarDecl(_ptr):

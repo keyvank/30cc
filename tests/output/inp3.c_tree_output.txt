@@ -446,6 +446,8 @@ DONE!
                   Literal(Type: 34, Value: 1)
                 Right:
                   Literal(Type: 34, Value: 1)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
   Struct(Name: MyStruct, Typedef: (null))
     VarDecl(a):
