@@ -5,6 +5,7 @@
 #include "parser.h"
 
 parser_node *parse_while(typed_token **tkns_ptr);
+parser_node *parse_do_while(typed_token **tkns_ptr);
 
 typedef struct
 {
