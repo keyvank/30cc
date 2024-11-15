@@ -1,0 +1,31 @@
+./out ""
+-------------
+I: 0
+I: 1
+I: 2
+I: 3
+I: 4
+I: 5
+I: 6
+I: 7
+I: 8
+I: 9
+a n 99
+Result: 42700
+Addr of a: 2871703538
+Addr of c: 2871703554
+Double of 123: 242074
+Fact: 5
+Fact: 4
+Fact: 3
+Fact: 2
+Fact: 1
+Fact: 0
+Factorial 5: 120
+TRUE
+TRUE
+1
+1 1 2 3 5 8 13 21 34
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 
+DONE!
+1

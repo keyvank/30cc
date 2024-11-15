@@ -296,5 +296,7 @@ Program(
         Args:
           Literal(Type: 33, Value: %s)
           Variable(str)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
 )

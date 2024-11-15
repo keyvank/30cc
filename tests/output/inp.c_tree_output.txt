@@ -65,5 +65,7 @@ Program(
         Args:
           Literal(Type: 33, Value: %u )
           Variable(i)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
 )

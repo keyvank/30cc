@@ -71,20 +71,19 @@ int main()
 
 ## Usage
 
-- First build the compiler using `gcc` by running: `make`
-- Compile to NASM x86-64 assembly: `./a.out INP_FILE.c --asm > out.asm`
-- Assemble with NASM: `nasm -f elf64 out.asm -o out.o`
-- Link with the C standard-library: `ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc -o out out.o`
-- Run the output: `./out`
+```
+make run program=./examples/inp.c argumnets=something
+```
 
 ## Contribute
 
-The missing parts are:
+### Tests
 
-- [ ] `#include` macro.
-- [ ] `#ifdef`, `#define` and `#ifndef` macros.
-- [ ] Field-access in structs (The `.` and `->` operators)
-- [ ] Type-checker
-- [ ] Some binary expressions (`+=`, `-=`, `*=`)
-- [ ] Unary expressions (`++`, `--`, `-`, `!`)
-- [ ] Pointer-integer addition (Based on the type-size)
+To run tests use
+```
+python scripts/test.py update
+```
+
+Then check the output of the tests.
+
+If you are on mac use `./scripts/test_mac.sh` to run the tests in docker.

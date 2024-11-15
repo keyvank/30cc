@@ -10,4 +10,5 @@ int main()
     }
 
     printf("%u ", i);
+    return 0;
 }

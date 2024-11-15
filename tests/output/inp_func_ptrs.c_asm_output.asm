@@ -237,6 +237,10 @@ mov [rbx], rax
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop
+mov rax, 0
+mov rsp, rbp
+pop rbp
+ret
 mov rsp, rbp
 pop rbp
 ret

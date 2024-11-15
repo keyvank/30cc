@@ -195,5 +195,7 @@ Program(
 )
                 Variable(i)
                 Variable(res)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
 )

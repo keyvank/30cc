@@ -27,4 +27,5 @@ int main(int argc, char **argv)
     str[3] = '\n';
     str[4] = '\0';
     printf("%s", str);
+    return 0;
 }

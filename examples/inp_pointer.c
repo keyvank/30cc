@@ -46,4 +46,5 @@ int main()
     int *b = 0;
     if (b == 0)
         printf("b is null pointer\n");
+    return 0;
 }

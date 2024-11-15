@@ -462,5 +462,7 @@ Program(
             Args:
               Literal(Type: 33, Value: b is null pointer
 )
+      Return:
+        Literal(Type: 34, Value: 0)
   )
 )

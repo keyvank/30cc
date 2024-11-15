@@ -4,24 +4,25 @@ import sys
 import difflib
 import shutil
 
-TEST_FILES = [
-    "./examples/inp.c",
-    "./examples/inp3.c",
-    "./examples/inp4.c",
-    "./examples/inp5.c",
-    "./examples/inp6.c",
-    "./examples/inp_bin_op.c",
-    "./examples/inp_linked_list.c",
-    "./examples/inp_unary_op.c",
-    "./examples/lib_usage.c",
-    "./examples/inp_include.c",
-    "./examples/inp_func_ptrs.c",
-    "./examples/inp_goto.c",
-    "./examples/inp_break.c",
-    "./examples/inp_preprocess.c",
-    "./examples/inp_pointer.c",
-    "./examples/switch.c",
-]
+# map of file names to their input(s)
+TEST_FILES = {
+    "./examples/inp.c": [],
+    "./examples/inp3.c": [],
+    "./examples/inp4.c": [],
+    "./examples/inp5.c": ["", "a b c"],
+    "./examples/inp6.c": [],
+    "./examples/inp_bin_op.c": [],
+    "./examples/inp_linked_list.c": [],
+    "./examples/inp_unary_op.c": [],
+    "./examples/lib_usage.c": [],
+    "./examples/inp_include.c": [],
+    "./examples/inp_func_ptrs.c": [],
+    "./examples/inp_goto.c": [],
+    "./examples/inp_break.c": [],
+    "./examples/inp_preprocess.c": [],
+    "./examples/inp_pointer.c": [],
+    "./examples/switch.c": [],
+}
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"
 TEMP_FOLDER = "temp_snapshots"
@@ -90,7 +91,7 @@ def main():
             sys.exit(1)
 
     try:
-        subprocess.run(["make", "-B", C_PROGRAM_NAME], check=True)
+        subprocess.run(["make", C_PROGRAM_NAME], check=True)
         print(f"Successfully built {C_PROGRAM_NAME}")
     except subprocess.CalledProcessError:
         print(f"Error: Failed to build {C_PROGRAM_NAME}")
@@ -108,17 +109,20 @@ def main():
         return
 
     diff_count = 0
-    for test_file in TEST_FILES:
+    for test_file in TEST_FILES.keys():
         for mode in ['lex', 'tree', 'asm']:
+            extension = "txt"
+            if mode == "asm":
+                extension = "asm"
             output_file = os.path.join(
-                OUTPUT_FOLDER, f"{os.path.basename(test_file)}_{mode}_output.txt"
+                OUTPUT_FOLDER, f"{os.path.basename(test_file)}_{mode}_output.{extension}"
             )
+            output = run(test_file, mode)
 
             if mode == "revert":
                 revert_snapshot(output_file)
                 continue
 
-            output = run(test_file, mode)
             if output is None:
                 continue
 
@@ -129,6 +133,40 @@ def main():
                     update_output(output_file, output, True)
             else:
                 update_output(output_file, output)
+
+    for test_file, inputs in TEST_FILES.items():
+        if len(inputs) == 0:
+            inputs = [""]
+
+        for i, inp in enumerate(inputs):
+            try:
+                command = subprocess.run(["make", "run", f"program={test_file}", f"arguments={inp}"],capture_output=True, text=True, check=True)
+                output = command.stdout
+            except subprocess.CalledProcessError as e:
+                print(f"Error: Failed to run {test_file} with input `{inp}`")
+                print(f"Error message: {e.stderr}")
+                continue
+            if i == 0 and len(inputs) == 1:
+                output_file = os.path.join(
+                    OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output.txt"
+                )
+            else:
+                output_file = os.path.join(
+                    OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output_{i}.txt"
+                )
+
+            if mode == "revert":
+                revert_snapshot(output_file)
+                continue
+
+            if os.path.exists(output_file):
+                if not compare_outputs(output_file, output):
+                    diff_count += 1
+                    print(f"Alert: New output differs from {output_file}")
+                    update_output(output_file, output, True)
+            else:
+                update_output(output_file, output)
+
 
     print(f"found {diff_count} differences in snapshots")
 
