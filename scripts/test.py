@@ -22,6 +22,7 @@ TEST_FILES = {
     "./examples/inp_preprocess.c": [],
     "./examples/inp_pointer.c": [],
     "./examples/switch.c": [],
+    "./examples/inp_loop.c": [],
 }
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"

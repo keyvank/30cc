@@ -204,6 +204,13 @@ parser_node *parse_statement(typed_token **tkns_ptr)
         return ret;
     }
 
+    ret = parse_do_while(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
     ret = parse_if(&tkn);
     if (ret)
     {
