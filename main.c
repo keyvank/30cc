@@ -5,8 +5,7 @@
 #include "lexer.h"
 #include "parser/program.h"
 #include "linked_list.h"
-#include "preprocess.h"
-#include "prep2.h"
+#include "preprocess/preprocess.h"
 
 char *read_source_file(FILE *fp);
 
@@ -58,7 +57,7 @@ typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
             t = t->next;
         }
     }
-    tkn = prep(tkn);
+    tkn = preprocess(tkn);
     if (log_prep)
     {
         typed_token *t = tkn;

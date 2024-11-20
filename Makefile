@@ -5,8 +5,8 @@ CFLAGS := -std=gnu99 -Og -ggdb
 
 BIN := a.out
 
-$(BIN): *.h *.c parser/*.c parser/*.h parser/expr/*.c parser/expr/*.h codegen/*.c codegen/*.h
-	$(CC) $(CFLAGS) *.c parser/*.c codegen/*.c parser/expr/*.c
+$(BIN): *.h *.c parser/*.c parser/*.h parser/expr/*.c parser/expr/*.h codegen/*.c codegen/*.h preprocess/*.c preprocess/*.h
+	$(CC) $(CFLAGS) *.c parser/*.c codegen/*.c parser/expr/*.c preprocess/*.c
 
 run: $(BIN)
 	@./a.out $(program) --asm > out.asm
