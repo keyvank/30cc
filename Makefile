@@ -5,7 +5,7 @@ CFLAGS := -std=gnu99 -Og -ggdb
 
 BIN := a.out
 
-$(BIN): *.c parser/*.c parser/expr/*.c codegen/*.c
+$(BIN): *.h *.c parser/*.c parser/*.h parser/expr/*.c parser/expr/*.h codegen/*.c codegen/*.h
 	$(CC) $(CFLAGS) *.c parser/*.c codegen/*.c parser/expr/*.c
 
 run: $(BIN)

@@ -58,9 +58,7 @@ typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
             t = t->next;
         }
     }
-    prep(tkn);
-    exit(0);
-    tkn = preprocess(tkn, filename, depth);
+    tkn = prep(tkn);
     if (log_prep)
     {
         typed_token *t = tkn;
