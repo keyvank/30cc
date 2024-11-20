@@ -51,17 +51,18 @@ apply_result *program_apply(parser_node *node, context *ctx)
         for (int j = 0; j < nfd->num_params; j++)
         {
             general_type *tp = ((node_type *)nfd->params[j]->data)->type;
-            //tp->debug(tp, ctx, 0);
+            // tp->debug(tp, ctx, 0);
             add_to_list(arg_types, tp);
         }
         general_type *func_type = new_pointer_type(new_func_type(func_ret, arg_types));
-        //func_type->debug(func_type, ctx, 0);
+        // func_type->debug(func_type, ctx, 0);
         new_global_symbol(ctx, func_name, func_name, func_type);
         node->apply(node, ctx);
         int total = ctx->stack_size;
         // 16 byte stack alignment
         total = total + (16 - total % 16);
-        add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
+        if(nfd->statements)
+            add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
     }
     add_text(ctx, "extern exit");
     add_text(ctx, "global _start");
