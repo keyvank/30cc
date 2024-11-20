@@ -498,10 +498,10 @@ typed_token *next_op(char **inp_ptr, int is_newline)
     return NULL;
 }
 
-int skip_whitespaces(char **inp_ptr)
+int skip_whitespaces(char **inp_ptr, int is_start)
 {
     char *inp = *inp_ptr;
-    int is_newline = 1;
+    int is_newline = is_start || (*inp == '\n');
     while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
         is_newline = (*inp == '\n');
@@ -511,9 +511,10 @@ int skip_whitespaces(char **inp_ptr)
     return is_newline;
 }
 
-typed_token *next_token(char **inp_ptr)
+typed_token *next_token(char **inp_ptr, int *is_start)
 {
-    int is_newline = skip_whitespaces(inp_ptr);
+    int is_newline = skip_whitespaces(inp_ptr, *is_start);
+    *is_start = 0;
 
     char *inp = *inp_ptr;
 
@@ -537,9 +538,10 @@ typed_token *next_token(char **inp_ptr)
 
 typed_token *tokenize(char *inp)
 {
+    int is_start = 1;
     char **ptr = &inp;
     typed_token *t;
-    while ((t = next_token(ptr))->type_id == TKN_COMMENT)
+    while ((t = next_token(ptr, &is_start))->type_id == TKN_COMMENT)
     {
     }
 
@@ -551,7 +553,7 @@ typed_token *tokenize(char *inp)
         {
             break;
         }
-        typed_token *next = next_token(ptr);
+        typed_token *next = next_token(ptr, &is_start);
         if (next->type_id == TKN_COMMENT)
         {
             continue;
