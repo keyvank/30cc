@@ -30,7 +30,7 @@ void move_reg_to_var(context *ctx, apply_result *var, char *reg)
 }
 
 void advance_ptr(context *ctx, apply_result *ptr,
-        apply_result *primitive)
+                 apply_result *primitive)
 {
     general_type *type = ((node_type *)ptr->type->data)->type;
     int sz = type->size(type, ctx);
@@ -174,8 +174,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
     else
     {
-        if ((left->type->kind != TYPE_PRIMITIVE && left->type->kind != TYPE_POINTER)
-                || (right->type->kind != TYPE_PRIMITIVE && right->type->kind != TYPE_POINTER))
+        if ((left->type->kind != TYPE_PRIMITIVE && left->type->kind != TYPE_POINTER) || (right->type->kind != TYPE_PRIMITIVE && right->type->kind != TYPE_POINTER))
         {
             fprintf(stderr, "Binary-operators only valid for primitive and pointer types!\n");
             left->type->debug(left->type, 0);
@@ -193,7 +192,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
     // TODO: clag gives warning when comparing int* and int
     if (binop->op != TKN_ASSIGN && binop->op != TKN_EQ &&
-            (left->type->kind == TYPE_POINTER || right->type->kind == TYPE_POINTER))
+        (left->type->kind == TYPE_POINTER || right->type->kind == TYPE_POINTER))
     {
         switch (binop->op)
         {
@@ -221,15 +220,27 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
     char *l1 = NULL;
     char *l2 = NULL;
+    char *l3 = NULL;
+    char *l4 = NULL;
+
+    int lsize = left->type->size(left->type, ctx);
+    int rsize = right->type->size(right->type, ctx);
+    symbol *tmp = right->type->kind == TYPE_POINTER ? new_temp_symbol(ctx, right->type) : new_temp_symbol(ctx, left->type);
 
     switch (binop->op)
     {
     case TKN_ASSIGN:
-        add_text(ctx, "mov rax, %s", right->code);
+        if (lsize == 1)
+            add_text(ctx, "mov al, %s", right->code);
+        else
+            add_text(ctx, "mov rax, %s", right->code);
         if (left->addr_code)
         {
             add_text(ctx, "mov rbx, %s", left->addr_code);
-            add_text(ctx, "mov [rbx], rax");
+            if (lsize == 1)
+                add_text(ctx, "mov byte [rbx], al");
+            else
+                add_text(ctx, "mov [rbx], rax");
         }
         else
         {
@@ -281,6 +292,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_OROR:
         l1 = new_label(ctx);
         l2 = new_label(ctx);
+        l3 = new_label(ctx);
+        l4 = new_label(ctx);
         add_text(ctx, "cmp rax, 0");
         if (binop->op == TKN_ANDAND)
             add_text(ctx, "je %s", l1);
@@ -294,6 +307,15 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         else
             add_text(ctx, "mov rax, 1");
         add_text(ctx, "%s:", l2);
+
+        add_text(ctx, "cmp rax, 0");
+        add_text(ctx, "jne %s", l3);
+        add_text(ctx, "jmp %s", l4);
+        add_text(ctx, "%s:", l3);
+        add_text(ctx, "mov rax, 1");
+        add_text(ctx, "%s:", l4);
+
+        tmp = new_temp_symbol(ctx, new_primitive_type("TKN_INT"));
         break;
     case TKN_LT:
     case TKN_LTE:
@@ -301,7 +323,18 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_GTE:
     case TKN_EQ:
     case TKN_NEQ:
-        add_to_list(ctx->text, "cmp rax, rbx");
+        int cmpsize = lsize;
+        if (rsize < cmpsize)
+            cmpsize = rsize;
+        if (cmpsize == 1)
+            add_to_list(ctx->text, "cmp al, bl");
+        else if (cmpsize == 8)
+            add_to_list(ctx->text, "cmp rax, rbx");
+        else
+        {
+            fprintf(stderr, "Cannot compare types with size %d!\n", cmpsize);
+            exit(1);
+        }
         l1 = new_label(ctx);
         l2 = new_label(ctx);
 
@@ -325,14 +358,14 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "%s:", l1);
         add_text(ctx, "mov rax, 1");
         add_text(ctx, "%s:", l2);
+
+        tmp = new_temp_symbol(ctx, new_primitive_type("TKN_INT"));
         break;
     default:
         fprintf(stderr, "Invalid op '%d'\n", binop->op);
         exit(1);
     }
 
-    symbol *tmp = right->type->kind == TYPE_POINTER ?
-        new_temp_symbol(ctx, right->type) : new_temp_symbol(ctx, left->type);
     add_text(ctx, "mov %s, rax", tmp->repl);
     return new_result(tmp->repl, tmp->type);
 }
