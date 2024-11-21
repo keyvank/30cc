@@ -16,7 +16,7 @@ apply_result *var_apply(parser_node *node, context *ctx)
 {
     node_var *var = (node_var *)node->data;
     symbol *sym = find_symbol(ctx, var->var_name);
-    symbol *addr_sym = new_temp_symbol(ctx, sym->type);
+    symbol *addr_sym = new_temp_symbol(ctx, new_pointer_type(sym->type));
     add_text(ctx, "mov rax, rsp");
     add_text(ctx, "add rax, %u", sym->offset);
     add_text(ctx, "mov %s, rax", addr_sym->repl);
