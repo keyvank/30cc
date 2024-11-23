@@ -1,8 +1,8 @@
-import subprocess
-import os
-import sys
 import difflib
+import os
 import shutil
+import subprocess
+import sys
 
 # map of file names to their input(s)
 TEST_FILES = {
@@ -23,6 +23,7 @@ TEST_FILES = {
     "./examples/inp_pointer.c": [],
     "./examples/switch.c": [],
     "./examples/inp_loop.c": [],
+    "./examples/lots_of_variables.c": [],
 }
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"
@@ -32,11 +33,16 @@ TEMP_FOLDER = "temp_snapshots"
 def run(input_file, mode):
     try:
         result = subprocess.run(
-            [C_PROGRAM_NAME, input_file, '--' + mode], capture_output=True, text=True, check=True
+            [C_PROGRAM_NAME, input_file, "--" + mode],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"Error: Failed to run {C_PROGRAM_NAME} with input `{input_file} --{mode}`")
+        print(
+            f"Error: Failed to run {C_PROGRAM_NAME} with input `{input_file} --{mode}`"
+        )
         print(f"Error message: {e.stderr}")
         return None
 
@@ -111,12 +117,13 @@ def main():
 
     diff_count = 0
     for test_file in TEST_FILES.keys():
-        for mode in ['lex', 'tree', 'asm']:
+        for mode in ["lex", "tree", "asm"]:
             extension = "txt"
             if mode == "asm":
                 extension = "asm"
             output_file = os.path.join(
-                OUTPUT_FOLDER, f"{os.path.basename(test_file)}_{mode}_output.{extension}"
+                OUTPUT_FOLDER,
+                f"{os.path.basename(test_file)}_{mode}_output.{extension}",
             )
             output = run(test_file, mode)
 
@@ -141,7 +148,12 @@ def main():
 
         for i, inp in enumerate(inputs):
             try:
-                command = subprocess.run(["make", "run", f"program={test_file}", f"arguments={inp}"],capture_output=True, text=True, check=True)
+                command = subprocess.run(
+                    ["make", "run", f"program={test_file}", f"arguments={inp}"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
                 output = command.stdout
             except subprocess.CalledProcessError as e:
                 print(f"Error: Failed to run {test_file} with input `{inp}`")
@@ -167,7 +179,6 @@ def main():
                     update_output(output_file, output, True)
             else:
                 update_output(output_file, output)
-
 
     print(f"found {diff_count} differences in snapshots")
 

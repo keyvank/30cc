@@ -9,5 +9,7 @@ else
 	docker start cc_tester
 fi
 
+rm ./a.out
+
 # Run the test script inside the container
 docker exec cc_tester /bin/bash -c "cd /mnt && python3 scripts/test.py"
