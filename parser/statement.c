@@ -21,7 +21,8 @@ apply_result *compound_statement_apply(parser_node *node, context *ctx)
     {
         comp->statements[i]->apply(comp->statements[i], ctx);
     }
-    while(ctx->symbol_table->count > num_syms) {
+    while (ctx->symbol_table->count > num_syms)
+    {
         pop_list(ctx->symbol_table);
     }
     return NULL;
@@ -45,7 +46,7 @@ apply_result *return_apply(parser_node *node, context *ctx)
     if (func->exp)
     {
         apply_result *val = func->exp->apply(func->exp, ctx);
-        add_text(ctx, "mov rax, %s", val->code);
+        add_text(ctx, "mov %s, %s", reg_a(val->type, ctx), val->code);
     }
 
     add_text(ctx, "mov rsp, rbp");
@@ -172,13 +173,15 @@ parser_node *parse_statement(typed_token **tkns_ptr)
     }
 
     ret = parse_break(&tkn);
-    if (ret) {
+    if (ret)
+    {
         *tkns_ptr = tkn;
         return ret;
     }
 
     ret = parse_continue(&tkn);
-    if (ret) {
+    if (ret)
+    {
         *tkns_ptr = tkn;
         return ret;
     }
@@ -256,10 +259,10 @@ parser_node *parse_statement(typed_token **tkns_ptr)
 
     ret = parse_switch(&tkn);
     if (ret)
-        {
+    {
         *tkns_ptr = tkn;
         return ret;
-        }
+    }
 
     return NULL;
 }

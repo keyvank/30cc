@@ -44,7 +44,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
 call printf
-mov [rsp+40], rax
 jmp __tmp_label_1
 __tmp_label_4:
 jmp __tmp_label_1
@@ -96,7 +95,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+56], rax
 call printf
-mov [rsp+64], rax
 jmp __tmp_label_6
 __tmp_label_11:
 mov rax, rsp
@@ -129,9 +127,8 @@ add rax, rbx
 mov [rsp+48], rax
 mov rax, [rsp+8]
 mov rbx, [rsp+48]
-mov rax, [rsp+48]
-mov rbx, [rsp+32]
-mov [rbx], rax
+mov rax, [rsp+32]
+mov [rax], rbx
 mov [rsp+56], rax
 jmp __tmp_label_5
 __tmp_label_6:
@@ -171,7 +168,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+56], rax
 call printf
-mov [rsp+64], rax
 ;define variable j
 mov rax, 0
 mov [rsp+64], rax
@@ -207,7 +203,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+112], rax
 call printf
-mov [rsp+120], rax
 mov rax, rsp
 add rax, 64
 mov [rsp+120], rax
@@ -252,9 +247,8 @@ add rax, rbx
 mov [rsp+48], rax
 mov rax, [rsp+8]
 mov rbx, [rsp+48]
-mov rax, [rsp+48]
-mov rbx, [rsp+32]
-mov [rbx], rax
+mov rax, [rsp+32]
+mov [rax], rbx
 mov [rsp+56], rax
 jmp __tmp_label_15
 __tmp_label_16:

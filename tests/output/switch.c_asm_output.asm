@@ -18,14 +18,14 @@ push rbp
 mov rbp, rsp
 sub rsp, __main_size
 ;define variable grade
-mov rax, 66
-mov [rsp+0], rax
+mov al, 66
+mov [rsp+0], al
 ;end define variable grade
 ;start switch
 mov rax, rsp
 add rax, 0
 mov [rsp+9], rax
-mov rax, [rsp+0]
+mov al, [rsp+0]
 cmp rax, 65
 je case___tmp_label_0_1
 cmp rax, 66
@@ -45,7 +45,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+25], rax
 call printf
-mov [rsp+33], rax
 ; stmt loc 1
 case___tmp_label_0_1:
 mov rax, rsp
@@ -53,9 +52,8 @@ add rax, 1
 mov [rsp+33], rax
 mov rax, [rsp+1]
 mov rbx, __temp_str_2
-mov rax, __temp_str_2
-mov rbx, [rsp+33]
-mov [rbx], rax
+mov rax, [rsp+33]
+mov [rax], rbx
 mov [rsp+41], rax
 ; stmt loc 2
 jmp __tmp_label_0
@@ -67,9 +65,8 @@ add rax, 1
 mov [rsp+49], rax
 mov rax, [rsp+1]
 mov rbx, __temp_str_3
-mov rax, __temp_str_3
-mov rbx, [rsp+49]
-mov [rbx], rax
+mov rax, [rsp+49]
+mov [rax], rbx
 mov [rsp+57], rax
 ; stmt loc 4
 jmp __tmp_label_0
@@ -80,9 +77,8 @@ add rax, 1
 mov [rsp+65], rax
 mov rax, [rsp+1]
 mov rbx, __temp_str_4
-mov rax, __temp_str_4
-mov rbx, [rsp+65]
-mov [rbx], rax
+mov rax, [rsp+65]
+mov [rax], rbx
 mov [rsp+73], rax
 ; stmt loc 6
 jmp __tmp_label_0
@@ -93,9 +89,8 @@ add rax, 1
 mov [rsp+81], rax
 mov rax, [rsp+1]
 mov rbx, __temp_str_5
-mov rax, __temp_str_5
-mov rbx, [rsp+81]
-mov [rbx], rax
+mov rax, [rsp+81]
+mov [rax], rbx
 mov [rsp+89], rax
 ; stmt loc 8
 jmp __tmp_label_0
@@ -106,9 +101,8 @@ add rax, 1
 mov [rsp+97], rax
 mov rax, [rsp+1]
 mov rbx, __temp_str_6
-mov rax, __temp_str_6
-mov rbx, [rsp+97]
-mov [rbx], rax
+mov rax, [rsp+97]
+mov [rax], rbx
 mov [rsp+105], rax
 ; end switch
 __tmp_label_0:
@@ -124,7 +118,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+121], rax
 call printf
-mov [rsp+129], rax
 ; end switch
 __tmp_label_1:
 ;start switch
@@ -142,7 +135,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+137], rax
 call printf
-mov [rsp+145], rax
 ; end switch
 __tmp_label_2:
 mov rax, __temp_str_9
@@ -158,7 +150,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+169], rax
 call printf
-mov [rsp+177], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

@@ -403,3 +403,23 @@ int types_equal(general_type *a, general_type *b, context *ctx)
     }
     return 0;
 }
+
+char *reg_a(general_type *tp, context *ctx)
+{
+    int sz = tp->size(tp, ctx);
+    if (sz == 1)
+        return "al";
+    else if (sz == 8)
+        return "rax";
+    return NULL;
+}
+
+char *reg_b(general_type *tp, context *ctx)
+{
+    int sz = tp->size(tp, ctx);
+    if (sz == 1)
+        return "bl";
+    else if (sz == 8)
+        return "rbx";
+    return NULL;
+}

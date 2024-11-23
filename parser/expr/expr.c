@@ -57,9 +57,10 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx)
     add_text(ctx, "; postfix op apply");
     node_postfix *postfix_op = (node_postfix *)node->data;
     apply_result *operand = postfix_op->exp->apply(postfix_op->exp, ctx);
-    add_text(ctx, "mov rax, %s", operand->code);
+    char *rega = reg_a(operand->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, operand->code);
     symbol *tmp = new_temp_symbol(ctx, operand->type);
-    add_text(ctx, "mov %s, rax", tmp->repl);
+    add_text(ctx, "mov %s, %s", tmp->repl, rega);
 
     int op = postfix_op->op;
 
@@ -72,13 +73,13 @@ apply_result *postfix_op_apply(parser_node *node, context *ctx)
 
     if (op == TKN_PLUSPLUS)
     {
-        add_text(ctx, "add rax, %d", unit);
-        move_reg_to_var(ctx, operand, "rax");
+        add_text(ctx, "add %s, %d", rega, unit);
+        move_reg_to_var(ctx, operand, rega);
     }
     else if (op == TKN_MINMIN)
     {
-        add_text(ctx, "sub rax, %d", unit);
-        move_reg_to_var(ctx, operand, "rax");
+        add_text(ctx, "sub %s, %d", rega, unit);
+        move_reg_to_var(ctx, operand, rega);
     }
     else
     {
@@ -105,7 +106,8 @@ apply_result *unary_op_apply(parser_node *node, context *ctx)
     node_unary_op *unary_op = (node_unary_op *)node->data;
     apply_result *operand = unary_op->exp->apply(unary_op->exp, ctx);
     add_text(ctx, "; operand code: %s", operand->code);
-    add_text(ctx, "mov rax, %s", operand->code);
+    char *rega = reg_a(operand->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, operand->code);
     symbol *tmp = new_temp_symbol(ctx, operand->type);
 
     int op = unary_op->op;
@@ -119,26 +121,26 @@ apply_result *unary_op_apply(parser_node *node, context *ctx)
 
     if (op == TKN_MIN)
     {
-        add_text(ctx, "neg rax");
+        add_text(ctx, "neg %s", rega);
     }
     else if (op == TKN_NOT)
     {
-        add_text(ctx, "cmp rax, 0");
+        add_text(ctx, "cmp %s, 0", rega);
         add_text(ctx, "sete al");
         add_text(ctx, "movzx rax, al");
     }
     else if (op == TKN_MINMIN)
     {
-        add_text(ctx, "sub rax, %d", unit);
-        move_reg_to_var(ctx, operand, "rax");
+        add_text(ctx, "sub %s, %d", rega, unit);
+        move_reg_to_var(ctx, operand, rega);
     }
     else if (op == TKN_PLUSPLUS)
     {
-        add_text(ctx, "add rax, %d", unit);
-        move_reg_to_var(ctx, operand, "rax");
+        add_text(ctx, "add %s, %d", rega, unit);
+        move_reg_to_var(ctx, operand, rega);
     }
 
-    add_text(ctx, "mov %s, rax", tmp->repl);
+    add_text(ctx, "mov %s, %s", tmp->repl, rega);
     add_text(ctx, "; unary op finish");
     return new_result(tmp->repl, tmp->type);
 }
@@ -161,6 +163,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     node_binary_op *binop = (node_binary_op *)node->data;
     apply_result *left = binop->left->apply(binop->left, ctx);
     apply_result *right = binop->right->apply(binop->right, ctx);
+    char *rega = reg_a(left->type, ctx);
+    char *regb = reg_b(right->type, ctx);
 
     if (binop->op == TKN_ASSIGN)
     {
@@ -215,8 +219,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
     else
     {
-        add_text(ctx, "mov rax, %s", left->code);
-        add_text(ctx, "mov rbx, %s", right->code);
+        add_text(ctx, "mov %s, %s", rega, left->code);
+        add_text(ctx, "mov %s, %s", regb, right->code);
     }
 
     char *l1 = NULL;
@@ -225,11 +229,10 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     switch (binop->op)
     {
     case TKN_ASSIGN:
-        add_text(ctx, "mov rax, %s", right->code);
         if (left->addr_code)
         {
-            add_text(ctx, "mov rbx, %s", left->addr_code);
-            add_text(ctx, "mov [rbx], rax");
+            add_text(ctx, "mov rax, %s", left->addr_code);
+            add_text(ctx, "mov [rax], %s", regb);
         }
         else
         {
@@ -238,33 +241,33 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         }
         break;
     case TKN_PLUS:
-        add_text(ctx, "add rax, rbx");
+        add_text(ctx, "add %s, %s", rega, regb);
         break;
     case TKN_PLUSEQ:
-        add_text(ctx, "add rax, rbx");
-        move_reg_to_var(ctx, left, "rax");
+        add_text(ctx, "add %s, %s", rega, regb);
+        move_reg_to_var(ctx, left, rega);
         break;
     case TKN_MIN:
-        add_text(ctx, "sub rax, rbx");
+        add_text(ctx, "sub %s, %s", rega, regb);
         break;
     case TKN_MINEQ:
-        add_text(ctx, "sub rax, rbx");
-        move_reg_to_var(ctx, left, "rax");
+        add_text(ctx, "sub %s, %s", rega, regb);
+        move_reg_to_var(ctx, left, rega);
         break;
     case TKN_STAR:
         // TODO: check sign for mul/imul
-        add_text(ctx, "mul rbx");
+        add_text(ctx, "mul %s", regb);
         break;
     case TKN_STAREQ:
-        add_text(ctx, "mul rbx");
-        move_reg_to_var(ctx, left, "rax");
+        add_text(ctx, "mul %s", regb);
+        move_reg_to_var(ctx, left, rega);
         break;
     case TKN_DIV:
-        add_text(ctx, "div rbx");
+        add_text(ctx, "div %s", regb);
         break;
     case TKN_DIVEQ:
-        add_text(ctx, "div rbx");
-        move_reg_to_var(ctx, left, "rax");
+        add_text(ctx, "div %s", regb);
+        move_reg_to_var(ctx, left, rega);
         break;
     case TKN_MOD:
         add_text(ctx, "move rdx, 0");
@@ -272,21 +275,21 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "move rax, rdx");
         break;
     case TKN_AND:
-        add_text(ctx, "and rax, rbx");
+        add_text(ctx, "and %s, %s", rega, regb);
         break;
     case TKN_OR:
-        add_text(ctx, "or rax, rbx");
+        add_text(ctx, "or %s, %s", rega, regb);
         break;
     case TKN_ANDAND:
     case TKN_OROR:
         l1 = new_label(ctx);
         l2 = new_label(ctx);
-        add_text(ctx, "cmp rax, 0");
+        add_text(ctx, "cmp %s, 0", rega);
         if (binop->op == TKN_ANDAND)
             add_text(ctx, "je %s", l1);
         else
             add_text(ctx, "jne %s", l1);
-        add_text(ctx, "mov rax, rbx");
+        add_text(ctx, "mov %s, %s", rega, regb);
         add_text(ctx, "jmp %s", l2);
         add_text(ctx, "%s:", l1);
         if (binop->op == TKN_ANDAND)
@@ -301,7 +304,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_GTE:
     case TKN_EQ:
     case TKN_NEQ:
-        add_to_list(ctx->text, "cmp rax, rbx");
+        add_text(ctx, "cmp %s, %s", rega, regb);
         l1 = new_label(ctx);
         l2 = new_label(ctx);
 

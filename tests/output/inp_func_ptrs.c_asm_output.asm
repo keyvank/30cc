@@ -126,9 +126,8 @@ add rax, 0
 mov [rsp+64], rax
 mov rax, [rsp+56]
 mov rbx, sum
-mov rax, sum
-mov rbx, [rsp+48]
-mov [rbx], rax
+mov rax, [rsp+48]
+mov [rax], rbx
 mov [rsp+72], rax
 mov rax, rsp
 add rax, 0
@@ -146,9 +145,8 @@ add rax, 0
 mov [rsp+104], rax
 mov rax, [rsp+96]
 mov rbx, mul
-mov rax, mul
-mov rbx, [rsp+88]
-mov [rbx], rax
+mov rax, [rsp+88]
+mov [rax], rbx
 mov [rsp+112], rax
 ;define variable i
 mov rax, 0
@@ -223,7 +221,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+264], rax
 call printf
-mov [rsp+272], rax
 ; postfix op apply
 mov rax, rsp
 add rax, 120
