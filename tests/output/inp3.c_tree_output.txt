@@ -208,17 +208,24 @@ Program(
         Function:
           Variable(printf)
         Args:
-          Literal(Type: 33, Value: Addr of a: %u
+          Literal(Type: 33, Value: Addr of c - Addr of a: %u
 )
-          Ref:
-            Variable(a)
-      FunctionCall:
-        Function:
-          Variable(printf)
-        Args:
-          Literal(Type: 33, Value: Addr of c: %u
-)
-          Variable(cc)
+          BinaryOp(Op: 75)
+            Left:
+              Cast:
+                Val:
+                  Variable(cc)
+                Type:
+                  Type(Name: (null)):
+                    TKN_INT
+            Right:
+              Cast:
+                Val:
+                  Ref:
+                    Variable(a)
+                Type:
+                  Type(Name: (null)):
+                    TKN_INT
       FunctionCall:
         Function:
           Variable(printf)

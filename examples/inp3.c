@@ -65,9 +65,7 @@ int main()
     int d = c * (c + a);
     printf("Result: %u\n", c + c + d + ((b + a) * a));
     int *cc = &c;
-    printf("Addr of a: %u\n", &a);
-    //printf("Value of b: %u\n", *(&a + 8));
-    printf("Addr of c: %u\n", cc);
+    printf("Addr of c - Addr of a: %u\n", (int)cc - (int)&a); // 16
     printf("Double of 123: %u\n", doub(doub(123 * doub(123)) * 2) + 10);
     printf("Factorial 5: %u\n", fact(5));
     if (1)
