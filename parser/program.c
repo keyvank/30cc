@@ -115,7 +115,7 @@ parser_node *parse_program(typed_token **tkn_ptr)
         }
         else if ((f = parse_var_decl(&tkn)))
         {
-            push_vec(var_decls, &f);
+            push_vec(var_decls, f);
         }
         else
         {
