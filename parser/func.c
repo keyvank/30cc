@@ -1,14 +1,15 @@
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../vec.h"
 #include "../lexer.h"
 #include "parser.h"
 #include "func.h"
 #include "type.h"
 #include "statement.h"
 #include "../codegen/codegen.h"
-#include "../linked_list.h"
 
 apply_result *func_def_apply(parser_node *node, context *ctx)
 {
@@ -53,9 +54,9 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 
-    for (int i = 0; i < func->num_statements; i++)
+    for (int i = 0; i < func->statements->total; i++)
     {
-        parser_node *node = func->statements[i];
+        parser_node *node = (parser_node *)get_vec(func->statements, i);
         node->apply(node, ctx);
     }
 
@@ -97,9 +98,9 @@ void func_def_debug(int depth, parser_node *node)
     {
         printtabs(depth + 1);
         printf("Statements:\n");
-        for (int i = 0; i < func->num_statements; i++)
+        for (int i = 0; i < func->statements->total; i++)
         {
-            parser_node *node = func->statements[i];
+            parser_node *node = (parser_node *)get_vec(func->statements, i);
             node->debug(depth + 2, node);
         }
     }
@@ -204,10 +205,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                 tkn = tkn->next;
 
                 int stmt_count = 0;
-                parser_node **stmts = (parser_node **)malloc(sizeof(parser_node *) * 128); // MAX 128 STATEMENTS
-                for (int i = 0; i < 128; i++)
-                    stmts[i] = NULL;
-
+                vector *stmts = initialize_vec(sizeof(parser_node *));
                 while (tkn)
                 {
                     if (tkn->type_id == TKN_R_BRACE)
@@ -226,7 +224,6 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         func->return_type = return_type;
                         func->num_params = params_count;
                         func->params = params;
-                        func->num_statements = stmt_count;
                         func->statements = stmts;
 
                         return node;
@@ -236,7 +233,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         parser_node *stmt = parse_statement(&tkn);
                         if (stmt)
                         {
-                            stmts[stmt_count++] = stmt;
+                            push_vec(stmts, stmt);
                         }
                         else
                         {

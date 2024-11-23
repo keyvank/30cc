@@ -1,8 +1,8 @@
-import subprocess
-import os
-import sys
 import difflib
+import os
 import shutil
+import subprocess
+import sys
 
 # map of file names to their input(s)
 TEST_FILES = {
@@ -23,6 +23,7 @@ TEST_FILES = {
     "./examples/inp_pointer.c": [],
     "./examples/switch.c": [],
     "./examples/inp_loop.c": [],
+    "./examples/lots_of_variables.c": [],
 }
 C_PROGRAM_NAME = "./a.out"
 OUTPUT_FOLDER = "tests/output"
@@ -32,11 +33,16 @@ TEMP_FOLDER = "temp_snapshots"
 def run(input_file, mode):
     try:
         result = subprocess.run(
-            [C_PROGRAM_NAME, input_file, '--' + mode], capture_output=True, text=True, check=True
+            [C_PROGRAM_NAME, input_file, "--" + mode],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"Error: Failed to run {C_PROGRAM_NAME} with input `{input_file} --{mode}`")
+        print(
+            f"Error: Failed to run {C_PROGRAM_NAME} with input `{input_file} --{mode}`"
+        )
         print(f"Error message: {e.stderr}")
         return None
 
@@ -87,8 +93,8 @@ def main():
     mode = None
     if len(sys.argv) > 2:
         mode = sys.argv[1]
-        if mode not in ["update", "revert"]:
-            print("Invalid mode. Use 'update' or 'revert'.")
+        if mode not in ["update", "revert", "run"]:
+            print("Invalid mode. Use 'update' or 'revert' or 'run'.")
             sys.exit(1)
 
     try:
@@ -110,15 +116,19 @@ def main():
         return
 
     diff_count = 0
+    failed = False
     for test_file in TEST_FILES.keys():
-        for mode in ['lex', 'tree', 'asm']:
+        for mode in ["lex", "tree", "asm"]:
             extension = "txt"
             if mode == "asm":
                 extension = "asm"
             output_file = os.path.join(
-                OUTPUT_FOLDER, f"{os.path.basename(test_file)}_{mode}_output.{extension}"
+                OUTPUT_FOLDER,
+                f"{os.path.basename(test_file)}_{mode}_output.{extension}",
             )
             output = run(test_file, mode)
+            if output is None:
+                failed = True
 
             if mode == "revert":
                 revert_snapshot(output_file)
@@ -135,43 +145,51 @@ def main():
             else:
                 update_output(output_file, output)
 
-    for test_file, inputs in TEST_FILES.items():
-        if len(inputs) == 0:
-            inputs = [""]
+    if mode == "run":
+        for test_file, inputs in TEST_FILES.items():
+            if len(inputs) == 0:
+                inputs = [""]
 
-        for i, inp in enumerate(inputs):
-            try:
-                command = subprocess.run(["make", "run", f"program={test_file}", f"arguments={inp}"],capture_output=True, text=True, check=True)
-                output = command.stdout
-            except subprocess.CalledProcessError as e:
-                print(f"Error: Failed to run {test_file} with input `{inp}`")
-                print(f"Error message: {e.stderr}")
-                continue
-            if i == 0 and len(inputs) == 1:
-                output_file = os.path.join(
-                    OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output.txt"
-                )
-            else:
-                output_file = os.path.join(
-                    OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output_{i}.txt"
-                )
+            for i, inp in enumerate(inputs):
+                try:
+                    command = subprocess.run(
+                        ["make", "run", f"program={test_file}", f"arguments={inp}"],
+                        capture_output=True,
+                        text=True,
+                        check=True,
+                    )
+                    output = command.stdout
+                except subprocess.CalledProcessError as e:
+                    print(f"Error: Failed to run {test_file} with input `{inp}`")
+                    print(f"Error message: {e.stderr}")
+                    continue
+                if i == 0 and len(inputs) == 1:
+                    output_file = os.path.join(
+                        OUTPUT_FOLDER, f"{os.path.basename(test_file)}_run_output.txt"
+                    )
+                else:
+                    output_file = os.path.join(
+                        OUTPUT_FOLDER,
+                        f"{os.path.basename(test_file)}_run_output_{i}.txt",
+                    )
 
-            if mode == "revert":
-                revert_snapshot(output_file)
-                continue
+                if mode == "revert":
+                    revert_snapshot(output_file)
+                    continue
 
-            if os.path.exists(output_file):
-                if not compare_outputs(output_file, output):
-                    diff_count += 1
-                    print(f"Alert: New output differs from {output_file}")
-                    update_output(output_file, output, True)
-            else:
-                update_output(output_file, output)
+                if os.path.exists(output_file):
+                    if not compare_outputs(output_file, output):
+                        diff_count += 1
+                        print(f"Alert: New output differs from {output_file}")
+                        update_output(output_file, output, True)
+                else:
+                    update_output(output_file, output)
 
-
-    print(f"found {diff_count} differences in snapshots")
+    print(f"found {diff_count} differences in run snapshots")
 
     if diff_count > 0:
+        exit(1)
+    if failed is True:
         exit(1)
 
 

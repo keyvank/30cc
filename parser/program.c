@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "../lexer.h"
+#include "../vec.h"
 #include "parser.h"
 #include "program.h"
 #include "func.h"
@@ -84,7 +85,7 @@ parser_node *parse_program(typed_token **tkn_ptr)
     int var_decl_count = 0;
     parser_node **funcs = (parser_node **)malloc(sizeof(parser_node *) * 128);
     parser_node **struct_defs = (parser_node **)malloc(sizeof(parser_node *) * 128);
-    parser_node **var_decls = (parser_node **)malloc(sizeof(parser_node *) * 128);
+    vector* var_decls = initialize_vec(sizeof(parser_node*));
     typed_token *tkn = *tkn_ptr;
     while (tkn)
     {
@@ -114,7 +115,7 @@ parser_node *parse_program(typed_token **tkn_ptr)
         }
         else if ((f = parse_var_decl(&tkn)))
         {
-            var_decls[var_decl_count++] = f;
+            push_vec(var_decls, f);
         }
         else
         {

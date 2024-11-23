@@ -2,6 +2,7 @@
 #define FUNCTION_H
 
 #include "../lexer.h"
+#include "../vec.h"
 #include "parser.h"
 
 parser_node *parse_function(typed_token **tkns_ptr);
@@ -13,7 +14,7 @@ typedef struct
     int num_params;
     parser_node **params;
     int num_statements;
-    parser_node **statements;
+    vector *statements;
 } node_func_def;
 
 #endif
