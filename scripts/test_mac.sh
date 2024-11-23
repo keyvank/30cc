@@ -1,5 +1,7 @@
 #/bin/bash
 
+python3 scripts/test.py
+
 # Check if the container exists and is running
 if ! docker ps -a --filter "name=cc_tester" --format '{{.Names}}' | grep -q "cc_tester"; then
 	docker run --name cc_tester -itd --platform linux/amd64 -v "$(pwd):/mnt" ubuntu
@@ -12,4 +14,4 @@ fi
 rm ./a.out
 
 # Run the test script inside the container
-docker exec cc_tester /bin/bash -c "cd /mnt && python3 scripts/test.py"
+docker exec cc_tester /bin/bash -c "cd /mnt && python3 scripts/test.py run"
