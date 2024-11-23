@@ -65,11 +65,29 @@ Program(
             IsPtr: 1
         Right:
           Literal(Type: 34, Value: 20)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: c
+            IsPtr: 1
+        Right:
+          Literal(Type: 35)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(m)
+            Field: d
+            IsPtr: 1
+        Right:
+          Literal(Type: 33, Value: Salam!)
       FunctionCall:
         Function:
           Variable(printf)
         Args:
-          Literal(Type: 33, Value: %u %u
+          Literal(Type: 33, Value: %u %u %c %s
 )
           Access:
             Object:
@@ -81,6 +99,16 @@ Program(
               Variable(m)
             Field: b
             IsPtr: 1
+          Access:
+            Object:
+              Variable(m)
+            Field: c
+            IsPtr: 1
+          Access:
+            Object:
+              Variable(m)
+            Field: d
+            IsPtr: 1
       Return:
         Literal(Type: 34, Value: 0)
   )
@@ -91,4 +119,11 @@ Program(
     VarDecl(b):
       Type(Name: b):
         TKN_INT
+    VarDecl(c):
+      Type(Name: c):
+        TKN_CHAR
+    VarDecl(d):
+      Type(Name: d):
+        Pointer of:
+          TKN_CHAR
 )

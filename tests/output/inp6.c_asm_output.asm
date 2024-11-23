@@ -1,8 +1,9 @@
 section .data
 __printf_size: equ 16
 __malloc_size: equ 16
-__temp_str_2 db `%u %u\n`, 0
-__main_size: equ 192
+__temp_str_2 db `Salam!`, 0
+__temp_str_3 db `%u %u %c %s\n`, 0
+__main_size: equ 288
 section .text
 extern printf
 extern malloc
@@ -11,7 +12,7 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
-mov rax, 16
+mov rax, 25
 mov [rsp+8], rax
 mov rdi, [rsp+8]
 mov rax, rsp
@@ -55,40 +56,98 @@ mov rax, 20
 mov rbx, [rsp+72]
 mov [rbx], rax
 mov [rsp+88], rax
-mov rax, __temp_str_2
-mov [rsp+96], rax
 mov rax, rsp
 add rax, 0
+mov [rsp+96], rax
+;;;
+mov rax, [rsp+0]
+add rax, 16
 mov [rsp+104], rax
+mov rax, [rax]
+mov [rsp+112], rax
+;;;
+mov rax, [rsp+112]
+mov rbx, 75
+mov rax, 75
+mov rbx, [rsp+104]
+mov [rbx], rax
+mov [rsp+113], rax
+mov rax, rsp
+add rax, 0
+mov [rsp+114], rax
+;;;
+mov rax, [rsp+0]
+add rax, 17
+mov [rsp+122], rax
+mov rax, [rax]
+mov [rsp+130], rax
+;;;
+mov rax, [rsp+130]
+mov rbx, __temp_str_2
+mov rax, __temp_str_2
+mov rbx, [rsp+122]
+mov [rbx], rax
+mov [rsp+138], rax
+mov rax, __temp_str_3
+mov [rsp+146], rax
+mov rax, rsp
+add rax, 0
+mov [rsp+154], rax
 ;;;
 mov rax, [rsp+0]
 add rax, 0
-mov [rsp+112], rax
+mov [rsp+162], rax
 mov rax, [rax]
-mov [rsp+120], rax
+mov [rsp+170], rax
 ;;;
-mov rax, [rsp+120]
-mov [rsp+128], rax
+mov rax, [rsp+170]
+mov [rsp+178], rax
 mov rax, rsp
 add rax, 0
-mov [rsp+136], rax
+mov [rsp+186], rax
 ;;;
 mov rax, [rsp+0]
 add rax, 8
-mov [rsp+144], rax
+mov [rsp+194], rax
 mov rax, [rax]
-mov [rsp+152], rax
+mov [rsp+202], rax
 ;;;
-mov rax, [rsp+152]
-mov [rsp+160], rax
-mov rdi, [rsp+96]
-mov rsi, [rsp+128]
-mov rdx, [rsp+160]
+mov rax, [rsp+202]
+mov [rsp+210], rax
 mov rax, rsp
 add rax, 0
-mov [rsp+168], rax
+mov [rsp+218], rax
+;;;
+mov rax, [rsp+0]
+add rax, 16
+mov [rsp+226], rax
+mov rax, [rax]
+mov [rsp+234], rax
+;;;
+mov rax, [rsp+234]
+mov [rsp+235], rax
+mov rax, rsp
+add rax, 0
+mov [rsp+236], rax
+;;;
+mov rax, [rsp+0]
+add rax, 17
+mov [rsp+244], rax
+mov rax, [rax]
+mov [rsp+252], rax
+;;;
+mov rax, [rsp+252]
+mov [rsp+260], rax
+mov rdi, [rsp+146]
+mov rsi, [rsp+178]
+mov rdx, [rsp+210]
+mov rcx, [rsp+235]
+mov r8, [rsp+260]
+mov rax, rsp
+add rax, 0
+mov [rsp+268], rax
 call printf
-mov [rsp+176], rax
+mov [rsp+276], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

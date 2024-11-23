@@ -12,8 +12,8 @@ I: 8
 I: 9
 a n 99
 Result: 42700
-Addr of a: 2871703538
-Addr of c: 2871703554
+Addr of a: 662392626
+Addr of c: 662392642
 Double of 123: 242074
 Fact: 5
 Fact: 4

@@ -50,7 +50,7 @@ apply_result *access_apply(parser_node *node, context *ctx)
     }
     if (field_type)
     {
-        symbol *sym_addr = new_temp_symbol(ctx, field_type);
+        symbol *sym_addr = new_temp_symbol(ctx, new_pointer_type(field_type));
         add_text(ctx, ";;;");
         if (acc->is_ptr)
             add_text(ctx, "mov rax, %s", obj->code);

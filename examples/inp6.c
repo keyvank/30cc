@@ -5,6 +5,8 @@ typedef struct
 {
     int a;
     int b;
+    char c;
+    char *d;
 } MyStruct;
 
 int main()
@@ -12,6 +14,8 @@ int main()
     MyStruct *m = (MyStruct *)malloc(sizeof(MyStruct));
     m->a = 10;
     m->b = 20;
-    printf("%u %u\n", m->a, m->b);
+    m->c = 'K';
+    m->d = "Salam!";
+    printf("%u %u %c %s\n", m->a, m->b, m->c, m->d);
     return 0;
 }
