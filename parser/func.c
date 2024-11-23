@@ -15,7 +15,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
 {
     node_func_def *func = (node_func_def *)node->data;
 
-    if (!func->statements->total)
+    if (!func->statements)
     {
         add_text(ctx, "extern %s", func->identity);
         return NULL;
@@ -54,10 +54,12 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 
-    for (int i = 0; i < func->statements->total; i++)
-    {
-        parser_node *node = (parser_node *)get_vec(func->statements, i);
-        node->apply(node, ctx);
+    if (func->statements) {
+        for (int i = 0; i < func->statements->total; i++)
+        {
+            parser_node *node = (parser_node *)get_vec(func->statements, i);
+            node->apply(node, ctx);
+        }
     }
 
     add_text(ctx, "mov rsp, rbp");
@@ -70,7 +72,7 @@ void func_def_debug(int depth, parser_node *node)
 {
     node_func_def *func = (node_func_def *)node->data;
     printtabs(depth);
-    if (func->statements->total)
+    if (func->statements)
     {
         printf("Function(\n");
     }
@@ -94,7 +96,7 @@ void func_def_debug(int depth, parser_node *node)
         node->debug(depth + 2, node);
     }
 
-    if (func->statements->total)
+    if (func->statements)
     {
         printtabs(depth + 1);
         printf("Statements:\n");
@@ -187,7 +189,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                     decl->num_params = params_count;
                     decl->params = params;
                     decl->num_statements = 0;
-                    decl->statements = initialize_vec(sizeof(parser_node *));
+                    decl->statements = NULL;
 
                     return node;
                 }
