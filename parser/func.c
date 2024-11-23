@@ -54,12 +54,10 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", sym->repl, regname);
     }
 
-    if (func->statements) {
-        for (int i = 0; i < func->statements->total; i++)
-        {
-            parser_node *node = (parser_node *)get_vec(func->statements, i);
-            node->apply(node, ctx);
-        }
+    for (int i = 0; i < func->statements->total; i++)
+    {
+        parser_node *node = (parser_node *)get_vec(func->statements, i);
+        node->apply(node, ctx);
     }
 
     add_text(ctx, "mov rsp, rbp");
