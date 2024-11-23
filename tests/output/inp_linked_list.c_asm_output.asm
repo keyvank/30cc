@@ -72,9 +72,8 @@ mov rax, [rax]
 mov [rsp+88], rax
 mov rax, [rsp+88]
 mov rbx, 0
-mov rax, 0
-mov rbx, [rsp+80]
-mov [rbx], rax
+mov rax, [rsp+80]
+mov [rax], rbx
 mov [rsp+96], rax
 mov rax, rsp
 add rax, 16
@@ -91,9 +90,8 @@ add rax, 8
 mov [rsp+128], rax
 mov rax, [rsp+120]
 mov rbx, [rsp+8]
-mov rax, [rsp+8]
-mov rbx, [rsp+112]
-mov [rbx], rax
+mov rax, [rsp+112]
+mov [rax], rbx
 mov [rsp+136], rax
 mov rax, rsp
 add rax, 0
@@ -152,9 +150,8 @@ mov [rsp+248], rax
 ;;;
 mov rax, [rsp+168]
 mov rbx, [rsp+248]
-mov rax, [rsp+248]
-mov rbx, [rsp+224]
-mov [rbx], rax
+mov rax, [rsp+224]
+mov [rax], rbx
 mov [rsp+256], rax
 jmp __tmp_label_2
 __tmp_label_3:
@@ -174,9 +171,8 @@ add rax, 16
 mov [rsp+248], rax
 mov rax, [rsp+240]
 mov rbx, [rsp+16]
-mov rax, [rsp+16]
-mov rbx, [rsp+232]
-mov [rbx], rax
+mov rax, [rsp+232]
+mov [rax], rbx
 mov [rsp+256], rax
 jmp __tmp_label_1
 __tmp_label_0:
@@ -195,9 +191,8 @@ add rax, 16
 mov [rsp+192], rax
 mov rax, [rsp+184]
 mov rbx, [rsp+16]
-mov rax, [rsp+16]
-mov rbx, [rsp+176]
-mov [rbx], rax
+mov rax, [rsp+176]
+mov [rax], rbx
 mov [rsp+200], rax
 __tmp_label_1:
 mov rsp, rbp
@@ -230,7 +225,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+48], rax
 call add_val
-mov [rsp+56], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+56], rax
@@ -244,7 +238,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call add_val
-mov [rsp+88], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+88], rax
@@ -258,7 +251,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+112], rax
 call add_val
-mov [rsp+120], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+120], rax
@@ -272,7 +264,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+144], rax
 call add_val
-mov [rsp+152], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+160], rax
@@ -315,7 +306,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+232], rax
 call printf
-mov [rsp+240], rax
 mov rax, rsp
 add rax, 152
 mov [rsp+240], rax
@@ -331,9 +321,8 @@ mov [rsp+264], rax
 ;;;
 mov rax, [rsp+152]
 mov rbx, [rsp+264]
-mov rax, [rsp+264]
-mov rbx, [rsp+240]
-mov [rbx], rax
+mov rax, [rsp+240]
+mov [rax], rbx
 mov [rsp+272], rax
 jmp __tmp_label_4
 __tmp_label_5:

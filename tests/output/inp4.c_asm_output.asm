@@ -24,9 +24,8 @@ mov [rsp+56], rax
 ;;;
 mov rax, [rsp+56]
 mov rbx, 5
-mov rax, 5
-mov rbx, [rsp+48]
-mov [rbx], rax
+mov rax, [rsp+48]
+mov [rax], rbx
 mov [rsp+64], rax
 mov rax, rsp
 add rax, 0
@@ -40,9 +39,8 @@ mov [rsp+88], rax
 ;;;
 mov rax, [rsp+88]
 mov rbx, 10
-mov rax, 10
-mov rbx, [rsp+80]
-mov [rbx], rax
+mov rax, [rsp+80]
+mov [rax], rbx
 mov [rsp+96], rax
 mov rax, rsp
 add rax, 0
@@ -51,8 +49,8 @@ mov [rsp+104], rax
 mov rax, [rsp+104]
 add rax, 16
 mov [rsp+112], rax
-mov rax, [rax]
-mov [rsp+120], rax
+mov (null), [rax]
+mov [rsp+120], (null)
 ;;;
 ;;;
 mov rax, [rsp+112]
@@ -63,9 +61,8 @@ mov [rsp+144], rax
 ;;;
 mov rax, [rsp+144]
 mov rbx, 19
-mov rax, 19
-mov rbx, [rsp+136]
-mov [rbx], rax
+mov rax, [rsp+136]
+mov [rax], rbx
 mov [rsp+152], rax
 mov rax, rsp
 add rax, 0
@@ -74,8 +71,8 @@ mov [rsp+160], rax
 mov rax, [rsp+160]
 add rax, 16
 mov [rsp+168], rax
-mov rax, [rax]
-mov [rsp+176], rax
+mov (null), [rax]
+mov [rsp+176], (null)
 ;;;
 ;;;
 mov rax, [rsp+168]
@@ -86,9 +83,8 @@ mov [rsp+200], rax
 ;;;
 mov rax, [rsp+200]
 mov rbx, 123
-mov rax, 123
-mov rbx, [rsp+192]
-mov [rbx], rax
+mov rax, [rsp+192]
+mov [rax], rbx
 mov [rsp+208], rax
 mov rax, rsp
 add rax, 0
@@ -107,8 +103,8 @@ mov [rsp+240], rax
 mov rax, [rsp+240]
 add rax, 16
 mov [rsp+248], rax
-mov rax, [rax]
-mov [rsp+256], rax
+mov (null), [rax]
+mov [rsp+256], (null)
 ;;;
 ;;;
 mov rax, [rsp+248]
@@ -137,9 +133,8 @@ add rax, rbx
 mov [rsp+320], rax
 mov rax, [rsp+232]
 mov rbx, [rsp+320]
-mov rax, [rsp+320]
-mov rbx, [rsp+224]
-mov [rbx], rax
+mov rax, [rsp+224]
+mov [rax], rbx
 mov [rsp+328], rax
 mov rax, __temp_str_2
 mov [rsp+336], rax
@@ -174,8 +169,8 @@ mov [rsp+408], rax
 mov rax, [rsp+408]
 add rax, 16
 mov [rsp+416], rax
-mov rax, [rax]
-mov [rsp+424], rax
+mov (null), [rax]
+mov [rsp+424], (null)
 ;;;
 ;;;
 mov rax, [rsp+416]
@@ -193,8 +188,8 @@ mov [rsp+464], rax
 mov rax, [rsp+464]
 add rax, 16
 mov [rsp+472], rax
-mov rax, [rax]
-mov [rsp+480], rax
+mov (null), [rax]
+mov [rsp+480], (null)
 ;;;
 ;;;
 mov rax, [rsp+472]
@@ -227,7 +222,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+552], rax
 call printf
-mov [rsp+560], rax
 mov rax, 10
 mov rbx, 8
 mul rbx
@@ -257,9 +251,8 @@ mov rax, [rbx]
 mov [rsp+616], rax
 mov rax, [rsp+616]
 mov rbx, 987
-mov rax, 987
-mov rbx, [rsp+608]
-mov [rbx], rax
+mov rax, [rsp+608]
+mov [rax], rbx
 mov [rsp+624], rax
 mov rax, rsp
 add rax, 560
@@ -295,7 +288,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+712], rax
 call printf
-mov [rsp+720], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

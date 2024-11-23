@@ -71,7 +71,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+112], rax
 call printf
-mov [rsp+120], rax
 mov rax, rsp
 add rax, 16
 mov [rsp+48], rax
@@ -145,9 +144,8 @@ mul rbx
 mov [rsp+120], rax
 mov rax, [rsp+104]
 mov rbx, [rsp+120]
-mov rax, [rsp+120]
-mov rbx, [rsp+96]
-mov [rbx], rax
+mov rax, [rsp+96]
+mov [rax], rbx
 mov [rsp+128], rax
 mov rax, rsp
 add rax, 56
@@ -161,9 +159,8 @@ add rax, rbx
 mov [rsp+152], rax
 mov rax, [rsp+56]
 mov rbx, [rsp+152]
-mov rax, [rsp+152]
-mov rbx, [rsp+136]
-mov [rbx], rax
+mov rax, [rsp+136]
+mov [rax], rbx
 mov [rsp+160], rax
 jmp __tmp_label_4
 __tmp_label_5:
@@ -214,7 +211,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+128], rax
 call printf
-mov [rsp+136], rax
 mov rax, rsp
 add rax, 56
 mov [rsp+136], rax
@@ -265,9 +261,8 @@ mov rax, [rsp+128]
 mov [rsp+136], rax
 mov rax, [rsp+120]
 mov rbx, [rsp+136]
-mov rax, [rsp+136]
-mov rbx, [rsp+112]
-mov [rbx], rax
+mov rax, [rsp+112]
+mov [rax], rbx
 mov [rsp+144], rax
 mov rax, rsp
 add rax, 56
@@ -305,9 +300,8 @@ mul rbx
 mov [rsp+232], rax
 mov rax, [rsp+184]
 mov rbx, [rsp+232]
-mov rax, [rsp+232]
-mov rbx, [rsp+176]
-mov [rbx], rax
+mov rax, [rsp+176]
+mov [rax], rbx
 mov [rsp+240], rax
 mov rax, __temp_str_4
 mov [rsp+248], rax
@@ -322,7 +316,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+272], rax
 call printf
-mov [rsp+280], rax
 mov rax, 20
 mov rbx, 1
 mul rbx
@@ -348,13 +341,12 @@ mul rbx
 mov rbx, [rsp+280]
 add rbx, rax
 mov [rsp+328], rbx
-mov rax, [rbx]
-mov [rsp+336], rax
-mov rax, [rsp+336]
-mov rbx, 104
-mov rax, 104
-mov rbx, [rsp+328]
-mov [rbx], rax
+mov al, [rbx]
+mov [rsp+336], al
+mov al, [rsp+336]
+mov bl, 104
+mov rax, [rsp+328]
+mov [rax], bl
 mov [rsp+337], rax
 mov rax, rsp
 add rax, 280
@@ -365,13 +357,12 @@ mul rbx
 mov rbx, [rsp+280]
 add rbx, rax
 mov [rsp+346], rbx
-mov rax, [rbx]
-mov [rsp+354], rax
-mov rax, [rsp+354]
-mov rbx, 105
-mov rax, 105
-mov rbx, [rsp+346]
-mov [rbx], rax
+mov al, [rbx]
+mov [rsp+354], al
+mov al, [rsp+354]
+mov bl, 105
+mov rax, [rsp+346]
+mov [rax], bl
 mov [rsp+355], rax
 mov rax, rsp
 add rax, 280
@@ -382,13 +373,12 @@ mul rbx
 mov rbx, [rsp+280]
 add rbx, rax
 mov [rsp+364], rbx
-mov rax, [rbx]
-mov [rsp+372], rax
-mov rax, [rsp+372]
-mov rbx, 33
-mov rax, 33
-mov rbx, [rsp+364]
-mov [rbx], rax
+mov al, [rbx]
+mov [rsp+372], al
+mov al, [rsp+372]
+mov bl, 33
+mov rax, [rsp+364]
+mov [rax], bl
 mov [rsp+373], rax
 mov rax, rsp
 add rax, 280
@@ -399,13 +389,12 @@ mul rbx
 mov rbx, [rsp+280]
 add rbx, rax
 mov [rsp+382], rbx
-mov rax, [rbx]
-mov [rsp+390], rax
-mov rax, [rsp+390]
-mov rbx, 10
-mov rax, 10
-mov rbx, [rsp+382]
-mov [rbx], rax
+mov al, [rbx]
+mov [rsp+390], al
+mov al, [rsp+390]
+mov bl, 10
+mov rax, [rsp+382]
+mov [rax], bl
 mov [rsp+391], rax
 mov rax, rsp
 add rax, 280
@@ -416,13 +405,12 @@ mul rbx
 mov rbx, [rsp+280]
 add rbx, rax
 mov [rsp+400], rbx
-mov rax, [rbx]
-mov [rsp+408], rax
-mov rax, [rsp+408]
-mov rbx, 0
-mov rax, 0
-mov rbx, [rsp+400]
-mov [rbx], rax
+mov al, [rbx]
+mov [rsp+408], al
+mov al, [rsp+408]
+mov bl, 0
+mov rax, [rsp+400]
+mov [rax], bl
 mov [rsp+409], rax
 mov rax, __temp_str_5
 mov [rsp+410], rax
@@ -437,7 +425,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+434], rax
 call printf
-mov [rsp+442], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

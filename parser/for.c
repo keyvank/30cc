@@ -23,8 +23,9 @@ apply_result *for_apply(parser_node *node, context *ctx)
 
     add_text(ctx, "%s:", start_for);
     apply_result *condv = forn->cond->apply(forn->cond, ctx);
-    add_text(ctx, "mov rax, %s", condv->code);
-    add_text(ctx, "cmp rax, 0");
+    char *rega = reg_a(condv->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, condv->code);
+    add_text(ctx, "cmp %s, 0", rega);
     add_text(ctx, "je %s", end_for);
     forn->body->apply(forn->body, ctx);
     forn->act->apply(forn->act, ctx);

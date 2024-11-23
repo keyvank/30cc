@@ -22,16 +22,14 @@ mov rax, rsp
 add rax, 0
 mov [rsp+16], rax
 call printf
-mov [rsp+24], rax
 jmp end
 mov rax, rsp
 add rax, 0
 mov [rsp+24], rax
 mov rax, [rsp+0]
 mov rbx, 69
-mov rax, 69
-mov rbx, [rsp+24]
-mov [rbx], rax
+mov rax, [rsp+24]
+mov [rax], rbx
 mov [rsp+32], rax
 mov rax, __temp_str_2
 mov [rsp+40], rax
@@ -40,7 +38,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+48], rax
 call printf
-mov [rsp+56], rax
 end:
 mov rax, __temp_str_3
 mov [rsp+56], rax
@@ -55,7 +52,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call printf
-mov [rsp+88], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

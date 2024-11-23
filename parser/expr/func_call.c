@@ -39,8 +39,9 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         }
 
         symbol *tmp = new_temp_symbol(ctx, regval->type);
-        add_text(ctx, "mov rax, %s", regval->code);
-        add_text(ctx, "mov %s, rax", tmp->repl);
+        char *rega = reg_a(regval->type, ctx);
+        add_text(ctx, "mov %s, %s", rega, regval->code);
+        add_text(ctx, "mov %s, %s", tmp->repl, rega);
 
         argvals[i] = tmp->repl;
     }
@@ -83,10 +84,17 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
     general_type *ret_type = ((func_type *)fun_type->data)->return_type;
 
     add_text(ctx, "call %s", fun_obj->code);
-    symbol *tmp = new_temp_symbol(ctx, ret_type);
-    add_text(ctx, "mov %s, rax", tmp->repl);
 
-    return new_result(tmp->repl, tmp->type);
+    char *rega = reg_a(ret_type, ctx);
+    // If return type is not void
+    if (rega)
+    {
+        symbol *tmp = new_temp_symbol(ctx, ret_type);
+        add_text(ctx, "mov %s, %s", tmp->repl, rega);
+        return new_result(tmp->repl, tmp->type);
+    } else {
+        return NULL;
+    }
 }
 
 parser_node *parse_func_call(typed_token **tkns_ptr, parser_node *func)

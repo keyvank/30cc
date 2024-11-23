@@ -26,10 +26,11 @@ apply_result *deref_apply(parser_node *node, context *ctx)
     symbol *sym_addr = new_temp_symbol(ctx, loc->type);
     add_text(ctx, "mov %s, rax", sym_addr->repl);
 
-    add_text(ctx, "mov rax, [rax]");
     general_type *deref_type = ((pointer_type *)loc->type->data)->of;
+    char *rega = reg_a(deref_type, ctx);
+    add_text(ctx, "mov %s, [rax]", rega);
     symbol *sym_val = new_temp_symbol(ctx, deref_type);
-    add_text(ctx, "mov %s, rax", sym_val->repl);
+    add_text(ctx, "mov %s, %s", sym_val->repl, rega);
 
     apply_result *res = new_result(sym_val->repl, deref_type);
     res->addr_code = sym_addr->repl;
