@@ -116,6 +116,7 @@ def main():
         return
 
     diff_count = 0
+    failed = False
     for test_file in TEST_FILES.keys():
         for mode in ["lex", "tree", "asm"]:
             extension = "txt"
@@ -126,6 +127,8 @@ def main():
                 f"{os.path.basename(test_file)}_{mode}_output.{extension}",
             )
             output = run(test_file, mode)
+            if output is None:
+                failed = True
 
             if mode == "revert":
                 revert_snapshot(output_file)
@@ -185,6 +188,8 @@ def main():
     print(f"found {diff_count} differences in run snapshots")
 
     if diff_count > 0:
+        exit(1)
+    if failed is True:
         exit(1)
 
 
