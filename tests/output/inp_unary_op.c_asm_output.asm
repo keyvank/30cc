@@ -1,5 +1,5 @@
 section .data
-__printf_size: equ 16
+__temp_str_0 db `%d\n`, 0
 __temp_str_1 db `%d\n`, 0
 __temp_str_2 db `%d\n`, 0
 __temp_str_3 db `%d\n`, 0
@@ -8,7 +8,6 @@ __temp_str_5 db `%d\n`, 0
 __temp_str_6 db `%d\n`, 0
 __temp_str_7 db `%d\n`, 0
 __temp_str_8 db `%d\n`, 0
-__temp_str_9 db `%d\n`, 0
 __main_size: equ 432
 section .text
 extern printf
@@ -21,7 +20,7 @@ sub rsp, __main_size
 mov rax, 2
 mov [rsp+0], rax
 ;end define variable a
-mov rax, __temp_str_1
+mov rax, __temp_str_0
 mov [rsp+8], rax
 ; unary op apply
 mov rax, rsp
@@ -40,7 +39,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+40], rax
 call printf
-mov rax, __temp_str_2
+mov rax, __temp_str_1
 mov [rsp+48], rax
 ; unary op apply
 mov rax, rsp
@@ -61,7 +60,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call printf
-mov rax, __temp_str_3
+mov rax, __temp_str_2
 mov [rsp+88], rax
 ; unary op apply
 mov rax, rsp
@@ -82,7 +81,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+120], rax
 call printf
-mov rax, __temp_str_4
+mov rax, __temp_str_3
 mov [rsp+128], rax
 ; unary op apply
 ; unary op apply
@@ -111,7 +110,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+168], rax
 call printf
-mov rax, __temp_str_5
+mov rax, __temp_str_4
 mov [rsp+176], rax
 ; unary op apply
 ; unary op apply
@@ -135,7 +134,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+216], rax
 call printf
-mov rax, __temp_str_6
+mov rax, __temp_str_5
 mov [rsp+224], rax
 ; unary op apply
 mov rax, rsp
@@ -156,7 +155,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+256], rax
 call printf
-mov rax, __temp_str_7
+mov rax, __temp_str_6
 mov [rsp+264], rax
 ; postfix op apply
 mov rax, rsp
@@ -176,7 +175,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+296], rax
 call printf
-mov rax, __temp_str_8
+mov rax, __temp_str_7
 mov [rsp+304], rax
 ; postfix op apply
 mov rax, rsp
@@ -214,31 +213,31 @@ jmp __tmp_label_3
 __tmp_label_2:
 mov rax, 1
 __tmp_label_3:
-mov [rsp+360], rax
-mov rax, [rsp+360]
+mov [rsp+368], rax
+mov rax, [rsp+368]
 cmp rax, 0
 je __tmp_label_1
-mov rax, __temp_str_9
-mov [rsp+368], rax
+mov rax, __temp_str_8
+mov [rsp+376], rax
+mov rax, rsp
+add rax, 344
+mov [rsp+384], rax
+mov rax, [rsp+344]
+mov [rsp+392], rax
+mov rdi, [rsp+376]
+mov rsi, [rsp+392]
+mov rax, rsp
+add rax, 0
+mov [rsp+400], rax
+call printf
+; postfix op apply
 mov rax, rsp
 add rax, 344
 mov [rsp+376], rax
 mov rax, [rsp+344]
 mov [rsp+384], rax
-mov rdi, [rsp+368]
-mov rsi, [rsp+384]
-mov rax, rsp
-add rax, 0
-mov [rsp+392], rax
-call printf
-; postfix op apply
-mov rax, rsp
-add rax, 344
-mov [rsp+368], rax
-mov rax, [rsp+344]
-mov [rsp+376], rax
 add rax, 1
-mov rbx, [rsp+368]
+mov rbx, [rsp+376]
 mov [rbx], rax
 ; postfix op finish
 jmp __tmp_label_0

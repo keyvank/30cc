@@ -1,8 +1,6 @@
 section .data
-__printf_size: equ 16
-__malloc_size: equ 16
-__temp_str_2 db `Salam!`, 0
-__temp_str_3 db `%u %u %c %s\n`, 0
+__temp_str_0 db `Salam!`, 0
+__temp_str_1 db `%u %u %c %s\n`, 0
 __main_size: equ 288
 section .text
 extern printf
@@ -38,6 +36,7 @@ mov rax, [rsp+48]
 mov rbx, 10
 mov rax, [rsp+40]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+56], rax
 mov rax, rsp
 add rax, 0
@@ -53,6 +52,7 @@ mov rax, [rsp+80]
 mov rbx, 20
 mov rax, [rsp+72]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+88], rax
 mov rax, rsp
 add rax, 0
@@ -68,7 +68,8 @@ mov al, [rsp+112]
 mov bl, 75
 mov rax, [rsp+104]
 mov [rax], bl
-mov [rsp+113], rax
+mov al, bl
+mov [rsp+113], al
 mov rax, rsp
 add rax, 0
 mov [rsp+114], rax
@@ -80,11 +81,12 @@ mov rax, [rax]
 mov [rsp+130], rax
 ;;;
 mov rax, [rsp+130]
-mov rbx, __temp_str_2
+mov rbx, __temp_str_0
 mov rax, [rsp+122]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+138], rax
-mov rax, __temp_str_3
+mov rax, __temp_str_1
 mov [rsp+146], rax
 mov rax, rsp
 add rax, 0

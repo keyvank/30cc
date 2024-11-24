@@ -1,36 +1,4 @@
-TKN_INT
-TKN_ID(function2)
-TKN_L_PAREN
-TKN_R_PAREN
-TKN_L_BRACE
-TKN_RETURN
-TKN_LIT_INT(13)
-TKN_SEMICOLON
-TKN_R_BRACE
-TKN_EOF
 Program(
-  Function(
-    Name:
-      function2
-    Returns:
-      Type(Name: (null)):
-        TKN_INT
-    Params:
-    Statements:
-      Return:
-        Literal(Type: 34, Value: 13)
-  )
-  Function(
-    Name:
-      function
-    Returns:
-      Type(Name: (null)):
-        TKN_INT
-    Params:
-    Statements:
-      Return:
-        Literal(Type: 34, Value: 69)
-  )
   FunctionDecl(
     Name:
       printf

@@ -1,9 +1,7 @@
 section .data
-__malloc_size: equ 16
-__printf_size: equ 16
 __new_list_size: equ 48
 __add_val_size: equ 352
-__temp_str_4 db `%u\n`, 0
+__temp_str_2 db `%u\n`, 0
 __main_size: equ 288
 section .text
 extern malloc
@@ -74,6 +72,7 @@ mov rax, [rsp+88]
 mov rbx, 0
 mov rax, [rsp+80]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+96], rax
 mov rax, rsp
 add rax, 16
@@ -92,6 +91,7 @@ mov rax, [rsp+120]
 mov rbx, [rsp+8]
 mov rax, [rsp+112]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+136], rax
 mov rax, rsp
 add rax, 0
@@ -152,6 +152,7 @@ mov rax, [rsp+168]
 mov rbx, [rsp+248]
 mov rax, [rsp+224]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+256], rax
 jmp __tmp_label_2
 __tmp_label_3:
@@ -173,6 +174,7 @@ mov rax, [rsp+240]
 mov rbx, [rsp+16]
 mov rax, [rsp+232]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+256], rax
 jmp __tmp_label_1
 __tmp_label_0:
@@ -193,6 +195,7 @@ mov rax, [rsp+184]
 mov rbx, [rsp+16]
 mov rax, [rsp+176]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+200], rax
 __tmp_label_1:
 mov rsp, rbp
@@ -286,7 +289,7 @@ mov [rsp+184], rax
 mov rax, [rsp+152]
 cmp rax, 0
 je __tmp_label_5
-mov rax, __temp_str_4
+mov rax, __temp_str_2
 mov [rsp+192], rax
 mov rax, rsp
 add rax, 152
@@ -323,6 +326,7 @@ mov rax, [rsp+152]
 mov rbx, [rsp+264]
 mov rax, [rsp+240]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+272], rax
 jmp __tmp_label_4
 __tmp_label_5:

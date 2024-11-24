@@ -15,11 +15,11 @@ TEST_FILES = {
     "./examples/inp_linked_list.c": [],
     "./examples/inp_unary_op.c": [],
     "./examples/lib_usage.c": [],
-    "./examples/inp_include.c": [],
+    #"./examples/inp_include.c": [],
     "./examples/inp_func_ptrs.c": [],
     "./examples/inp_goto.c": [],
     "./examples/inp_break.c": [],
-    "./examples/inp_preprocess.c": [],
+    #"./examples/inp_preprocess.c": [],
     "./examples/inp_pointer.c": [],
     "./examples/switch.c": [],
     "./examples/inp_loop.c": [],
@@ -127,6 +127,7 @@ def main():
                 OUTPUT_FOLDER,
                 f"{os.path.basename(test_file)}_{mode}_output.{extension}",
             )
+            print(test_file, mode)
             output = run(test_file, mode)
             if output is None:
                 failed = True

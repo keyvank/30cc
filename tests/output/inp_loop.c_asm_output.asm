@@ -1,9 +1,8 @@
 section .data
-__printf_size: equ 16
-__temp_str_1 db `inside do while\n`, 0
+__temp_str_0 db `inside do while\n`, 0
+__temp_str_1 db `i %d\n`, 0
 __temp_str_2 db `i %d\n`, 0
-__temp_str_3 db `i %d\n`, 0
-__main_size: equ 160
+__main_size: equ 176
 section .text
 extern printf
 global main
@@ -17,7 +16,7 @@ mov [rsp+0], rax
 ;end define variable i
 ; enter loop
 __tmp_label_0:
-mov rax, __temp_str_1
+mov rax, __temp_str_0
 mov [rsp+8], rax
 mov rdi, [rsp+8]
 mov rax, rsp
@@ -32,7 +31,7 @@ __tmp_label_1:
 ; exit loop
 ; enter loop
 __tmp_label_2:
-mov rax, __temp_str_2
+mov rax, __temp_str_1
 mov [rsp+8], rax
 mov rax, rsp
 add rax, 0
@@ -67,8 +66,8 @@ jmp __tmp_label_5
 __tmp_label_4:
 mov rax, 1
 __tmp_label_5:
-mov [rsp+16], rax
-mov rax, [rsp+16]
+mov [rsp+24], rax
+mov rax, [rsp+24]
 cmp rax, 0
 je __tmp_label_3
 jmp __tmp_label_2
@@ -78,7 +77,7 @@ __tmp_label_3:
 __tmp_label_6:
 mov rax, rsp
 add rax, 0
-mov [rsp+24], rax
+mov [rsp+32], rax
 mov rax, [rsp+0]
 mov rbx, 0
 cmp rax, rbx
@@ -88,32 +87,32 @@ jmp __tmp_label_9
 __tmp_label_8:
 mov rax, 1
 __tmp_label_9:
-mov [rsp+32], rax
-mov rax, [rsp+32]
+mov [rsp+48], rax
+mov rax, [rsp+48]
 cmp rax, 0
 je __tmp_label_7
 ; postfix op apply
 mov rax, rsp
 add rax, 0
-mov [rsp+40], rax
+mov [rsp+56], rax
 mov rax, [rsp+0]
-mov [rsp+48], rax
+mov [rsp+64], rax
 sub rax, 1
-mov rbx, [rsp+40]
+mov rbx, [rsp+56]
 mov [rbx], rax
 ; postfix op finish
-mov rax, __temp_str_3
-mov [rsp+56], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+64], rax
-mov rax, [rsp+0]
+mov rax, __temp_str_2
 mov [rsp+72], rax
-mov rdi, [rsp+56]
-mov rsi, [rsp+72]
 mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
+mov rax, [rsp+0]
+mov [rsp+88], rax
+mov rdi, [rsp+72]
+mov rsi, [rsp+88]
+mov rax, rsp
+add rax, 0
+mov [rsp+96], rax
 call printf
 jmp __tmp_label_6
 __tmp_label_7:

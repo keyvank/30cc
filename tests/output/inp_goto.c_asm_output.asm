@@ -1,8 +1,7 @@
 section .data
-__printf_size: equ 16
-__temp_str_1 db `first\n`, 0
-__temp_str_2 db `second\n`, 0
-__temp_str_3 db `%d\n`, 0
+__temp_str_0 db `first\n`, 0
+__temp_str_1 db `second\n`, 0
+__temp_str_2 db `%d\n`, 0
 __main_size: equ 96
 section .text
 extern printf
@@ -15,7 +14,7 @@ sub rsp, __main_size
 mov rax, 2
 mov [rsp+0], rax
 ;end define variable a
-mov rax, __temp_str_1
+mov rax, __temp_str_0
 mov [rsp+8], rax
 mov rdi, [rsp+8]
 mov rax, rsp
@@ -30,8 +29,9 @@ mov rax, [rsp+0]
 mov rbx, 69
 mov rax, [rsp+24]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+32], rax
-mov rax, __temp_str_2
+mov rax, __temp_str_1
 mov [rsp+40], rax
 mov rdi, [rsp+40]
 mov rax, rsp
@@ -39,7 +39,7 @@ add rax, 0
 mov [rsp+48], rax
 call printf
 end:
-mov rax, __temp_str_3
+mov rax, __temp_str_2
 mov [rsp+56], rax
 mov rax, rsp
 add rax, 0

@@ -1,8 +1,6 @@
 section .data
-__printf_size: equ 16
-__malloc_size: equ 16
-__temp_str_2 db `%u %u %u %u %u\n`, 0
-__temp_str_3 db `%u\n`, 0
+__temp_str_0 db `%u %u %u %u %u\n`, 0
+__temp_str_1 db `%u\n`, 0
 __main_size: equ 736
 section .text
 extern printf
@@ -26,6 +24,7 @@ mov rax, [rsp+56]
 mov rbx, 5
 mov rax, [rsp+48]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+64], rax
 mov rax, rsp
 add rax, 0
@@ -41,6 +40,7 @@ mov rax, [rsp+88]
 mov rbx, 10
 mov rax, [rsp+80]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+96], rax
 mov rax, rsp
 add rax, 0
@@ -63,6 +63,7 @@ mov rax, [rsp+144]
 mov rbx, 19
 mov rax, [rsp+136]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+152], rax
 mov rax, rsp
 add rax, 0
@@ -85,6 +86,7 @@ mov rax, [rsp+200]
 mov rbx, 123
 mov rax, [rsp+192]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+208], rax
 mov rax, rsp
 add rax, 0
@@ -135,8 +137,9 @@ mov rax, [rsp+232]
 mov rbx, [rsp+320]
 mov rax, [rsp+224]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+328], rax
-mov rax, __temp_str_2
+mov rax, __temp_str_0
 mov [rsp+336], rax
 mov rax, rsp
 add rax, 0
@@ -253,6 +256,7 @@ mov rax, [rsp+616]
 mov rbx, 987
 mov rax, [rsp+608]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+624], rax
 mov rax, rsp
 add rax, 560
@@ -271,7 +275,7 @@ mov [rsp+664], rax
 mov rax, [rsp+664]
 mov [rsp+632], rax
 ;end define variable s5
-mov rax, __temp_str_3
+mov rax, __temp_str_1
 mov [rsp+672], rax
 mov rax, rsp
 add rax, 632
