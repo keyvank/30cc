@@ -51,7 +51,7 @@ apply_result *access_apply(parser_node *node, context *ctx)
     if (field_type)
     {
         symbol *sym_addr = new_temp_symbol(ctx, new_pointer_type(field_type));
-        add_text(ctx, ";;;");
+
         if (acc->is_ptr)
             add_text(ctx, "mov rax, %s", obj->code);
         else
@@ -61,9 +61,16 @@ apply_result *access_apply(parser_node *node, context *ctx)
 
         symbol *sym_val = new_temp_symbol(ctx, field_type);
         char *rega = reg_a(field_type, ctx);
-        add_text(ctx, "mov %s, [rax]", rega);
-        add_text(ctx, "mov %s, %s", sym_val->repl, rega);
-        add_text(ctx, ";;;");
+
+        // We don't need to store the value of a field which its type is
+        // non-primitive into a register! Its address is the only thing
+        // the user needs, for accessing its sub-fields!
+        if (rega)
+        {
+            add_text(ctx, "mov %s, [rax]", rega);
+            add_text(ctx, "mov %s, %s", sym_val->repl, rega);
+        }
+
         apply_result *res = new_result(sym_val->repl, field_type);
         res->addr_code = sym_addr->repl;
         return res;
