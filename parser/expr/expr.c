@@ -238,6 +238,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         {
             add_text(ctx, "mov rax, %s", left->addr_code);
             add_text(ctx, "mov [rax], %s", regb);
+            add_text(ctx, "mov %s, %s", rega, regb);
         }
         else
         {
@@ -266,24 +267,6 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_STAREQ:
         add_text(ctx, "mul %s", regb);
         move_reg_to_var(ctx, left, rega);
-        break;
-    case TKN_DIV:
-        add_text(ctx, "div %s", regb);
-        break;
-    case TKN_DIVEQ:
-        add_text(ctx, "div %s", regb);
-        move_reg_to_var(ctx, left, rega);
-        break;
-    case TKN_MOD:
-        add_text(ctx, "move rdx, 0");
-        add_text(ctx, "div rbx");
-        add_text(ctx, "move rax, rdx");
-        break;
-    case TKN_AND:
-        add_text(ctx, "and %s, %s", rega, regb);
-        break;
-    case TKN_OR:
-        add_text(ctx, "or %s, %s", rega, regb);
         break;
     case TKN_ANDAND:
     case TKN_OROR:
@@ -352,7 +335,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         exit(1);
     }
 
-    add_text(ctx, "mov %s, rax", tmp->repl);
+    char *rega_res = reg_a(tmp->type, ctx);
+    add_text(ctx, "mov %s, %s", tmp->repl, rega_res);
     return new_result(tmp->repl, tmp->type);
 }
 
@@ -376,20 +360,22 @@ apply_result *cond_apply(parser_node *node, context *ctx)
 {
     node_cond *cond = (node_cond *)node->data;
     apply_result *cond_res = cond->cond->apply(cond->cond, ctx);
+    char *rega_cond = reg_a(cond_res->type, ctx);
     apply_result *yes_val = cond->true_val->apply(cond->true_val, ctx);
     apply_result *no_val = cond->false_val->apply(cond->false_val, ctx);
+    char *rega_val = reg_a(yes_val->type, ctx);
     char *l1 = new_label(ctx);
     char *l2 = new_label(ctx);
-    add_text(ctx, "mov rax, %s", cond_res->code);
-    add_text(ctx, "cmp rax, 0");
+    add_text(ctx, "mov %s, %s", rega_cond, cond_res->code);
+    add_text(ctx, "cmp %s, 0", rega_cond);
     add_text(ctx, "je %s", l1);
-    add_text(ctx, "mov rax, %s", yes_val->code);
+    add_text(ctx, "mov %s, %s", rega_val, yes_val->code);
     add_text(ctx, "jmp %s", l2);
     add_text(ctx, "%s:", l1);
-    add_text(ctx, "mov rax, %s", no_val->code);
+    add_text(ctx, "mov %s, %s", rega_val, no_val->code);
     add_text(ctx, "%s:", l2);
     symbol *sym = new_temp_symbol(ctx, yes_val->type);
-    add_text(ctx, "mov %s, rax", sym->repl);
+    add_text(ctx, "mov %s, %s", sym->repl, rega_val);
     return new_result(sym->repl, sym->type);
 }
 
