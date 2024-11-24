@@ -617,8 +617,7 @@ typed_token *tokenize(char *inp)
 
 int main()
 {
-    printf("SALAM %u\n", 200 && 300);
-    typed_token *fst = tokenize("   \n \t   abc def ghi void   int llllll   ");
+    typed_token *fst = tokenize("   \n \t    abc 123 'c' \"keyvan\" def ghi void   int llllll  kkkk  23 ");
 
     typed_token *curr = fst;
     while (curr)
