@@ -53,7 +53,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+64], rax
 call printf
-mov [rsp+72], rax
 mov rax, rsp
 add rax, 8
 mov [rsp+32], rax
@@ -66,9 +65,8 @@ add rax, rbx
 mov [rsp+48], rax
 mov rax, [rsp+8]
 mov rbx, [rsp+48]
-mov rax, [rsp+48]
-mov rbx, [rsp+32]
-mov [rbx], rax
+mov rax, [rsp+32]
+mov [rax], rbx
 mov [rsp+56], rax
 jmp __tmp_label_0
 __tmp_label_1:
@@ -86,7 +84,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
 call printf
-mov [rsp+40], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

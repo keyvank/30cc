@@ -61,7 +61,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
 call printf
-mov [rsp+40], rax
 mov rax, __temp_str_4
 mov [rsp+40], rax
 mov rax, rsp
@@ -77,7 +76,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+72], rax
 call printf
-mov [rsp+80], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

@@ -65,7 +65,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call strcpy
-mov [rsp+88], rax
 mov rax, rsp
 add rax, 16
 mov [rsp+88], rax
@@ -82,7 +81,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+120], rax
 call strcat
-mov [rsp+128], rax
 mov rax, __temp_str_10
 mov [rsp+128], rax
 mov rax, rsp
@@ -96,7 +94,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+152], rax
 call printf
-mov [rsp+160], rax
 mov rax, rsp
 add rax, 160
 mov [rsp+168], rax
@@ -113,9 +110,8 @@ call fopen
 mov [rsp+200], rax
 mov rax, [rsp+160]
 mov rbx, [rsp+200]
-mov rax, [rsp+200]
-mov rbx, [rsp+168]
-mov [rbx], rax
+mov rax, [rsp+168]
+mov [rax], rbx
 mov [rsp+208], rax
 ; unary op apply
 mov rax, rsp
@@ -138,7 +134,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+240], rax
 call printf
-mov [rsp+248], rax
 mov rax, 1
 mov rsp, rbp
 pop rbp
@@ -157,7 +152,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+256], rax
 call fprintf
-mov [rsp+264], rax
 mov rax, rsp
 add rax, 160
 mov [rsp+264], rax

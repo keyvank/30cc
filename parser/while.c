@@ -17,8 +17,9 @@ apply_result *while_apply(parser_node *node, context *ctx)
 
     add_text(ctx, "%s:", start_while);
     apply_result *condv = w->cond->apply(w->cond, ctx);
-    add_text(ctx, "mov rax, %s", condv->code);
-    add_text(ctx, "cmp rax, 0");
+    char *rega = reg_a(condv->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, condv->code);
+    add_text(ctx, "cmp %s, 0", rega);
     add_text(ctx, "je %s", end_while);
     w->body->apply(w->body, ctx);
     add_text(ctx, "jmp %s", start_while);
@@ -90,8 +91,9 @@ apply_result *do_while_apply(parser_node *node, context *ctx)
     w->body->apply(w->body, ctx);
 
     apply_result *condv = w->cond->apply(w->cond, ctx);
-    add_text(ctx, "mov rax, %s", condv->code);
-    add_text(ctx, "cmp rax, 0");
+    char *rega = reg_a(condv->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, condv->code);
+    add_text(ctx, "cmp %s, 0", rega);
     add_text(ctx, "je %s", end_while);
     add_text(ctx, "jmp %s", start_while);
 

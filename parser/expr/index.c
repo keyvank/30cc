@@ -39,9 +39,10 @@ apply_result *index_apply(parser_node *node, context *ctx)
     symbol *sym_addr = new_temp_symbol(ctx, arr->type);
     add_text(ctx, "mov %s, rbx", sym_addr->repl);
 
-    add_text(ctx, "mov rax, [rbx]");
+    char *rega = reg_a(base_type, ctx);
+    add_text(ctx, "mov %s, [rbx]", rega);
     symbol *sym_val = new_temp_symbol(ctx, base_type);
-    add_text(ctx, "mov %s, rax", sym_val->repl);
+    add_text(ctx, "mov %s, %s", sym_val->repl, rega);
 
     apply_result *ret = new_result(sym_val->repl, base_type);
     ret->code = sym_val->repl;

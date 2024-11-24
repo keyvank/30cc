@@ -26,8 +26,9 @@ apply_result *var_decl_apply(parser_node *node, context *ctx)
             exit(1);
         }
         add_text(ctx, ";define variable %s", decl->identity);
-        add_text(ctx, "mov rax, %s", val->code);
-        add_text(ctx, "mov %s, rax", sym->repl);
+        char *rega = reg_a(val->type, ctx);
+        add_text(ctx, "mov %s, %s", rega, val->code);
+        add_text(ctx, "mov %s, %s", sym->repl, rega);
         add_text(ctx, ";end define variable %s", decl->identity);
     }
     return NULL;

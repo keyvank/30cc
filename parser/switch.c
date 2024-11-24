@@ -50,7 +50,8 @@ apply_result *switch_apply(parser_node *node, context *ctx) {
     char *end_switch_label = new_loop_end_label(ctx);
 
     apply_result *condition_eval = switch_node->condition->apply(switch_node->condition, ctx);
-    add_text(ctx, "mov rax, %s", condition_eval->code);
+    char *rega = reg_a(condition_eval->type, ctx);
+    add_text(ctx, "mov %s, %s", rega, condition_eval->code);
 
     list_node *location = switch_node->case_locations->first;
     list_node *stmt_case = switch_node->cases->first;

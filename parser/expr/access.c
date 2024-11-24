@@ -60,8 +60,9 @@ apply_result *access_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, rax", sym_addr->repl);
 
         symbol *sym_val = new_temp_symbol(ctx, field_type);
-        add_text(ctx, "mov rax, [rax]", sym_val->repl);
-        add_text(ctx, "mov %s, rax", sym_val->repl);
+        char *rega = reg_a(field_type, ctx);
+        add_text(ctx, "mov %s, [rax]", rega);
+        add_text(ctx, "mov %s, %s", sym_val->repl, rega);
         add_text(ctx, ";;;");
         apply_result *res = new_result(sym_val->repl, field_type);
         res->addr_code = sym_addr->repl;

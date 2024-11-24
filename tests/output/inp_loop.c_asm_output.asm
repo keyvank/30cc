@@ -24,7 +24,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+16], rax
 call printf
-mov [rsp+24], rax
 mov rax, 0
 cmp rax, 0
 je __tmp_label_1
@@ -46,7 +45,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
 call printf
-mov [rsp+40], rax
 ; postfix op apply
 mov rax, rsp
 add rax, 0
@@ -117,7 +115,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call printf
-mov [rsp+88], rax
 jmp __tmp_label_6
 __tmp_label_7:
 ; exit loop

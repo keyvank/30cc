@@ -13,8 +13,9 @@ apply_result *if_apply(parser_node *node, context *ctx)
 {
     node_if *ifn = (node_if *)node->data;
     apply_result *ife = ifn->cond->apply(ifn->cond, ctx);
+    char *rega = reg_a(ife->type, ctx);
 
-    add_text(ctx, "mov rax, 0");
+    add_text(ctx, "mov %s, 0", rega);
 
     char *end_of_if = new_label(ctx);
     char *end_of_else = NULL;
@@ -23,7 +24,7 @@ apply_result *if_apply(parser_node *node, context *ctx)
         end_of_else = new_label(ctx);
     }
 
-    add_text(ctx, "cmp rax, %s", ife->code);
+    add_text(ctx, "cmp %s, %s", rega, ife->code);
     add_text(ctx, "je %s", end_of_if);
     ifn->body->apply(ifn->body, ctx);
     if (ifn->else_body)

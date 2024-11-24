@@ -40,7 +40,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+40], rax
 call printf
-mov [rsp+48], rax
 mov rax, __temp_str_2
 mov [rsp+48], rax
 ; unary op apply
@@ -62,7 +61,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+80], rax
 call printf
-mov [rsp+88], rax
 mov rax, __temp_str_3
 mov [rsp+88], rax
 ; unary op apply
@@ -84,7 +82,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+120], rax
 call printf
-mov [rsp+128], rax
 mov rax, __temp_str_4
 mov [rsp+128], rax
 ; unary op apply
@@ -114,7 +111,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+168], rax
 call printf
-mov [rsp+176], rax
 mov rax, __temp_str_5
 mov [rsp+176], rax
 ; unary op apply
@@ -139,7 +135,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+216], rax
 call printf
-mov [rsp+224], rax
 mov rax, __temp_str_6
 mov [rsp+224], rax
 ; unary op apply
@@ -161,7 +156,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+256], rax
 call printf
-mov [rsp+264], rax
 mov rax, __temp_str_7
 mov [rsp+264], rax
 ; postfix op apply
@@ -182,7 +176,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+296], rax
 call printf
-mov [rsp+304], rax
 mov rax, __temp_str_8
 mov [rsp+304], rax
 ; postfix op apply
@@ -203,7 +196,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+336], rax
 call printf
-mov [rsp+344], rax
 ;define variable i
 mov rax, 0
 mov [rsp+344], rax
@@ -239,7 +231,6 @@ mov rax, rsp
 add rax, 0
 mov [rsp+392], rax
 call printf
-mov [rsp+400], rax
 ; postfix op apply
 mov rax, rsp
 add rax, 344
