@@ -1,14 +1,13 @@
 section .data
-__printf_size: equ 16
-__temp_str_1 db `1`, 0
-__temp_str_2 db `Excellent!\n`, 0
-__temp_str_3 db `Well done\n`, 0
-__temp_str_4 db `You passed\n`, 0
-__temp_str_5 db `Better try again\n`, 0
-__temp_str_6 db `Invalid grade\n`, 0
-__temp_str_7 db `default case\n`, 0
-__temp_str_8 db `is two\n`, 0
-__temp_str_9 db `%s\n`, 0
+__temp_str_0 db `1`, 0
+__temp_str_1 db `Excellent!\n`, 0
+__temp_str_2 db `Well done\n`, 0
+__temp_str_3 db `You passed\n`, 0
+__temp_str_4 db `Better try again\n`, 0
+__temp_str_5 db `Invalid grade\n`, 0
+__temp_str_6 db `default case\n`, 0
+__temp_str_7 db `is two\n`, 0
+__temp_str_8 db `%s\n`, 0
 __main_size: equ 192
 section .text
 extern printf
@@ -38,7 +37,7 @@ cmp rax, 70
 je case___tmp_label_0_7
 jmp case___tmp_label_0_9
 ; stmt loc 0
-mov rax, __temp_str_1
+mov rax, __temp_str_0
 mov [rsp+17], rax
 mov rdi, [rsp+17]
 mov rax, rsp
@@ -51,9 +50,10 @@ mov rax, rsp
 add rax, 1
 mov [rsp+33], rax
 mov rax, [rsp+1]
-mov rbx, __temp_str_2
+mov rbx, __temp_str_1
 mov rax, [rsp+33]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+41], rax
 ; stmt loc 2
 jmp __tmp_label_0
@@ -64,9 +64,10 @@ mov rax, rsp
 add rax, 1
 mov [rsp+49], rax
 mov rax, [rsp+1]
-mov rbx, __temp_str_3
+mov rbx, __temp_str_2
 mov rax, [rsp+49]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+57], rax
 ; stmt loc 4
 jmp __tmp_label_0
@@ -76,9 +77,10 @@ mov rax, rsp
 add rax, 1
 mov [rsp+65], rax
 mov rax, [rsp+1]
-mov rbx, __temp_str_4
+mov rbx, __temp_str_3
 mov rax, [rsp+65]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+73], rax
 ; stmt loc 6
 jmp __tmp_label_0
@@ -88,9 +90,10 @@ mov rax, rsp
 add rax, 1
 mov [rsp+81], rax
 mov rax, [rsp+1]
-mov rbx, __temp_str_5
+mov rbx, __temp_str_4
 mov rax, [rsp+81]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+89], rax
 ; stmt loc 8
 jmp __tmp_label_0
@@ -100,9 +103,10 @@ mov rax, rsp
 add rax, 1
 mov [rsp+97], rax
 mov rax, [rsp+1]
-mov rbx, __temp_str_6
+mov rbx, __temp_str_5
 mov rax, [rsp+97]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+105], rax
 ; end switch
 __tmp_label_0:
@@ -111,7 +115,7 @@ mov rax, 1
 jmp case___tmp_label_1_0
 ; stmt loc 0
 case___tmp_label_1_0:
-mov rax, __temp_str_7
+mov rax, __temp_str_6
 mov [rsp+113], rax
 mov rdi, [rsp+113]
 mov rax, rsp
@@ -128,7 +132,7 @@ jmp case___tmp_label_2_0
 ; stmt loc 0
 case___tmp_label_2_0:
 case___tmp_label_2_0:
-mov rax, __temp_str_8
+mov rax, __temp_str_7
 mov [rsp+129], rax
 mov rdi, [rsp+129]
 mov rax, rsp
@@ -137,7 +141,7 @@ mov [rsp+137], rax
 call printf
 ; end switch
 __tmp_label_2:
-mov rax, __temp_str_9
+mov rax, __temp_str_8
 mov [rsp+145], rax
 mov rax, rsp
 add rax, 1

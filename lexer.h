@@ -9,6 +9,8 @@ typedef struct typed_token_
     struct typed_token_ *next;
 } typed_token;
 
+typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *));
+void str_tkn_debug(typed_token *tkn);
 typed_token *tokenize(char *inp);
 
 #define TKN_EOF 0
@@ -35,6 +37,7 @@ typed_token *tokenize(char *inp);
 #define TKN_R_BRACK 21
 #define TKN_SEMICOLON 22
 #define TKN_COMMA 23
+#define TKN_SHARP 24
 
 #define TKN_ID 32
 #define TKN_LIT_STR 33

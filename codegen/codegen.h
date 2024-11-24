@@ -69,6 +69,7 @@ int types_equal(general_type *a, general_type *b, context *ctx);
 context new_context();
 void add_text(context *ctx, char *fmt, ...);
 void add_data(context *ctx, char *fmt, ...);
+void replace_text(context *ctx, char *a, char *b);
 
 typedef struct
 {

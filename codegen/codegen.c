@@ -53,6 +53,19 @@ void add_text(context *ctx, char *fmt, ...)
     add_to_list(ctx->text, txt);
 }
 
+void replace_text(context *ctx, char *a, char *b)
+{
+    list_node *curr = ctx->text->first;
+    while (curr)
+    {
+        if (strcmp(curr->value, a) == 0)
+        {
+            curr->value = b;
+        }
+        curr = curr->next;
+    }
+}
+
 symbol *find_symbol(context *ctx, char *name)
 {
     list_node *curr = ctx->symbol_table->last;
@@ -92,14 +105,15 @@ char *new_loop_end_label(context *ctx)
 {
     char *name = new_label(ctx);
     int *label_id = malloc(sizeof(int));
-    *label_id = ctx->label_counter-1;
+    *label_id = ctx->label_counter - 1;
     add_to_list(ctx->loop_end_labels, label_id);
     return name;
 }
 
-char* get_current_loop_end_label_counter(context *ctx, char *name)
+char *get_current_loop_end_label_counter(context *ctx, char *name)
 {
-    if (ctx->loop_end_labels->count == 0) {
+    if (ctx->loop_end_labels->count == 0)
+    {
         fprintf(stderr, "Not inside loop\n");
         return NULL;
     }
@@ -112,16 +126,17 @@ char *new_loop_start_label(context *ctx)
 {
     char *name = new_label(ctx);
     int *label_id = malloc(sizeof(int));
-    *label_id = ctx->label_counter-1;
+    *label_id = ctx->label_counter - 1;
     add_to_list(ctx->loop_start_labels, label_id);
 
     add_text(ctx, "; enter loop");
     return name;
 }
 
-char* get_current_loop_start_label_counter(context *ctx, char *name)
+char *get_current_loop_start_label_counter(context *ctx, char *name)
 {
-    if (ctx->loop_start_labels->count == 0) {
+    if (ctx->loop_start_labels->count == 0)
+    {
         fprintf(stderr, "Not inside loop\n");
         return NULL;
     }

@@ -19,6 +19,10 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
     {
         add_text(ctx, "extern %s", func->identity);
         return NULL;
+    } else {
+        char *extern_txt = cc_asprintf("extern %s", func->identity);
+        char *cmt_extern_txt = cc_asprintf(";extern %s", func->identity);
+        replace_text(ctx, extern_txt, cmt_extern_txt);
     }
 
     add_text(ctx, "global %s", func->identity);

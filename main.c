@@ -5,7 +5,7 @@
 #include "lexer.h"
 #include "parser/program.h"
 #include "linked_list.h"
-#include "preprocess.h"
+#include "preprocess/preprocess.h"
 
 char *read_source_file(FILE *fp);
 
@@ -21,9 +21,7 @@ char *read_source_file(FILE *fp);
         (p) = NULL; \
     } while (0)
 
-int lex = 0;
-
-typed_token *process(const char *filename, int depth)
+typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
 {
     typed_token *tkn = NULL;
     char *content = NULL;
@@ -50,7 +48,7 @@ typed_token *process(const char *filename, int depth)
     }
 
     tkn = tokenize(content);
-    if (lex)
+    if (log_lex)
     {
         typed_token *t = tkn;
         while (t)
@@ -59,7 +57,16 @@ typed_token *process(const char *filename, int depth)
             t = t->next;
         }
     }
-    tkn = preprocess(tkn, filename, depth);
+    tkn = preprocess(tkn);
+    if (log_prep)
+    {
+        typed_token *t = tkn;
+        while (t)
+        {
+            t->debug(t);
+            t = t->next;
+        }
+    }
 
 cleanup:
     if (fp)
@@ -73,18 +80,19 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        fprintf(stderr, "Usage: %s <filename> <mode> (<mode>: --lex, --asm or --tree)\n", argv[0]);
+        fprintf(stderr, "Usage: %s <filename> <mode> (<mode>: --lex, --prep, --asm or --tree)\n", argv[0]);
         return 1;
     }
 
-    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0) {
+    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0&& strcmp(argv[2], "--prep") != 0) {
         fprintf(stderr, "Unknown argument %s", argv[2]);
         return 1;
     }
 
-    lex = !strcmp(argv[2], "--lex");
+    int log_lex = !strcmp(argv[2], "--lex");
+    int log_prep = !strcmp(argv[2], "--prep");
 
-    typed_token *tkn = process(argv[1], 0);
+    typed_token *tkn = process(argv[1], 0, log_lex, log_prep);
     if (tkn == NULL)
     {
         return 1;

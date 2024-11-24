@@ -1,19 +1,11 @@
 section .data
-__printf_size: equ 16
-__strcmp_size: equ 16
-__strcat_size: equ 16
-__strcpy_size: equ 16
-__malloc_size: equ 16
-__fprintf_size: equ 16
-__fopen_size: equ 16
-__fclose_size: equ 16
-__temp_str_8 db `salam `, 0
-__temp_str_9 db `khubi`, 0
-__temp_str_10 db `%s\n`, 0
-__temp_str_11 db `output.txt`, 0
-__temp_str_12 db `w`, 0
-__temp_str_13 db `Error opening file!`, 0
-__temp_str_14 db `Hello, World!\n`, 0
+__temp_str_0 db `salam `, 0
+__temp_str_1 db `khubi`, 0
+__temp_str_2 db `%s\n`, 0
+__temp_str_3 db `output.txt`, 0
+__temp_str_4 db `w`, 0
+__temp_str_5 db `Error opening file!`, 0
+__temp_str_6 db `Hello, World!\n`, 0
 __main_size: equ 320
 section .text
 extern printf
@@ -30,11 +22,11 @@ push rbp
 mov rbp, rsp
 sub rsp, __main_size
 ;define variable a
-mov rax, __temp_str_8
+mov rax, __temp_str_0
 mov [rsp+0], rax
 ;end define variable a
 ;define variable b
-mov rax, __temp_str_9
+mov rax, __temp_str_1
 mov [rsp+8], rax
 ;end define variable b
 mov rax, 100
@@ -81,7 +73,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+120], rax
 call strcat
-mov rax, __temp_str_10
+mov rax, __temp_str_2
 mov [rsp+128], rax
 mov rax, rsp
 add rax, 16
@@ -97,9 +89,9 @@ call printf
 mov rax, rsp
 add rax, 160
 mov [rsp+168], rax
-mov rax, __temp_str_11
+mov rax, __temp_str_3
 mov [rsp+176], rax
-mov rax, __temp_str_12
+mov rax, __temp_str_4
 mov [rsp+184], rax
 mov rdi, [rsp+176]
 mov rsi, [rsp+184]
@@ -112,6 +104,7 @@ mov rax, [rsp+160]
 mov rbx, [rsp+200]
 mov rax, [rsp+168]
 mov [rax], rbx
+mov rax, rbx
 mov [rsp+208], rax
 ; unary op apply
 mov rax, rsp
@@ -127,7 +120,7 @@ mov [rsp+224], rax
 mov rax, 0
 cmp rax, [rsp+224]
 je __tmp_label_0
-mov rax, __temp_str_13
+mov rax, __temp_str_5
 mov [rsp+232], rax
 mov rdi, [rsp+232]
 mov rax, rsp
@@ -144,7 +137,7 @@ add rax, 160
 mov [rsp+232], rax
 mov rax, [rsp+160]
 mov [rsp+240], rax
-mov rax, __temp_str_14
+mov rax, __temp_str_6
 mov [rsp+248], rax
 mov rdi, [rsp+240]
 mov rsi, [rsp+248]

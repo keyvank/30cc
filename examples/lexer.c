@@ -1,10 +1,91 @@
+void *malloc(int sz);
+void printf(char *s, ...);
+int strcmp(char *a, char *b);
+void exit(int ret);
+int getchar();
 
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "lexer.h"
+#define NULL 0
+
+typedef struct typed_token_
+{
+    int type_id;
+    void *data;
+    void (*debug)(struct typed_token_ *);
+    struct typed_token_ *next;
+} typed_token;
+
+#define TKN_EOF 0
+#define TKN_VOID 1
+#define TKN_INT 2
+#define TKN_CHAR 3
+#define TKN_RETURN 4
+#define TKN_FOR 5
+#define TKN_IF 6
+#define TKN_DO 7
+#define TKN_WHILE 8
+#define TKN_STRUCT 9
+#define TKN_ELSE 10
+#define TKN_SIZEOF 11
+#define TKN_TYPEDEF 12
+#define TKN_GOTO 13
+
+// Single letter symbols
+#define TKN_L_PAREN 16
+#define TKN_R_PAREN 17
+#define TKN_L_BRACE 18
+#define TKN_R_BRACE 19
+#define TKN_L_BRACK 20
+#define TKN_R_BRACK 21
+#define TKN_SEMICOLON 22
+#define TKN_COMMA 23
+#define TKN_SHARP 24
+
+#define TKN_ID 32
+#define TKN_LIT_STR 33
+#define TKN_LIT_INT 34
+#define TKN_LIT_CHAR 35
+
+#define TKN_ASSIGN 64
+#define TKN_EQ 65
+#define TKN_LT 66
+#define TKN_GT 67
+#define TKN_LTE 68
+#define TKN_GTE 69
+#define TKN_NOT 70
+#define TKN_NEQ 71
+#define TKN_PLUS 72
+#define TKN_PLUSPLUS 73
+#define TKN_PLUSEQ 74
+#define TKN_MIN 75
+#define TKN_MINMIN 76
+#define TKN_MINEQ 77
+#define TKN_STAR 78
+#define TKN_STAREQ 79
+#define TKN_DOTS 80
+#define TKN_AND 81
+#define TKN_ANDAND 82
+#define TKN_OR 83
+#define TKN_OROR 84
+#define TKN_QUEST 85
+#define TKN_COLON 86
+#define TKN_DOT 87
+#define TKN_ARROW 88
+#define TKN_DIV 89
+#define TKN_DIVEQ 90
+#define TKN_MOD 91
+#define TKN_MODEQ 92
+#define TKN_OREQ 93
+#define TKN_ANDEQ 94
+#define TKN_BREAK 96
+#define TKN_CONTINUE 96
+#define TKN_SWITCH 97
+#define TKN_CASE 98
+#define TKN_DEFAULT 99
+
+#define TKN_COMMENT 128
+#define TKN_DIRECTIVE 129
+
+typed_token *tokenize(char *inp);
 
 char is_num(char c)
 {
@@ -18,7 +99,7 @@ char is_letter(char c)
 
 char is_letter_or_num(char c)
 {
-    return (is_num(c) || is_letter(c)) ? c : 0;
+    return (is_num(c) || is_letter(c)) ? c : '\0';
 }
 
 typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *))
@@ -27,7 +108,7 @@ typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *))
     ret->type_id = tkn_id;
     ret->data = data;
     ret->debug = debug;
-    ret->next = NULL;
+    ret->next = 0;
     return ret;
 }
 
@@ -47,7 +128,7 @@ void str_tkn_debug(typed_token *tkn)
 }
 void directive_tkn_debug(typed_token *tkn)
 {
-    typed_token *curr = tkn->data;
+    typed_token *curr = (typed_token *)curr->data;
     printf("%s:\n", STR(TKN_DIRECTIVE));
     while (curr)
     {
@@ -78,7 +159,7 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
         char *val_ptr = val;
         *val_ptr = c;
         val_ptr++;
-        while (*inp && (c = is_letter_or_num(*inp)))
+        while ((*inp != '\0') && ((c = is_letter_or_num(*inp)) != '\0'))
         {
             *val_ptr = c;
             inp++;
@@ -91,38 +172,6 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_VOID);
         else if (strcmp(val, "int") == 0)
             return new_simp_tkn(TKN_INT);
-        else if (strcmp(val, "char") == 0)
-            return new_simp_tkn(TKN_CHAR);
-        else if (strcmp(val, "return") == 0)
-            return new_simp_tkn(TKN_RETURN);
-        else if (strcmp(val, "for") == 0)
-            return new_simp_tkn(TKN_FOR);
-        else if (strcmp(val, "if") == 0)
-            return new_simp_tkn(TKN_IF);
-        else if (strcmp(val, "else") == 0)
-            return new_simp_tkn(TKN_ELSE);
-        else if (strcmp(val, "do") == 0)
-            return new_simp_tkn(TKN_DO);
-        else if (strcmp(val, "while") == 0)
-            return new_simp_tkn(TKN_WHILE);
-        else if (strcmp(val, "struct") == 0)
-            return new_simp_tkn(TKN_STRUCT);
-        else if (strcmp(val, "sizeof") == 0)
-            return new_simp_tkn(TKN_SIZEOF);
-        else if (strcmp(val, "typedef") == 0)
-            return new_simp_tkn(TKN_TYPEDEF);
-        else if (strcmp(val, "goto") == 0)
-            return new_simp_tkn(TKN_GOTO);
-        else if (strcmp(val, "break") == 0)
-            return new_simp_tkn(TKN_BREAK);
-        else if (strcmp(val, "continue") == 0)
-            return new_simp_tkn(TKN_CONTINUE);
-        else if (strcmp(val, "switch") == 0)
-            return new_simp_tkn(TKN_SWITCH);
-        else if (strcmp(val, "case") == 0)
-            return new_simp_tkn(TKN_CASE);
-        else if (strcmp(val, "default") == 0)
-            return new_simp_tkn(TKN_DEFAULT);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
@@ -137,13 +186,13 @@ typed_token *next_op(char **inp_ptr, int is_newline)
     char *inp = *inp_ptr;
     if (is_num(*inp))
     {
-        int a = *inp - 48;
+        int a = (int)*inp - 48;
         inp++;
         while (is_num(*inp))
         {
 
             a = a * 10;
-            a += (*inp - 48);
+            a += ((int)*inp - 48);
             inp++;
         }
         *inp_ptr = inp;
@@ -271,7 +320,7 @@ typed_token *next_op(char **inp_ptr, int is_newline)
             {
                 *inp_ptr += 4;
                 char e = *(inp + 2);
-                char *ch = malloc(1);
+                char *ch = (char *)malloc(1);
                 if (e == 'n')
                 {
                     *ch = '\n';
@@ -290,7 +339,7 @@ typed_token *next_op(char **inp_ptr, int is_newline)
         else if (*(inp + 1) != '\0' && *(inp + 2) == '\'')
         {
             *inp_ptr += 3;
-            char *ch = malloc(1);
+            char *ch = (char *)malloc(1);
             *ch = *(inp + 1);
             return new_tkn(TKN_LIT_CHAR, (void *)ch, char_tkn_debug);
         }
@@ -322,7 +371,6 @@ typed_token *next_op(char **inp_ptr, int is_newline)
             sz++;
             inp++;
         }
-        free(val); //
     }
     if (*inp == '=')
     {
@@ -502,11 +550,13 @@ int skip_whitespaces(char **inp_ptr, int is_start)
 {
     char *inp = *inp_ptr;
     int is_newline = is_start || (*inp == '\n');
-    while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
+
+    while (*inp != '\0' && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
-        is_newline = (*inp == '\n');
+        is_newline = (int)(*inp == '\n');
         inp++;
     }
+
     *inp_ptr = inp;
     return is_newline;
 }
@@ -514,6 +564,7 @@ int skip_whitespaces(char **inp_ptr, int is_start)
 typed_token *next_token(char **inp_ptr, int *is_start)
 {
     int is_newline = skip_whitespaces(inp_ptr, *is_start);
+
     *is_start = 0;
 
     char *inp = *inp_ptr;
@@ -523,6 +574,7 @@ typed_token *next_token(char **inp_ptr, int *is_start)
         return new_simp_tkn(TKN_EOF);
 
     typed_token *tkn = next_keyword_or_identifier(inp_ptr);
+
     if (!tkn)
         tkn = next_op(inp_ptr, is_newline);
     if (tkn)
@@ -531,8 +583,8 @@ typed_token *next_token(char **inp_ptr, int *is_start)
     }
     else
     {
-        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno));
-        exit(0);
+        printf("Unexpected character '%c'", **inp_ptr);
+        exit(1);
     }
 }
 
@@ -544,7 +596,6 @@ typed_token *tokenize(char *inp)
     while ((t = next_token(ptr, &is_start))->type_id == TKN_COMMENT)
     {
     }
-
     typed_token *first = t;
 
     while (t)
@@ -562,4 +613,18 @@ typed_token *tokenize(char *inp)
         t = next;
     }
     return first;
+}
+
+int main()
+{
+    typed_token *fst = tokenize("   \n \t    abc 123 'c' \"keyvan\" def ghi void   int llllll  kkkk  23 ");
+
+    typed_token *curr = fst;
+    while (curr)
+    {
+        curr->debug(curr);
+        curr = curr->next;
+    }
+
+    return 0;
 }
