@@ -30,7 +30,10 @@ apply_result *index_apply(parser_node *node, context *ctx)
 
     int elem_size = base_type->size(base_type, ctx);
     apply_result *ind = idx->ind->apply(idx->ind, ctx);
-    add_text(ctx, "mov rax, %s", ind->code);
+    char *rega_ind = reg_a(ind->type, ctx);
+
+    add_text(ctx, "xor rax, rax");
+    add_text(ctx, "mov %s, %s", rega_ind, ind->code);
     add_text(ctx, "mov rbx, %u", elem_size);
     add_text(ctx, "mul rbx");
     add_text(ctx, "mov rbx, %s", arr->code);

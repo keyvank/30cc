@@ -231,8 +231,10 @@ int primitive_type_size(general_type *self, context *ctx)
 {
     UNUSED(ctx);
     primitive_type *p = (primitive_type *)self->data;
-    if (strcmp(p->type_name, "TKN_INT") == 0)
+    if (strcmp(p->type_name, "TKN_LONG") == 0)
         return 8;
+    if (strcmp(p->type_name, "TKN_INT") == 0)
+        return 4;
     if (strcmp(p->type_name, "TKN_CHAR") == 0)
         return 1;
     if (strcmp(p->type_name, "TKN_VOID") == 0)
@@ -424,6 +426,10 @@ char *reg_a(general_type *tp, context *ctx)
     int sz = tp->size(tp, ctx);
     if (sz == 1)
         return "al";
+    else if(sz == 2)
+        return "ax";
+    else if(sz == 4)
+        return "eax";
     else if (sz == 8)
         return "rax";
     return NULL;
@@ -434,7 +440,32 @@ char *reg_b(general_type *tp, context *ctx)
     int sz = tp->size(tp, ctx);
     if (sz == 1)
         return "bl";
+    else if(sz == 2)
+        return "bx";
+    else if(sz == 4)
+        return "ebx";
     else if (sz == 8)
         return "rbx";
     return NULL;
+}
+
+void debug_reg(char *reg, context *ctx) {
+    add_text(ctx, "push %s", reg);
+    add_text(ctx, "push rdi");
+    add_text(ctx, "push rsi");
+    add_text(ctx, "push rax");
+
+    add_text(ctx, "mov rdi, __30CC_REG_DEBUG_MSG");
+    add_text(ctx, "mov rsi, %s", reg);
+    add_text(ctx, "call printf");
+
+    add_text(ctx, "pop rax");
+    add_text(ctx, "pop rsi");
+    add_text(ctx, "pop rdi");
+    add_text(ctx, "pop %s", reg);
+}
+
+void halt(context *ctx) {
+    add_text(ctx, "__30CC_HALT_LABEL:");
+    add_text(ctx, "jmp __30CC_HALT_LABEL");
 }

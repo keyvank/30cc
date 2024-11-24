@@ -91,6 +91,8 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_VOID);
         else if (strcmp(val, "int") == 0)
             return new_simp_tkn(TKN_INT);
+        else if (strcmp(val, "long") == 0)
+            return new_simp_tkn(TKN_LONG);
         else if (strcmp(val, "char") == 0)
             return new_simp_tkn(TKN_CHAR);
         else if (strcmp(val, "return") == 0)

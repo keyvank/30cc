@@ -96,4 +96,7 @@ void new_struct(context *ctx, context_struct *s);
 
 char *reg_a(general_type *tp, context *ctx);
 char *reg_b(general_type *tp, context *ctx);
+
+void debug_reg(char *reg,context *ctx);
+void halt(context *ctx);
 #endif

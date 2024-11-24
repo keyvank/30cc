@@ -76,6 +76,8 @@ apply_result *program_apply(parser_node *node, context *ctx)
     add_text(ctx, "call main");
     add_text(ctx, "mov rdi, rax");
     add_text(ctx, "call exit");
+
+    add_data(ctx, "__30CC_REG_DEBUG_MSG db `30CC DEBUG: %%u\\n`, 0");
     return NULL;
 }
 

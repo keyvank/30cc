@@ -19,7 +19,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
 {
     typed_token *tkn = *tkns_ptr;
     parser_node *node = NULL;
-    if (tkn->type_id == TKN_INT || tkn->type_id == TKN_VOID || tkn->type_id == TKN_CHAR)
+    if (tkn->type_id == TKN_INT || tkn->type_id == TKN_VOID || tkn->type_id == TKN_CHAR|| tkn->type_id == TKN_LONG)
     {
         typed_token *ret_type_tkn = tkn;
         tkn = tkn->next;
