@@ -13,13 +13,11 @@ sub rsp, __main_size
 mov rax, rsp
 add rax, 0
 mov [rsp+40], rax
-;;;
 mov rax, [rsp+40]
 add rax, 0
 mov [rsp+48], rax
 mov rax, [rax]
 mov [rsp+56], rax
-;;;
 mov rax, [rsp+56]
 mov rbx, 5
 mov rax, [rsp+48]
@@ -29,13 +27,11 @@ mov [rsp+64], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+72], rax
-;;;
 mov rax, [rsp+72]
 add rax, 8
 mov [rsp+80], rax
 mov rax, [rax]
 mov [rsp+88], rax
-;;;
 mov rax, [rsp+88]
 mov rbx, 10
 mov rax, [rsp+80]
@@ -45,20 +41,14 @@ mov [rsp+96], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+104], rax
-;;;
 mov rax, [rsp+104]
 add rax, 16
 mov [rsp+112], rax
-mov (null), [rax]
-mov [rsp+120], (null)
-;;;
-;;;
 mov rax, [rsp+112]
 add rax, 0
 mov [rsp+136], rax
 mov rax, [rax]
 mov [rsp+144], rax
-;;;
 mov rax, [rsp+144]
 mov rbx, 19
 mov rax, [rsp+136]
@@ -68,20 +58,14 @@ mov [rsp+152], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+160], rax
-;;;
 mov rax, [rsp+160]
 add rax, 16
 mov [rsp+168], rax
-mov (null), [rax]
-mov [rsp+176], (null)
-;;;
-;;;
 mov rax, [rsp+168]
 add rax, 8
 mov [rsp+192], rax
 mov rax, [rax]
 mov [rsp+200], rax
-;;;
 mov rax, [rsp+200]
 mov rbx, 123
 mov rax, [rsp+192]
@@ -91,30 +75,22 @@ mov [rsp+208], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+216], rax
-;;;
 mov rax, [rsp+216]
 add rax, 32
 mov [rsp+224], rax
 mov rax, [rax]
 mov [rsp+232], rax
-;;;
 mov rax, rsp
 add rax, 0
 mov [rsp+240], rax
-;;;
 mov rax, [rsp+240]
 add rax, 16
 mov [rsp+248], rax
-mov (null), [rax]
-mov [rsp+256], (null)
-;;;
-;;;
 mov rax, [rsp+248]
 add rax, 8
 mov [rsp+272], rax
 mov rax, [rax]
 mov [rsp+280], rax
-;;;
 mov rax, [rsp+280]
 mov rbx, 2
 mul rbx
@@ -122,13 +98,11 @@ mov [rsp+288], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+296], rax
-;;;
 mov rax, [rsp+296]
 add rax, 0
 mov [rsp+304], rax
 mov rax, [rax]
 mov [rsp+312], rax
-;;;
 mov rax, [rsp+288]
 mov rbx, [rsp+312]
 add rax, rbx
@@ -144,75 +118,57 @@ mov [rsp+336], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+344], rax
-;;;
 mov rax, [rsp+344]
 add rax, 0
 mov [rsp+352], rax
 mov rax, [rax]
 mov [rsp+360], rax
-;;;
 mov rax, [rsp+360]
 mov [rsp+368], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+376], rax
-;;;
 mov rax, [rsp+376]
 add rax, 8
 mov [rsp+384], rax
 mov rax, [rax]
 mov [rsp+392], rax
-;;;
 mov rax, [rsp+392]
 mov [rsp+400], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+408], rax
-;;;
 mov rax, [rsp+408]
 add rax, 16
 mov [rsp+416], rax
-mov (null), [rax]
-mov [rsp+424], (null)
-;;;
-;;;
 mov rax, [rsp+416]
 add rax, 0
 mov [rsp+440], rax
 mov rax, [rax]
 mov [rsp+448], rax
-;;;
 mov rax, [rsp+448]
 mov [rsp+456], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+464], rax
-;;;
 mov rax, [rsp+464]
 add rax, 16
 mov [rsp+472], rax
-mov (null), [rax]
-mov [rsp+480], (null)
-;;;
-;;;
 mov rax, [rsp+472]
 add rax, 8
 mov [rsp+496], rax
 mov rax, [rax]
 mov [rsp+504], rax
-;;;
 mov rax, [rsp+504]
 mov [rsp+512], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+520], rax
-;;;
 mov rax, [rsp+520]
 add rax, 32
 mov [rsp+528], rax
 mov rax, [rax]
 mov [rsp+536], rax
-;;;
 mov rax, [rsp+536]
 mov [rsp+544], rax
 mov rdi, [rsp+336]

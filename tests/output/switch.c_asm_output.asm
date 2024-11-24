@@ -25,15 +25,15 @@ mov rax, rsp
 add rax, 0
 mov [rsp+9], rax
 mov al, [rsp+0]
-cmp rax, 65
+cmp al, 65
 je case___tmp_label_0_1
-cmp rax, 66
+cmp al, 66
 je case___tmp_label_0_3
-cmp rax, 67
+cmp al, 67
 je case___tmp_label_0_3
-cmp rax, 68
+cmp al, 68
 je case___tmp_label_0_5
-cmp rax, 70
+cmp al, 70
 je case___tmp_label_0_7
 jmp case___tmp_label_0_9
 ; stmt loc 0

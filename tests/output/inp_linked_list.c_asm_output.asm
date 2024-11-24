@@ -55,13 +55,11 @@ mov [rsp+16], rax
 mov rax, rsp
 add rax, 16
 mov [rsp+48], rax
-;;;
 mov rax, [rsp+16]
 add rax, 8
 mov [rsp+56], rax
 mov rax, [rax]
 mov [rsp+64], rax
-;;;
 mov rax, [rsp+56]
 mov [rsp+72], rax
 mov rax, [rsp+72]
@@ -77,13 +75,11 @@ mov [rsp+96], rax
 mov rax, rsp
 add rax, 16
 mov [rsp+104], rax
-;;;
 mov rax, [rsp+16]
 add rax, 0
 mov [rsp+112], rax
 mov rax, [rax]
 mov [rsp+120], rax
-;;;
 mov rax, rsp
 add rax, 8
 mov [rsp+128], rax
@@ -96,26 +92,22 @@ mov [rsp+136], rax
 mov rax, rsp
 add rax, 0
 mov [rsp+144], rax
-;;;
 mov rax, [rsp+0]
 add rax, 0
 mov [rsp+152], rax
 mov rax, [rax]
 mov [rsp+160], rax
-;;;
 mov rax, 0
 cmp rax, [rsp+160]
 je __tmp_label_0
 mov rax, rsp
 add rax, 0
 mov [rsp+176], rax
-;;;
 mov rax, [rsp+0]
 add rax, 0
 mov [rsp+184], rax
 mov rax, [rax]
 mov [rsp+192], rax
-;;;
 ;define variable curr
 mov rax, [rsp+192]
 mov [rsp+168], rax
@@ -125,13 +117,11 @@ __tmp_label_2:
 mov rax, rsp
 add rax, 168
 mov [rsp+200], rax
-;;;
 mov rax, [rsp+168]
 add rax, 8
 mov [rsp+208], rax
 mov rax, [rax]
 mov [rsp+216], rax
-;;;
 mov rax, [rsp+216]
 cmp rax, 0
 je __tmp_label_3
@@ -141,13 +131,11 @@ mov [rsp+224], rax
 mov rax, rsp
 add rax, 168
 mov [rsp+232], rax
-;;;
 mov rax, [rsp+168]
 add rax, 8
 mov [rsp+240], rax
 mov rax, [rax]
 mov [rsp+248], rax
-;;;
 mov rax, [rsp+168]
 mov rbx, [rsp+248]
 mov rax, [rsp+224]
@@ -160,13 +148,11 @@ __tmp_label_3:
 mov rax, rsp
 add rax, 168
 mov [rsp+224], rax
-;;;
 mov rax, [rsp+168]
 add rax, 8
 mov [rsp+232], rax
 mov rax, [rax]
 mov [rsp+240], rax
-;;;
 mov rax, rsp
 add rax, 16
 mov [rsp+248], rax
@@ -181,13 +167,11 @@ __tmp_label_0:
 mov rax, rsp
 add rax, 0
 mov [rsp+168], rax
-;;;
 mov rax, [rsp+0]
 add rax, 0
 mov [rsp+176], rax
 mov rax, [rax]
 mov [rsp+184], rax
-;;;
 mov rax, rsp
 add rax, 16
 mov [rsp+192], rax
@@ -270,13 +254,11 @@ call add_val
 mov rax, rsp
 add rax, 0
 mov [rsp+160], rax
-;;;
 mov rax, [rsp+0]
 add rax, 0
 mov [rsp+168], rax
 mov rax, [rax]
 mov [rsp+176], rax
-;;;
 ;define variable curr
 mov rax, [rsp+176]
 mov [rsp+152], rax
@@ -294,13 +276,11 @@ mov [rsp+192], rax
 mov rax, rsp
 add rax, 152
 mov [rsp+200], rax
-;;;
 mov rax, [rsp+152]
 add rax, 0
 mov [rsp+208], rax
 mov rax, [rax]
 mov [rsp+216], rax
-;;;
 mov rax, [rsp+216]
 mov [rsp+224], rax
 mov rdi, [rsp+192]
@@ -315,13 +295,11 @@ mov [rsp+240], rax
 mov rax, rsp
 add rax, 152
 mov [rsp+248], rax
-;;;
 mov rax, [rsp+152]
 add rax, 8
 mov [rsp+256], rax
 mov rax, [rax]
 mov [rsp+264], rax
-;;;
 mov rax, [rsp+152]
 mov rbx, [rsp+264]
 mov rax, [rsp+240]
