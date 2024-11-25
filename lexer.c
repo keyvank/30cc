@@ -123,6 +123,8 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_CASE);
         else if (strcmp(val, "default") == 0)
             return new_simp_tkn(TKN_DEFAULT);
+        else if (strcmp(val, "extern") == 0)
+            return new_simp_tkn(TKN_EXTERN);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }

@@ -12,12 +12,18 @@
 #include "../linked_list.h"
 #include "struct_def.h"
 #include "type.h"
+#include "extern.h"
 
 void program_debug(int depth, parser_node *node)
 {
     node_program *prog = (node_program *)node->data;
     printtabs(depth);
     printf("Program(\n");
+    for (int i = 0; i < prog->externs->total; i++)
+    {
+        parser_node *node = (parser_node *)get_vec(prog->externs, i);
+        node->debug(depth + 1, node);
+    }
     for (int i = 0; i < prog->num_functions; i++)
     {
         parser_node *node = prog->functions[i];
@@ -35,6 +41,11 @@ void program_debug(int depth, parser_node *node)
 apply_result *program_apply(parser_node *node, context *ctx)
 {
     node_program *prog = (node_program *)node->data;
+    for (int i = 0; i < prog->externs->total; i++)
+    {
+        parser_node *node = (parser_node *)get_vec(prog->externs, i);
+        node->apply(node, ctx);
+    }
     for (int i = 0; i < prog->num_struct_defs; i++)
     {
         prog->struct_defs[i]->apply(prog->struct_defs[i], ctx);
@@ -61,7 +72,7 @@ apply_result *program_apply(parser_node *node, context *ctx)
         int total = ctx->stack_size;
         // 16 byte stack alignment
         total = total + (16 - total % 16);
-        if(nfd->statements)
+        if (nfd->statements)
             add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
     }
     add_text(ctx, "extern exit");
@@ -86,7 +97,8 @@ parser_node *parse_program(typed_token **tkn_ptr)
     int var_decl_count = 0;
     parser_node **funcs = (parser_node **)malloc(sizeof(parser_node *) * 128);
     parser_node **struct_defs = (parser_node **)malloc(sizeof(parser_node *) * 128);
-    vector* var_decls = initialize_vec(sizeof(parser_node*));
+    vector *externs = initialize_vec(sizeof(parser_node *));
+    vector *var_decls = initialize_vec(sizeof(parser_node *));
     typed_token *tkn = *tkn_ptr;
     while (tkn)
     {
@@ -97,7 +109,7 @@ parser_node *parse_program(typed_token **tkn_ptr)
             node->debug = program_debug;
             node->apply = program_apply;
             node_program *prog = (node_program *)node->data;
-
+            prog->externs = externs;
             prog->num_functions = func_count;
             prog->functions = funcs;
             prog->num_struct_defs = struct_def_count;
@@ -117,6 +129,10 @@ parser_node *parse_program(typed_token **tkn_ptr)
         else if ((f = parse_var_decl(&tkn)))
         {
             push_vec(var_decls, f);
+        }
+        else if ((f = parse_extern(&tkn)))
+        {
+            push_vec(externs, f);
         }
         else
         {

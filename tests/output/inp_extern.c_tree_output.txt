@@ -1,0 +1,51 @@
+Program(
+  Extern:
+    VarDecl(stderr):
+      Type(Name: stderr):
+        Pointer of:
+          TKN_VOID
+  Extern:
+    VarDecl(stdout):
+      Type(Name: stdout):
+        Pointer of:
+          TKN_VOID
+  FunctionDecl(
+    Name:
+      fprintf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+    Statements:
+      FunctionCall:
+        Function:
+          Variable(fprintf)
+        Args:
+          Variable(stdout)
+          Literal(Type: 33, Value: This is stdout!
+)
+      FunctionCall:
+        Function:
+          Variable(fprintf)
+        Args:
+          Variable(stderr)
+          Literal(Type: 33, Value: This is stderr!
+)
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
