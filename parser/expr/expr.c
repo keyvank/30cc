@@ -218,6 +218,8 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     }
     else
     {
+        add_text(ctx, "xor rax, rax");
+        add_text(ctx, "xor rbx, rbx");
         add_text(ctx, "mov %s, %s", rega, left->code);
         add_text(ctx, "mov %s, %s", regb, right->code);
     }
@@ -238,7 +240,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         {
             add_text(ctx, "mov rax, %s", left->addr_code);
             add_text(ctx, "mov [rax], %s", regb);
-            add_text(ctx, "mov %s, %s", rega, regb);
+            add_text(ctx, "mov rax, rbx");
         }
         else
         {
@@ -247,25 +249,25 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         }
         break;
     case TKN_PLUS:
-        add_text(ctx, "add %s, %s", rega, regb);
+        add_text(ctx, "add rax, rbx");
         break;
     case TKN_PLUSEQ:
-        add_text(ctx, "add %s, %s", rega, regb);
+        add_text(ctx, "add rax, rbx");
         move_reg_to_var(ctx, left, rega);
         break;
     case TKN_MIN:
-        add_text(ctx, "sub %s, %s", rega, regb);
+        add_text(ctx, "sub rax, rbx");
         break;
     case TKN_MINEQ:
-        add_text(ctx, "sub %s, %s", rega, regb);
+        add_text(ctx, "sub rax, rbx");
         move_reg_to_var(ctx, left, rega);
         break;
     case TKN_STAR:
         // TODO: check sign for mul/imul
-        add_text(ctx, "mul %s", regb);
+        add_text(ctx, "mul rbx");
         break;
     case TKN_STAREQ:
-        add_text(ctx, "mul %s", regb);
+        add_text(ctx, "mul rbx");
         move_reg_to_var(ctx, left, rega);
         break;
     case TKN_ANDAND:
@@ -274,12 +276,12 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         l2 = new_label(ctx);
         l3 = new_label(ctx);
         l4 = new_label(ctx);
-        add_text(ctx, "cmp %s, 0", rega);
+        add_text(ctx, "cmp rax, 0");
         if (binop->op == TKN_ANDAND)
             add_text(ctx, "je %s", l1);
         else
             add_text(ctx, "jne %s", l1);
-        add_text(ctx, "mov %s, %s", rega, regb);
+        add_text(ctx, "mov rax, rbx");
         add_text(ctx, "jmp %s", l2);
         add_text(ctx, "%s:", l1);
         if (binop->op == TKN_ANDAND)
@@ -288,7 +290,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
             add_text(ctx, "mov rax, 1");
         add_text(ctx, "%s:", l2);
 
-        add_text(ctx, "cmp %s, 0", rega);
+        add_text(ctx, "cmp rax, 0");
         add_text(ctx, "jne %s", l3);
         add_text(ctx, "jmp %s", l4);
         add_text(ctx, "%s:", l3);
@@ -303,7 +305,7 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
     case TKN_GTE:
     case TKN_EQ:
     case TKN_NEQ:
-        add_text(ctx, "cmp %s, %s", rega, regb);
+        add_text(ctx, "cmp rax, rbx");
         l1 = new_label(ctx);
         l2 = new_label(ctx);
 
