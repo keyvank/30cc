@@ -25,5 +25,8 @@ jobs:
       with:
         version: latest
 
+    - name: Set up NASM
+      uses: ilammy/setup-nasm@v1
+
     - name: Run tests
       run: python scripts/test.py
