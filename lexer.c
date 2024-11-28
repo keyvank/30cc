@@ -319,6 +319,10 @@ typed_token *next_op(char **inp_ptr, int is_newline)
                 {
                     c = '\n';
                 }
+                else
+                {
+                    c = *inp;
+                }
             }
             val[sz] = c;
             sz++;
