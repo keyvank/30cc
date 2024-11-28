@@ -8,6 +8,7 @@
 #include "preprocess.h"
 #include "macro_define.h"
 #include "macro_call.h"
+#include "macro_include.h"
 #include "token.h"
 
 typed_token *chain_tokens(linked_list *tkns)
@@ -27,11 +28,13 @@ typed_token *chain_tokens(linked_list *tkns)
     return res_first;
 }
 
-typed_token *preprocess(typed_token *tkn)
+typed_token *preprocess(prep_ctx *ctx, char *path)
 {
+    char *prev_path = ctx->curr_path;
+    ctx->curr_path = path;
+    typed_token *tkn = tokenize_file(path);
     linked_list *ret = new_linked_list();
-    prep_ctx *ctx = (prep_ctx *)malloc(sizeof(prep_ctx));
-    ctx->defs = new_linked_list();
+
     while (tkn->type_id != TKN_EOF)
     {
         seg *s = NULL;
@@ -39,6 +42,8 @@ typed_token *preprocess(typed_token *tkn)
             s = parse_token(ctx, &tkn);
         if (!s)
             s = parse_define(ctx, &tkn);
+        if (!s)
+            s = parse_include(ctx, &tkn);
         if (!s)
             s = parse_macro_call(ctx, &tkn);
 
@@ -54,6 +59,8 @@ typed_token *preprocess(typed_token *tkn)
             }
         }
     }
+
+    ctx->curr_path = prev_path;
 
     return chain_tokens(ret);
 }

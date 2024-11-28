@@ -7,60 +7,17 @@
 #include "linked_list.h"
 #include "preprocess/preprocess.h"
 
-char *read_source_file(FILE *fp);
-
-#define MAX_INCLUDE_DEPTH 8
-/**
- * free() ignores NULL pointer by default. set each pointer to NULL
- * after calling free() to avoid double free error.
- */
-#define xfree(p)    \
-    do              \
-    {               \
-        free((p));  \
-        (p) = NULL; \
-    } while (0)
-
-typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
+typed_token *process(const char *filename, int log_lex, int log_prep)
 {
-    typed_token *tkn = NULL;
-    char *content = NULL;
-    FILE *fp = NULL;
+    prep_ctx *ctx = (prep_ctx *)malloc(sizeof(prep_ctx));
+    ctx->curr_path = NULL;
+    ctx->defs = new_linked_list();
 
-    if (depth > MAX_INCLUDE_DEPTH)
-    {
-        fprintf(stderr, "exceeded maximum include depth (%d)\n", MAX_INCLUDE_DEPTH);
-        goto cleanup;
-    }
-
-    fp = fopen(filename, "rb");
-    if (fp == NULL)
-    {
-        fprintf(stderr, "Error opening file: %s\n", filename);
-        goto cleanup;
-    }
-    content = read_source_file(fp);
-
-    if (!content)
-    {
-        fprintf(stderr, "failed to read source file: read_source_file returned NULL\n");
-        goto cleanup;
-    }
-
-    tkn = tokenize(content);
+    typed_token *lexed = tokenize_file(filename);
+    typed_token *prep = preprocess(ctx, filename);
     if (log_lex)
     {
-        typed_token *t = tkn;
-        while (t)
-        {
-            t->debug(t);
-            t = t->next;
-        }
-    }
-    tkn = preprocess(tkn);
-    if (log_prep)
-    {
-        typed_token *t = tkn;
+        typed_token *t = lexed;
         while (t)
         {
             t->debug(t);
@@ -68,12 +25,17 @@ typed_token *process(const char *filename, int depth, int log_lex, int log_prep)
         }
     }
 
-cleanup:
-    if (fp)
-        fclose(fp);
-    if (content)
-        xfree(content);
-    return tkn;
+    if (log_prep)
+    {
+        typed_token *t = prep;
+        while (t)
+        {
+            t->debug(t);
+            t = t->next;
+        }
+    }
+
+    return prep;
 }
 
 int main(int argc, char *argv[])
@@ -84,7 +46,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0&& strcmp(argv[2], "--prep") != 0) {
+    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0 && strcmp(argv[2], "--prep") != 0)
+    {
         fprintf(stderr, "Unknown argument %s", argv[2]);
         return 1;
     }
@@ -92,7 +55,7 @@ int main(int argc, char *argv[])
     int log_lex = !strcmp(argv[2], "--lex");
     int log_prep = !strcmp(argv[2], "--prep");
 
-    typed_token *tkn = process(argv[1], 0, log_lex, log_prep);
+    typed_token *tkn = process(argv[1], log_lex, log_prep);
     if (tkn == NULL)
     {
         return 1;
@@ -134,28 +97,4 @@ int main(int argc, char *argv[])
     }
 
     return 0;
-}
-
-char *read_source_file(FILE *fp)
-{
-    char *data = NULL;
-    struct stat st;
-
-    if (fstat(fileno(fp), &st) == -1)
-        goto ret;
-
-    data = calloc(st.st_size + 1, sizeof(char));
-    if (!data)
-        goto ret;
-
-    int rd = fread(data, sizeof(char), st.st_size, fp);
-    if (rd != st.st_size)
-    {
-        data = NULL;
-        goto ret;
-    }
-    data[st.st_size] = '\0';
-
-ret:
-    return data;
 }

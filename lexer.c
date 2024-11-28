@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "lexer.h"
 
 char is_num(char c)
@@ -568,4 +569,38 @@ typed_token *tokenize(char *inp)
         t = next;
     }
     return first;
+}
+
+typed_token *tokenize_file(char *path)
+{
+    FILE *fp = NULL;
+
+    fp = fopen(path, "rb");
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Error opening file: %s\n", path);
+        exit(1);
+    }
+
+    char *data = NULL;
+    struct stat st;
+
+    if (fstat(fileno(fp), &st) == -1)
+        goto ret;
+
+    data = calloc(st.st_size + 1, sizeof(char));
+    if (!data)
+        goto ret;
+
+    int rd = fread(data, sizeof(char), st.st_size, fp);
+    if (rd != st.st_size)
+    {
+        data = NULL;
+        goto ret;
+    }
+    data[st.st_size] = '\0';
+
+    return tokenize(data);
+ret:
+    return NULL;
 }

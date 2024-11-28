@@ -1,19 +1,8 @@
-TKN_INT
-TKN_ID(function2)
-TKN_L_PAREN
-TKN_R_PAREN
-TKN_L_BRACE
-TKN_RETURN
-TKN_LIT_INT(13)
-TKN_SEMICOLON
-TKN_R_BRACE
-TKN_EOF
 section .data
 __function2_size: equ 16
 __function_size: equ 16
-__printf_size: equ 16
-__temp_str_3 db `function: %d\n`, 0
-__temp_str_4 db `function2: %d\n`, 0
+__temp_str_2 db `function: %d\n`, 0
+__temp_str_3 db `function2: %d\n`, 0
 __main_size: equ 96
 section .text
 global function2
@@ -46,7 +35,7 @@ main:
 push rbp
 mov rbp, rsp
 sub rsp, __main_size
-mov rax, __temp_str_3
+mov rax, __temp_str_2
 mov [rsp+0], rax
 mov rax, rsp
 add rax, 0
@@ -61,7 +50,7 @@ mov rax, rsp
 add rax, 0
 mov [rsp+32], rax
 call printf
-mov rax, __temp_str_4
+mov rax, __temp_str_3
 mov [rsp+40], rax
 mov rax, rsp
 add rax, 0
