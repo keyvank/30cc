@@ -1,27 +1,11 @@
 void printf(char *, ...);
 
-#define DEBUG 1
+#define DEBUG
 
-#ifdef DEBUG
-int function() {
-    return 69;
-}
+int main()
+{
+#ifndef DEBUG
+    printf("Debug disabled!\n");
 #endif
-
-#ifdef RELEASE
-int function() {
-    return 13;
-}
-#endif
-
-#ifndef RELEASE
-int function2() {
-    return 99;
-}
-#endif
-
-int main() {
-    printf("function(): %d\n", function());
-    printf("function2(): %d\n", function2());
     return 0;
 }

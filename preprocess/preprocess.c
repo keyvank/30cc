@@ -9,6 +9,7 @@
 #include "macro_define.h"
 #include "macro_call.h"
 #include "macro_include.h"
+#include "macro_ifndef.h"
 #include "token.h"
 
 typed_token *chain_tokens(linked_list *tkns)
@@ -37,6 +38,40 @@ typed_token *preprocess(prep_ctx *ctx, char *path)
 
     while (tkn->type_id != TKN_EOF)
     {
+        if (is_endif(tkn))
+        {
+            tkn = tkn->next;
+            continue;
+        }
+
+        seg_ifndef *ifndef = parse_ifndef(ctx, &tkn);
+        if (ifndef)
+        {
+            if (find_define(ctx, ifndef->def))
+            {
+                int endif_found = 0;
+                while (tkn->type_id != TKN_EOF)
+                {
+                    if (is_endif(tkn))
+                    {
+                        tkn = tkn->next;
+                        endif_found = 1;
+                        break;
+                    }
+                    tkn = tkn->next;
+                }
+                if (!endif_found)
+                {
+                    fprintf(stderr, "Couldn't find #endif!\n");
+                    exit(1);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
         seg *s = NULL;
         if (!s)
             s = parse_token(ctx, &tkn);
