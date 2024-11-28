@@ -396,7 +396,15 @@ apply_result *cast_apply(parser_node *node, context *ctx)
 {
     node_cast *cast = (node_cast *)node->data;
     general_type *cast_type = ((node_type *)cast->type->data)->type;
-    return new_result(cast->val->apply(cast->val, ctx)->code, cast_type);
+    apply_result *val = cast->val->apply(cast->val, ctx);
+    symbol *casted = new_temp_symbol(ctx, cast_type);
+    char *rega_casted = reg_a(cast_type, ctx);
+    char *rega_val = reg_a(val->type, ctx);
+    add_text(ctx, "xor rax, rax");
+    add_text(ctx, "mov %s, %s", casted->repl, rega_casted);
+    add_text(ctx, "mov %s, %s", rega_val, val->code);
+    add_text(ctx, "mov %s, %s", casted->repl, rega_val);
+    return new_result(casted->repl, cast_type);
 }
 
 void sizeof_debug(int depth, parser_node *node)
