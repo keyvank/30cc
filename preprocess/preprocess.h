@@ -5,6 +5,7 @@
 
 typedef struct
 {
+    char *curr_path;
     linked_list *defs;
 } prep_ctx;
 
@@ -15,6 +16,6 @@ typedef struct seg_
     linked_list *(*to_code)(struct seg_ *self, prep_ctx *ctx);
 } seg;
 
-typed_token *preprocess(typed_token *tkn);
+typed_token *preprocess(prep_ctx *ctx, char *path);
 
 #endif
