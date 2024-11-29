@@ -168,6 +168,7 @@ symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *ty
 
 symbol *new_symbol(context *ctx, char *name, general_type *type)
 {
+    int sz = type->size(type, ctx);
     symbol *newsym = (symbol *)malloc(sizeof(symbol));
     newsym->name = name;
     newsym->offset = 0;
@@ -177,9 +178,9 @@ symbol *new_symbol(context *ctx, char *name, general_type *type)
         symbol *lastsym = ((symbol *)ctx->symbol_table->last->value);
         newsym->offset = lastsym->offset + lastsym->type->size(lastsym->type, ctx);
     }
-    newsym->repl = cc_asprintf("[rsp+%u]", newsym->offset);
+    newsym->repl = cc_asprintf("[rbp-%u]", newsym->offset + sz);
     add_to_list(ctx->symbol_table, newsym);
-    ctx->stack_size += newsym->type->size(newsym->type, ctx);
+    ctx->stack_size += sz;
     return newsym;
 }
 

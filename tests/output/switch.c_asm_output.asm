@@ -18,13 +18,13 @@ mov rbp, rsp
 sub rsp, __main_size
 ;define variable grade
 mov al, 66
-mov [rsp+0], al
+mov [rbp-1], al
 ;end define variable grade
 ;start switch
-mov rax, rsp
-add rax, 0
-mov [rsp+9], rax
-mov al, [rsp+0]
+mov rax, rbp
+sub rax, 1
+mov [rbp-17], rax
+mov al, [rbp-1]
 cmp al, 65
 je case___tmp_label_0_1
 cmp al, 66
@@ -38,76 +38,76 @@ je case___tmp_label_0_7
 jmp case___tmp_label_0_9
 ; stmt loc 0
 mov rax, __temp_str_0
-mov [rsp+17], rax
-mov rdi, [rsp+17]
-mov rax, rsp
-add rax, 0
-mov [rsp+25], rax
+mov [rbp-25], rax
+mov rdi, [rbp-25]
+mov rax, rbp
+sub rax, 8
+mov [rbp-33], rax
 call printf
 ; stmt loc 1
 case___tmp_label_0_1:
-mov rax, rsp
-add rax, 1
-mov [rsp+33], rax
-mov rax, [rsp+1]
+mov rax, rbp
+sub rax, 9
+mov [rbp-41], rax
+mov rax, [rbp-9]
 mov rbx, __temp_str_1
-mov rax, [rsp+33]
+mov rax, [rbp-41]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+41], rax
+mov [rbp-49], rax
 ; stmt loc 2
 jmp __tmp_label_0
 ; stmt loc 3
 case___tmp_label_0_3:
 case___tmp_label_0_3:
-mov rax, rsp
-add rax, 1
-mov [rsp+49], rax
-mov rax, [rsp+1]
+mov rax, rbp
+sub rax, 9
+mov [rbp-57], rax
+mov rax, [rbp-9]
 mov rbx, __temp_str_2
-mov rax, [rsp+49]
+mov rax, [rbp-57]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+57], rax
+mov [rbp-65], rax
 ; stmt loc 4
 jmp __tmp_label_0
 ; stmt loc 5
 case___tmp_label_0_5:
-mov rax, rsp
-add rax, 1
-mov [rsp+65], rax
-mov rax, [rsp+1]
+mov rax, rbp
+sub rax, 9
+mov [rbp-73], rax
+mov rax, [rbp-9]
 mov rbx, __temp_str_3
-mov rax, [rsp+65]
+mov rax, [rbp-73]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+73], rax
+mov [rbp-81], rax
 ; stmt loc 6
 jmp __tmp_label_0
 ; stmt loc 7
 case___tmp_label_0_7:
-mov rax, rsp
-add rax, 1
-mov [rsp+81], rax
-mov rax, [rsp+1]
+mov rax, rbp
+sub rax, 9
+mov [rbp-89], rax
+mov rax, [rbp-9]
 mov rbx, __temp_str_4
-mov rax, [rsp+81]
+mov rax, [rbp-89]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+89], rax
+mov [rbp-97], rax
 ; stmt loc 8
 jmp __tmp_label_0
 ; stmt loc 9
 case___tmp_label_0_9:
-mov rax, rsp
-add rax, 1
-mov [rsp+97], rax
-mov rax, [rsp+1]
+mov rax, rbp
+sub rax, 9
+mov [rbp-105], rax
+mov rax, [rbp-9]
 mov rbx, __temp_str_5
-mov rax, [rsp+97]
+mov rax, [rbp-105]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+105], rax
+mov [rbp-113], rax
 ; end switch
 __tmp_label_0:
 ;start switch
@@ -116,11 +116,11 @@ jmp case___tmp_label_1_0
 ; stmt loc 0
 case___tmp_label_1_0:
 mov rax, __temp_str_6
-mov [rsp+113], rax
-mov rdi, [rsp+113]
-mov rax, rsp
-add rax, 0
-mov [rsp+121], rax
+mov [rbp-121], rax
+mov rdi, [rbp-121]
+mov rax, rbp
+sub rax, 8
+mov [rbp-129], rax
 call printf
 ; end switch
 __tmp_label_1:
@@ -133,26 +133,26 @@ jmp case___tmp_label_2_0
 case___tmp_label_2_0:
 case___tmp_label_2_0:
 mov rax, __temp_str_7
-mov [rsp+129], rax
-mov rdi, [rsp+129]
-mov rax, rsp
-add rax, 0
-mov [rsp+137], rax
+mov [rbp-137], rax
+mov rdi, [rbp-137]
+mov rax, rbp
+sub rax, 8
+mov [rbp-145], rax
 call printf
 ; end switch
 __tmp_label_2:
 mov rax, __temp_str_8
-mov [rsp+145], rax
-mov rax, rsp
-add rax, 1
-mov [rsp+153], rax
-mov rax, [rsp+1]
-mov [rsp+161], rax
-mov rdi, [rsp+145]
-mov rsi, [rsp+161]
-mov rax, rsp
-add rax, 0
-mov [rsp+169], rax
+mov [rbp-153], rax
+mov rax, rbp
+sub rax, 9
+mov [rbp-161], rax
+mov rax, [rbp-9]
+mov [rbp-169], rax
+mov rdi, [rbp-153]
+mov rsi, [rbp-169]
+mov rax, rbp
+sub rax, 8
+mov [rbp-177], rax
 call printf
 mov rax, 0
 mov rsp, rbp

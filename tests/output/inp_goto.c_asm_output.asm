@@ -12,45 +12,45 @@ mov rbp, rsp
 sub rsp, __main_size
 ;define variable a
 mov rax, 2
-mov [rsp+0], rax
+mov [rbp-8], rax
 ;end define variable a
 mov rax, __temp_str_0
-mov [rsp+8], rax
-mov rdi, [rsp+8]
-mov rax, rsp
-add rax, 0
-mov [rsp+16], rax
+mov [rbp-16], rax
+mov rdi, [rbp-16]
+mov rax, rbp
+sub rax, 8
+mov [rbp-24], rax
 call printf
 jmp end
-mov rax, rsp
-add rax, 0
-mov [rsp+24], rax
-mov rax, [rsp+0]
+mov rax, rbp
+sub rax, 8
+mov [rbp-32], rax
+mov rax, [rbp-8]
 mov rbx, 69
-mov rax, [rsp+24]
+mov rax, [rbp-32]
 mov [rax], rbx
 mov rax, rbx
-mov [rsp+32], rax
+mov [rbp-40], rax
 mov rax, __temp_str_1
-mov [rsp+40], rax
-mov rdi, [rsp+40]
-mov rax, rsp
-add rax, 0
-mov [rsp+48], rax
+mov [rbp-48], rax
+mov rdi, [rbp-48]
+mov rax, rbp
+sub rax, 8
+mov [rbp-56], rax
 call printf
 end:
 mov rax, __temp_str_2
-mov [rsp+56], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+64], rax
-mov rax, [rsp+0]
-mov [rsp+72], rax
-mov rdi, [rsp+56]
-mov rsi, [rsp+72]
-mov rax, rsp
-add rax, 0
-mov [rsp+80], rax
+mov [rbp-64], rax
+mov rax, rbp
+sub rax, 8
+mov [rbp-72], rax
+mov rax, [rbp-8]
+mov [rbp-80], rax
+mov rdi, [rbp-64]
+mov rsi, [rbp-80]
+mov rax, rbp
+sub rax, 8
+mov [rbp-88], rax
 call printf
 mov rax, 0
 mov rsp, rbp

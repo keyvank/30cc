@@ -12,16 +12,16 @@ mov rbp, rsp
 sub rsp, __main_size
 ;define variable i
 mov rax, 0
-mov [rsp+0], rax
+mov [rbp-8], rax
 ;end define variable i
 ; enter loop
 __tmp_label_0:
 mov rax, __temp_str_0
-mov [rsp+8], rax
-mov rdi, [rsp+8]
-mov rax, rsp
-add rax, 0
-mov [rsp+16], rax
+mov [rbp-16], rax
+mov rdi, [rbp-16]
+mov rax, rbp
+sub rax, 8
+mov [rbp-24], rax
 call printf
 mov rax, 0
 cmp rax, 0
@@ -32,32 +32,32 @@ __tmp_label_1:
 ; enter loop
 __tmp_label_2:
 mov rax, __temp_str_1
-mov [rsp+8], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+16], rax
-mov rax, [rsp+0]
-mov [rsp+24], rax
-mov rdi, [rsp+8]
-mov rsi, [rsp+24]
-mov rax, rsp
-add rax, 0
-mov [rsp+32], rax
+mov [rbp-16], rax
+mov rax, rbp
+sub rax, 8
+mov [rbp-24], rax
+mov rax, [rbp-8]
+mov [rbp-32], rax
+mov rdi, [rbp-16]
+mov rsi, [rbp-32]
+mov rax, rbp
+sub rax, 8
+mov [rbp-40], rax
 call printf
 ; postfix op apply
-mov rax, rsp
-add rax, 0
-mov [rsp+40], rax
-mov rax, [rsp+0]
-mov [rsp+48], rax
+mov rax, rbp
+sub rax, 8
+mov [rbp-48], rax
+mov rax, [rbp-8]
+mov [rbp-56], rax
 add rax, 1
-mov rbx, [rsp+40]
+mov rbx, [rbp-48]
 mov [rbx], rax
 ; postfix op finish
-mov rax, rsp
-add rax, 0
-mov [rsp+8], rax
-mov rax, [rsp+0]
+mov rax, rbp
+sub rax, 8
+mov [rbp-16], rax
+mov rax, [rbp-8]
 mov rbx, 3
 cmp rax, rbx
 jl __tmp_label_4
@@ -66,8 +66,8 @@ jmp __tmp_label_5
 __tmp_label_4:
 mov rax, 1
 __tmp_label_5:
-mov [rsp+24], rax
-mov rax, [rsp+24]
+mov [rbp-32], rax
+mov rax, [rbp-32]
 cmp rax, 0
 je __tmp_label_3
 jmp __tmp_label_2
@@ -75,10 +75,10 @@ __tmp_label_3:
 ; exit loop
 ; enter loop
 __tmp_label_6:
-mov rax, rsp
-add rax, 0
-mov [rsp+32], rax
-mov rax, [rsp+0]
+mov rax, rbp
+sub rax, 8
+mov [rbp-40], rax
+mov rax, [rbp-8]
 mov rbx, 0
 cmp rax, rbx
 jne __tmp_label_8
@@ -87,32 +87,32 @@ jmp __tmp_label_9
 __tmp_label_8:
 mov rax, 1
 __tmp_label_9:
-mov [rsp+48], rax
-mov rax, [rsp+48]
+mov [rbp-56], rax
+mov rax, [rbp-56]
 cmp rax, 0
 je __tmp_label_7
 ; postfix op apply
-mov rax, rsp
-add rax, 0
-mov [rsp+56], rax
-mov rax, [rsp+0]
-mov [rsp+64], rax
+mov rax, rbp
+sub rax, 8
+mov [rbp-64], rax
+mov rax, [rbp-8]
+mov [rbp-72], rax
 sub rax, 1
-mov rbx, [rsp+56]
+mov rbx, [rbp-64]
 mov [rbx], rax
 ; postfix op finish
 mov rax, __temp_str_2
-mov [rsp+72], rax
-mov rax, rsp
-add rax, 0
-mov [rsp+80], rax
-mov rax, [rsp+0]
-mov [rsp+88], rax
-mov rdi, [rsp+72]
-mov rsi, [rsp+88]
-mov rax, rsp
-add rax, 0
-mov [rsp+96], rax
+mov [rbp-80], rax
+mov rax, rbp
+sub rax, 8
+mov [rbp-88], rax
+mov rax, [rbp-8]
+mov [rbp-96], rax
+mov rdi, [rbp-80]
+mov rsi, [rbp-96]
+mov rax, rbp
+sub rax, 8
+mov [rbp-104], rax
 call printf
 jmp __tmp_label_6
 __tmp_label_7:
