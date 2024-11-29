@@ -12,54 +12,12 @@ Program(
   )
   Function(
     Name:
-      function
-    Returns:
-      Type(Name: (null)):
-        TKN_INT
-    Params:
-    Statements:
-      Return:
-        Literal(Type: 34, Value: 69)
-  )
-  Function(
-    Name:
-      function2
-    Returns:
-      Type(Name: (null)):
-        TKN_INT
-    Params:
-    Statements:
-      Return:
-        Literal(Type: 34, Value: 99)
-  )
-  Function(
-    Name:
       main
     Returns:
       Type(Name: (null)):
         TKN_INT
     Params:
     Statements:
-      FunctionCall:
-        Function:
-          Variable(printf)
-        Args:
-          Literal(Type: 33, Value: function(): %d
-)
-          FunctionCall:
-            Function:
-              Variable(function)
-            Args:
-      FunctionCall:
-        Function:
-          Variable(printf)
-        Args:
-          Literal(Type: 33, Value: function2(): %d
-)
-          FunctionCall:
-            Function:
-              Variable(function2)
-            Args:
       Return:
         Literal(Type: 34, Value: 0)
   )

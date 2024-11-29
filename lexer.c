@@ -158,11 +158,31 @@ typed_token *next_op(char **inp_ptr, int is_newline)
     }
     if (is_newline && *inp == '#')
     {
-        char *line = (char *)malloc(256);
+        char *line = (char *)malloc(512);
         int sz = 0;
         inp++;
         while (*inp)
         {
+            if (*inp == '\\')
+            {
+                inp++;
+                while (*inp)
+                {
+                    if (*inp == ' ')
+                        inp++;
+                    else if (*inp == '\n')
+                    {
+                        inp++;
+                        break;
+                    }
+                    else
+                    {
+                        fprintf(stderr, "Invalid character '%c' coming after '\\'!\n", *inp);
+                        exit(1);
+                    }
+                }
+                continue;
+            }
             if (*inp == '\n' || *inp == '\0')
             {
                 line[sz] = '\0';
