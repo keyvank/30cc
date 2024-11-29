@@ -1,0 +1,110 @@
+Program(
+  FunctionDecl(
+    Name:
+      malloc
+    Returns:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_VOID
+    Params:
+      Type(Name: (null)):
+        TKN_INT
+  )
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  FunctionDecl(
+    Name:
+      sprintf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
+  Function(
+    Name:
+      cc_asprintf
+    Returns:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+    Params:
+      Type(Name: inp):
+        Pointer of:
+          TKN_CHAR
+    Statements:
+      Asm:
+        "mov r9, r8"        "mov r8, rcx"        "mov rcx, rdx"        "mov rdx, rsi"        "mov rsi, rdi"        "mov rdi, 0"      Asm:
+        "push rdi"        "push rsi"        "push rdx"        "push rcx"        "push r8"        "push r9"      VarDecl(ret):
+        Type(Name: ret):
+          Pointer of:
+            TKN_CHAR
+        Value:
+          Cast:
+            Val:
+              FunctionCall:
+                Function:
+                  Variable(malloc)
+                Args:
+                  Literal(Type: 34, Value: 128)
+            Type:
+              Type(Name: (null)):
+                Pointer of:
+                  TKN_CHAR
+      Asm:
+        "pop r9"        "pop r8"        "pop rcx"        "pop rdx"        "pop rsi"        "pop rdi"      FunctionCall:
+        Function:
+          Variable(sprintf)
+        Args:
+          Variable(ret)
+          Variable(inp)
+      Return:
+        Variable(ret)
+  )
+  Function(
+    Name:
+      main
+    Returns:
+      Type(Name: (null)):
+        TKN_INT
+    Params:
+    Statements:
+      VarDecl(ret):
+        Type(Name: ret):
+          Pointer of:
+            TKN_CHAR
+        Value:
+          FunctionCall:
+            Function:
+              Variable(cc_asprintf)
+            Args:
+              Literal(Type: 33, Value: salam %s %u%c)
+              Literal(Type: 33, Value: donya)
+              Literal(Type: 34, Value: 123)
+              Literal(Type: 35)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %s %s
+)
+          Literal(Type: 33, Value: haha)
+          Variable(ret)
+      Return:
+        Literal(Type: 34, Value: 0)
+  )
+)
