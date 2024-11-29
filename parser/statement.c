@@ -12,6 +12,7 @@
 #include "if.h"
 #include "while.h"
 #include "goto.h"
+#include "asm.h"
 
 apply_result *compound_statement_apply(parser_node *node, context *ctx)
 {
@@ -165,6 +166,14 @@ parser_node *parse_statement(typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
     parser_node *ret = NULL;
+
+    ret = parse_asm(&tkn);
+    if (ret)
+    {
+        *tkns_ptr = tkn;
+        return ret;
+    }
+
     ret = parse_var_decl(&tkn);
     if (ret)
     {

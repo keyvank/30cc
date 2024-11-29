@@ -29,6 +29,7 @@ typed_token *tokenize(char *inp);
 #define TKN_TYPEDEF 12
 #define TKN_GOTO 13
 #define TKN_EXTERN 14
+#define TKN_ASM 15
 
 // Single letter symbols
 #define TKN_L_PAREN 16

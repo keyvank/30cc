@@ -126,6 +126,8 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
             return new_simp_tkn(TKN_DEFAULT);
         else if (strcmp(val, "extern") == 0)
             return new_simp_tkn(TKN_EXTERN);
+        else if (strcmp(val, "__asm__") == 0)
+            return new_simp_tkn(TKN_ASM);
         else
             return new_tkn(TKN_ID, val, ident_tkn_debug);
     }
