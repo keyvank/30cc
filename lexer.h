@@ -13,6 +13,7 @@ typed_token *new_tkn(int tkn_id, void *data, void (*debug)(typed_token *));
 void str_tkn_debug(typed_token *tkn);
 typed_token *tokenize_file(char *path);
 typed_token *tokenize(char *inp);
+typed_token *eof_token();
 
 #define TKN_EOF 0
 #define TKN_VOID 1

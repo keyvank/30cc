@@ -12,18 +12,32 @@
 #include "macro_ifndef.h"
 #include "token.h"
 
+typed_token *clone_token(typed_token *a)
+{
+    typed_token *ret = (typed_token *)malloc(sizeof(typed_token));
+    memcpy((void *)ret, (void *)a, sizeof(typed_token));
+    ret->next = NULL;
+    return ret;
+}
+
 typed_token *chain_tokens(linked_list *tkns)
 {
+    if (tkns->count == 0)
+        return eof_token();
     list_node *curr = tkns->first;
-    typed_token *res_first = (typed_token *)curr->value;
+    typed_token *res_first = clone_token((typed_token *)curr->value);
     typed_token *curr_tkn = res_first;
     while (curr)
     {
         curr = curr->next;
         if (curr)
         {
-            curr_tkn->next = (typed_token *)curr->value;
+            curr_tkn->next = clone_token((typed_token *)curr->value);
             curr_tkn = curr_tkn->next;
+        }
+        else
+        {
+            curr_tkn->next = eof_token();
         }
     }
     return res_first;
@@ -54,7 +68,6 @@ typed_token *preprocess(prep_ctx *ctx, char *path)
                 {
                     if (is_endif(tkn))
                     {
-                        tkn = tkn->next;
                         endif_found = 1;
                         break;
                     }

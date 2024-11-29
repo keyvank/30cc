@@ -183,17 +183,18 @@ typed_token *next_op(char **inp_ptr, int is_newline)
                 }
                 continue;
             }
-            if (*inp == '\n' || *inp == '\0')
-            {
-                line[sz] = '\0';
-                *inp_ptr = inp;
-                typed_token *dir_tkns = tokenize(line);
-                return new_tkn(TKN_DIRECTIVE, dir_tkns, directive_tkn_debug);
-            }
+
+            if (*inp == '\n')
+                break;
+
             line[sz] = *inp;
             sz++;
             inp++;
         }
+        line[sz] = '\0';
+        *inp_ptr = inp;
+        typed_token *dir_tkns = tokenize(line);
+        return new_tkn(TKN_DIRECTIVE, dir_tkns, directive_tkn_debug);
     }
     if (*inp == '?')
     {
@@ -625,4 +626,8 @@ typed_token *tokenize_file(char *path)
     return tokenize(data);
 ret:
     return NULL;
+}
+
+typed_token *eof_token() {
+    return new_simp_tkn(TKN_EOF);
 }
