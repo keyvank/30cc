@@ -412,7 +412,7 @@ mov [rbp-481], al
 mov al, [rbp-481]
 mov [rbp-482], al
 mov rdi, [rbp-456]
-mov rsi, [rbp-482]
+mov sil, [rbp-482]
 mov rax, rbp
 sub rax, 8
 mov [rbp-490], rax

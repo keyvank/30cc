@@ -439,3 +439,82 @@ char *reg_b(general_type *tp, context *ctx)
         return "rbx";
     return NULL;
 }
+
+char *reg_typed(char *reg, general_type *tp, context *ctx)
+{
+    int sz = tp->size(tp, ctx);
+    if (strcmp(reg, "rdi") == 0)
+    {
+        if (sz == 8)
+            return "rdi";
+        else if (sz == 4)
+            return "edi";
+        else if (sz == 2)
+            return "di";
+        else if (sz == 1)
+            return "dil";
+    }
+    else if (strcmp(reg, "rsi") == 0)
+    {
+        if (sz == 8)
+            return "rsi";
+        else if (sz == 4)
+            return "esi";
+        else if (sz == 2)
+            return "si";
+        else if (sz == 1)
+            return "sil";
+    }
+    else if (strcmp(reg, "rdx") == 0)
+    {
+        if (sz == 8)
+            return "rdx";
+        else if (sz == 4)
+            return "edx";
+        else if (sz == 2)
+            return "dx";
+        else if (sz == 1)
+            return "dl";
+    }
+    else if (strcmp(reg, "rcx") == 0)
+    {
+        if (sz == 8)
+            return "rcx";
+        else if (sz == 4)
+            return "ecx";
+        else if (sz == 2)
+            return "cx";
+        else if (sz == 1)
+            return "cl";
+    }
+    else if (strcmp(reg, "r8") == 0)
+    {
+        if (sz == 8)
+            return "r8";
+        else if (sz == 4)
+            return "r8d";
+        else if (sz == 2)
+            return "r8w";
+        else if (sz == 1)
+            return "r8b";
+    }
+    else if (strcmp(reg, "r9") == 0)
+    {
+        if (sz == 8)
+            return "r9";
+        else if (sz == 4)
+            return "r9d";
+        else if (sz == 2)
+            return "r9w";
+        else if (sz == 1)
+            return "r9b";
+    }
+    else
+    {
+        fprintf(stderr, "Unknown register %s!\n", reg);
+        exit(1);
+    }
+    fprintf(stderr, "Unknown size %u!\n", sz);
+    exit(1);
+    return "";
+}

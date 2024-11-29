@@ -272,9 +272,9 @@ mov [rbp-49], rax
 mov al, 99
 mov [rbp-50], al
 mov rdi, [rbp-40]
-mov rsi, [rbp-41]
+mov sil, [rbp-41]
 mov rdx, [rbp-49]
-mov rcx, [rbp-50]
+mov cl, [rbp-50]
 mov rax, rbp
 sub rax, 8
 mov [rbp-58], rax

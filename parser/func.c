@@ -19,7 +19,9 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
     {
         add_text(ctx, "extern %s", func->identity);
         return NULL;
-    } else {
+    }
+    else
+    {
         char *extern_txt = cc_asprintf("extern %s", func->identity);
         char *cmt_extern_txt = cc_asprintf(";extern %s", func->identity);
         replace_text(ctx, extern_txt, cmt_extern_txt);
@@ -53,6 +55,7 @@ apply_result *func_def_apply(parser_node *node, context *ctx)
             fprintf(stderr, "Cannot define a function with more than 6 args!");
             exit(1);
         }
+        regname = reg_typed(regname, par->type, ctx);
 
         symbol *sym = new_symbol(ctx, par->name, par->type);
         add_text(ctx, "mov %s, %s", sym->repl, regname);

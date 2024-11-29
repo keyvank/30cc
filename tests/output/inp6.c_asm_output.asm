@@ -127,7 +127,7 @@ mov [rbp-276], rax
 mov rdi, [rbp-162]
 mov rsi, [rbp-194]
 mov rdx, [rbp-226]
-mov rcx, [rbp-244]
+mov cl, [rbp-244]
 mov r8, [rbp-276]
 mov rax, rbp
 sub rax, 8

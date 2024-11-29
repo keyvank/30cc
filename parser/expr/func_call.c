@@ -29,6 +29,7 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
     node_func_call *call = (node_func_call *)node->data;
 
     char **argvals = (char **)malloc(sizeof(char *) * 6);
+    general_type **argtypes = (general_type **)malloc(sizeof(general_type *) * 6);
     for (int i = 0; i < call->num_args; i++)
     {
         apply_result *regval = call->args[i]->apply(call->args[i], ctx);
@@ -44,6 +45,7 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         add_text(ctx, "mov %s, %s", tmp->repl, rega);
 
         argvals[i] = tmp->repl;
+        argtypes[i] = regval->type;
     }
     for (int i = 0; i < call->num_args; i++)
     {
@@ -65,6 +67,7 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
             fprintf(stderr, "Cannot provide more than 6 args!\n");
             exit(1);
         }
+        regname = reg_typed(regname, argtypes[i], ctx);
         add_text(ctx, "mov %s, %s", regname, argvals[i]);
     }
 
@@ -92,7 +95,9 @@ apply_result *func_call_apply(parser_node *node, context *ctx)
         symbol *tmp = new_temp_symbol(ctx, ret_type);
         add_text(ctx, "mov %s, %s", tmp->repl, rega);
         return new_result(tmp->repl, tmp->type);
-    } else {
+    }
+    else
+    {
         return NULL;
     }
 }
