@@ -1,24 +1,5 @@
-void printf(char *, ...);
-int strcmp(char *, char *);
-void strcat(char *, char *);
-void strcpy(char *, char *);
-void *malloc(int);
-void fprintf(FILE *, char *, ...);
-
-typedef struct
-{
-    char *_ptr;
-    int _cnt;
-    char *_base;
-    int _flag;
-    int _file;
-    int _charbuf;
-    int _bufsiz;
-    char *_tmpfname;
-} FILE;
-
-FILE *fopen(char *, char *);
-int fclose(FILE *);
+#include "libc.h"
+#include "libc.h"
 
 int main()
 {
@@ -29,7 +10,7 @@ int main()
     strcat(c, b);
     printf("%s\n", c);
 
-    FILE *file_ptr;
+    void *file_ptr;
     file_ptr = fopen("output.txt", "w");
     if (!file_ptr)
     {

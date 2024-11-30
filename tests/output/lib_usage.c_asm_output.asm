@@ -8,14 +8,18 @@ __temp_str_5 db `Error opening file!`, 0
 __temp_str_6 db `Hello, World!\n`, 0
 __main_size: equ 336
 section .text
+extern stdout
+extern stderr
 extern printf
 extern strcmp
 extern strcat
 extern strcpy
 extern malloc
+extern sprintf
 extern fprintf
 extern fopen
 extern fclose
+extern fread
 global main
 main:
 push rbp
