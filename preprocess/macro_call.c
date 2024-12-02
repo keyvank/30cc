@@ -1,6 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include "../libc.h"
 #include "macro_call.h"
 #include "token.h"
 

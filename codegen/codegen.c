@@ -1,11 +1,7 @@
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-
+#include "../libc.h"
 #include "codegen.h"
 #include "../linked_list.h"
+#include "stdarg.h"
 #define UNUSED(x) (void)(x)
 
 context new_context()

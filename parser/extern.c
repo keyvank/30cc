@@ -1,6 +1,5 @@
 #include "extern.h"
-#include <stdlib.h>
-#include <string.h>
+#include "../libc.h"
 #include "../codegen/codegen.h"
 
 #include "parser.h"

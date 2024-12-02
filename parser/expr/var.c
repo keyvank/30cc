@@ -1,6 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-
+#include "../../libc.h"
 #include "../../lexer.h"
 #include "../parser.h"
 #include "var.h"

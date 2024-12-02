@@ -1,6 +1,5 @@
 
-#include <stdlib.h>
-
+#include "../libc.h"
 #include "../lexer.h"
 #include "break.h"
 #include "parser.h"

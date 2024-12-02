@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include "libc.h"
 #include "linked_list.h"
 
 linked_list *new_linked_list()

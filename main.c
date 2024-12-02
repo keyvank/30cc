@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
+#include "libc.h"
 #include "lexer.h"
 #include "parser/program.h"
 #include "linked_list.h"
@@ -14,7 +11,6 @@ typed_token *process(const char *filename, int log_lex, int log_prep)
     ctx->defs = new_linked_list();
 
     typed_token *lexed = tokenize_file(filename);
-    typed_token *prep = preprocess(ctx, filename);
     if (log_lex)
     {
         typed_token *t = lexed;
@@ -25,6 +21,7 @@ typed_token *process(const char *filename, int log_lex, int log_prep)
         }
     }
 
+    typed_token *prep = preprocess(ctx, filename);
     if (log_prep)
     {
         typed_token *t = prep;

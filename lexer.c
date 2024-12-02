@@ -1,10 +1,5 @@
 
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
+#include "libc.h"
 #include "lexer.h"
 
 char is_num(char c)
@@ -561,7 +556,7 @@ typed_token *next_token(char **inp_ptr, int *is_start)
     }
     else
     {
-        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno));
+        fprintf(stderr, "Unexpected character '%c'!\n", **inp_ptr);
         exit(0);
     }
 }
@@ -596,7 +591,7 @@ typed_token *tokenize(char *inp)
 
 typed_token *tokenize_file(char *path)
 {
-    FILE *fp = NULL;
+    void *fp = NULL;
 
     fp = fopen(path, "rb");
     if (fp == NULL)
@@ -606,28 +601,19 @@ typed_token *tokenize_file(char *path)
     }
 
     char *data = NULL;
-    struct stat st;
-
-    if (fstat(fileno(fp), &st) == -1)
-        goto ret;
-
-    data = calloc(st.st_size + 1, sizeof(char));
+    data = calloc(32768, sizeof(char));
     if (!data)
         goto ret;
 
-    int rd = fread(data, sizeof(char), st.st_size, fp);
-    if (rd != st.st_size)
-    {
-        data = NULL;
-        goto ret;
-    }
-    data[st.st_size] = '\0';
+    int rd = fread(data, sizeof(char), 32768, fp);
+    data[rd] = '\0';
 
     return tokenize(data);
 ret:
     return NULL;
 }
 
-typed_token *eof_token() {
+typed_token *eof_token()
+{
     return new_simp_tkn(TKN_EOF);
 }

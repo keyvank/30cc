@@ -3,7 +3,7 @@
 
 typedef struct typed_token_
 {
-    unsigned char type_id;
+    int type_id;
     void *data;
     void (*debug)(struct typed_token_ *);
     struct typed_token_ *next;

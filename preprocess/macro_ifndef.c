@@ -1,8 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include "../libc.h"
 #include "macro_ifndef.h"
 #include "preprocess.h"
-#include <string.h>
 
 seg_ifndef *parse_ifndef(prep_ctx *ctx, typed_token **tkns_ptr)
 {

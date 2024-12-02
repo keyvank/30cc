@@ -1,8 +1,4 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "../libc.h"
 #include "../vec.h"
 #include "../lexer.h"
 #include "parser.h"

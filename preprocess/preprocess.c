@@ -1,9 +1,7 @@
 
 
 #include "../linked_list.h"
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "../libc.h"
 #include "../lexer.h"
 #include "preprocess.h"
 #include "macro_define.h"

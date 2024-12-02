@@ -1,8 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include "../libc.h"
 #include "macro_include.h"
 #include "preprocess.h"
-#include <string.h>
 
 char *get_path(char *curr_path, char *header_path)
 {
