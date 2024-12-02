@@ -29,8 +29,7 @@ parser_node *parse_var(typed_token **tkns_ptr)
 
     if (tkn->type_id == TKN_ID)
     {
-        char *varname = malloc(128);
-        strcpy(varname, tkn->data);
+        char *varname = (char *)tkn->data;
         tkn = tkn->next;
         *tkns_ptr = tkn;
 

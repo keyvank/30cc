@@ -33,8 +33,7 @@ parser_node *parse_label(typed_token **tkns_ptr)
             node->debug = label_debug;
             node->apply = label_apply;
             node_label *lab = (node_label *)node->data;
-            lab->name = malloc(128);
-            strcpy(lab->name, name_tkn->data);
+            lab->name = (char *)name_tkn->data;
 
             return node;
         }
@@ -78,8 +77,7 @@ parser_node *parse_goto(typed_token **tkns_ptr)
                 node->debug = goto_debug;
                 node->apply = goto_apply;
                 node_goto *go = (node_goto *)node->data;
-                go->label = malloc(128);
-                strcpy(go->label, label_tkn->data);
+                go->label = (char *)label_tkn->data;
 
                 return node;
             }

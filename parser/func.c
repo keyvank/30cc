@@ -184,8 +184,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                     node->apply = func_def_apply;
                     node_func_def *decl = (node_func_def *)node->data;
 
-                    decl->identity = malloc(128);
-                    strcpy(decl->identity, (char *)name_tkn->data);
+                    decl->identity = (char *)name_tkn->data;
                     decl->return_type = return_type;
                     decl->num_params = params_count;
                     decl->params = params;
@@ -222,8 +221,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         node->apply = func_def_apply;
                         node_func_def *func = (node_func_def *)node->data;
 
-                        func->identity = malloc(128);
-                        strcpy(func->identity, (char *)name_tkn->data);
+                        func->identity = (char *)name_tkn->data;
                         func->return_type = return_type;
                         func->num_params = params_count;
                         func->params = params;

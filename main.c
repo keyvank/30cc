@@ -5,7 +5,7 @@
 #include "preprocess/preprocess.h"
 #include "preprocess/macro_define.h"
 
-typed_token *process(const char *filename, int log_lex, int log_prep)
+typed_token *process(char *filename, int log_lex, int log_prep)
 {
     prep_ctx *ctx = (prep_ctx *)malloc(sizeof(prep_ctx));
     ctx->curr_path = NULL;
@@ -42,7 +42,7 @@ typed_token *process(const char *filename, int log_lex, int log_prep)
     return prep;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     if (argc != 3)
     {

@@ -60,7 +60,7 @@ seg_ifdef *parse_ifdef(prep_ctx *ctx, typed_token **tkns_ptr)
         }
 
         *tkns_ptr = tkn;
-        seg_ifdef *ret = malloc(sizeof(seg_ifdef));
+        seg_ifdef *ret = (seg_ifdef *)malloc(sizeof(seg_ifdef));
         ret->ndef = ndef;
         ret->def = def;
         ret->endif = endif;
