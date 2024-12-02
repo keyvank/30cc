@@ -1,6 +1,7 @@
 
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../lexer.h"
 #include "../vec.h"
@@ -40,6 +41,7 @@ void program_debug(int depth, parser_node *node)
 
 apply_result *program_apply(parser_node *node, context *ctx)
 {
+    int has_main_func = 0;
     node_program *prog = (node_program *)node->data;
     for (int i = 0; i < prog->externs->total; i++)
     {
@@ -56,6 +58,10 @@ apply_result *program_apply(parser_node *node, context *ctx)
         ctx->stack_size = 0;
         parser_node *node = prog->functions[i];
         char *func_name = ((node_func_def *)node->data)->identity;
+        if (strcmp(func_name, "main") == 0)
+        {
+            has_main_func = 1;
+        }
         node_func_def *nfd = ((node_func_def *)node->data);
         general_type *func_ret = ((node_type *)nfd->return_type->data)->type;
         linked_list *arg_types = new_linked_list();
@@ -75,18 +81,21 @@ apply_result *program_apply(parser_node *node, context *ctx)
         if (nfd->statements)
             add_data(ctx, "__%s_size: equ %u", ((node_func_def *)node->data)->identity, total);
     }
-    add_text(ctx, "extern exit");
-    add_text(ctx, "global _start");
-    add_text(ctx, "_start:");
+    if (has_main_func)
+    {
+        add_text(ctx, "extern exit");
+        add_text(ctx, "global _start");
+        add_text(ctx, "_start:");
 
-    add_text(ctx, "; Pass argc and argv");
-    add_text(ctx, "mov rdi, [rsp]");
-    add_text(ctx, "mov rsi, rsp");
-    add_text(ctx, "add rsi, 8");
+        add_text(ctx, "; Pass argc and argv");
+        add_text(ctx, "mov rdi, [rsp]");
+        add_text(ctx, "mov rsi, rsp");
+        add_text(ctx, "add rsi, 8");
 
-    add_text(ctx, "call main");
-    add_text(ctx, "mov rdi, rax");
-    add_text(ctx, "call exit");
+        add_text(ctx, "call main");
+        add_text(ctx, "mov rdi, rax");
+        add_text(ctx, "call exit");
+    }
     return NULL;
 }
 

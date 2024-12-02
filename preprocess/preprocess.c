@@ -25,6 +25,8 @@ typed_token *chain_tokens(linked_list *tkns)
     if (tkns->count == 0)
         return eof_token();
     list_node *curr = tkns->first;
+    if (curr == NULL)
+        return NULL;
     typed_token *res_first = clone_token((typed_token *)curr->value);
     typed_token *curr_tkn = res_first;
     while (curr)
@@ -98,12 +100,15 @@ typed_token *preprocess(prep_ctx *ctx, char *path)
         if (s)
         {
             linked_list *res = s->to_code(s, ctx);
-            list_node *t = res->first;
-            while (t)
+            if (res != NULL)
             {
-                typed_token *tk = (typed_token *)t->value;
-                add_to_list(ret, tk);
-                t = t->next;
+                list_node *t = res->first;
+                while (t)
+                {
+                    typed_token *tk = (typed_token *)t->value;
+                    add_to_list(ret, tk);
+                    t = t->next;
+                }
             }
         }
     }
