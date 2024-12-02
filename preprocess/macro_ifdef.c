@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "macro_ifndef.h"
+#include "macro_ifdef.h"
 #include "preprocess.h"
 #include <string.h>
 
-char *is_ifdef(typed_token *tkn)
+char *is_ifdef(typed_token *tkn, int * not )
 {
     if (tkn->type_id == TKN_DIRECTIVE)
     {
@@ -12,8 +12,9 @@ char *is_ifdef(typed_token *tkn)
         tkn = tkn->next;
         if (inner_tkn->type_id == TKN_ID)
         {
-            if (strcmp((char *)inner_tkn->data, "ifndef") == 0)
+            if (strcmp((char *)inner_tkn->data, "ifndef") == 0 || strcmp((char *)inner_tkn->data, "ifdef") == 0)
             {
+                *not = strcmp((char *)inner_tkn->data, "ifndef") == 0;
                 inner_tkn = inner_tkn->next;
                 if (inner_tkn->type_id == TKN_ID)
                 {
@@ -30,11 +31,11 @@ char *is_ifdef(typed_token *tkn)
     return NULL;
 }
 
-seg_ifndef *parse_ifndef(prep_ctx *ctx, typed_token **tkns_ptr)
+seg_ifdef *parse_ifdef(prep_ctx *ctx, typed_token **tkns_ptr)
 {
     typed_token *tkn = *tkns_ptr;
-
-    char *def = is_ifdef(tkn);
+    int ndef = 0;
+    char *def = is_ifdef(tkn, &ndef);
     if (def)
     {
         tkn = tkn->next;
@@ -43,9 +44,10 @@ seg_ifndef *parse_ifndef(prep_ctx *ctx, typed_token **tkns_ptr)
         int cnt = 1;
         while (endif)
         {
+            int tmp = 0;
             if (is_endif(endif))
                 cnt -= 1;
-            else if (is_ifdef(endif))
+            else if (is_ifdef(endif, &tmp))
                 cnt += 1;
             if (cnt == 0)
             {
@@ -60,7 +62,8 @@ seg_ifndef *parse_ifndef(prep_ctx *ctx, typed_token **tkns_ptr)
         }
 
         *tkns_ptr = tkn;
-        seg_ifndef *ret = malloc(sizeof(seg_ifndef));
+        seg_ifdef *ret = malloc(sizeof(seg_ifdef));
+        ret->ndef = ndef;
         ret->def = def;
         ret->endif = endif;
         return ret;
