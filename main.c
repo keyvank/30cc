@@ -3,12 +3,19 @@
 #include "parser/program.h"
 #include "linked_list.h"
 #include "preprocess/preprocess.h"
+#include "preprocess/macro_define.h"
 
 typed_token *process(const char *filename, int log_lex, int log_prep)
 {
     prep_ctx *ctx = (prep_ctx *)malloc(sizeof(prep_ctx));
     ctx->curr_path = NULL;
     ctx->defs = new_linked_list();
+
+    seg_define *_30cc_define = (seg_define *)malloc(sizeof(seg_define));
+    _30cc_define->arg_names=new_linked_list();
+    _30cc_define->id = "_30CC";
+    _30cc_define->replace = new_linked_list();
+    add_to_list(ctx->defs, _30cc_define);
 
     typed_token *lexed = tokenize_file(filename);
     if (log_lex)
