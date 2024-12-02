@@ -9,7 +9,7 @@
 
 char *escape(char *inp)
 {
-    char *ret = malloc(128);
+    char *ret = (char *)malloc(128);
     int cnt = 0;
     while (*inp)
     {
@@ -25,7 +25,7 @@ char *escape(char *inp)
         }
         inp++;
     }
-    ret[cnt] = 0;
+    ret[cnt] = '\0';
     return ret;
 }
 
@@ -83,17 +83,16 @@ parser_node *parse_literal(typed_token **tkns_ptr)
         lit->type = val_tkn->type_id;
         if (lit->type == TKN_LIT_STR)
         {
-            lit->value = malloc(128);
-            strcpy(lit->value, val_tkn->data);
+            lit->value = (char *)val_tkn->data;
         }
         else if (lit->type == TKN_LIT_INT)
         {
-            lit->value = malloc(sizeof(int));
+            lit->value = (char *)malloc(sizeof(int));
             *((int *)lit->value) = *((int *)val_tkn->data);
         }
         else if (lit->type == TKN_LIT_CHAR)
         {
-            lit->value = malloc(sizeof(char));
+            lit->value = (char *)malloc(sizeof(char));
             *((char *)lit->value) = *((char *)val_tkn->data);
         }
         else

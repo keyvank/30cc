@@ -28,7 +28,7 @@ seg *parse_token(prep_ctx *ctx, typed_token **tkns_ptr)
     ret->data = malloc(sizeof(seg_tkn));
     ret->to_code = seg_code_gen;
     if (tkn->type_id == TKN_ID)
-        ret->stringified = tkn->data;
+        ret->stringified = (char *)tkn->data;
     else
         ret->stringified = NULL;
     ((seg_tkn *)ret->data)->tkn = tkn;

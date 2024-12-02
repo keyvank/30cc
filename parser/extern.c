@@ -18,8 +18,8 @@ void extern_debug(int depth, parser_node *node)
 apply_result *extern_apply(parser_node *node, context *ctx)
 {
     node_extern *ex = (node_extern *)node->data;
-    node_var_decl *vd = ex->var_decl->data;
-    node_type *tp = vd->type->data;
+    node_var_decl *vd = (node_var_decl *)ex->var_decl->data;
+    node_type *tp = (node_type *)vd->type->data;
 
     add_text(ctx, "extern %s", vd->identity);
     new_global_symbol(ctx, vd->identity, cc_asprintf("[%s]", vd->identity), tp->type);

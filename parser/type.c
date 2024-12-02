@@ -57,9 +57,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
             return NULL;
         }
 
-        char *tp_name = malloc(128);
-        strcpy(tp_name, struct_name_tkn->data);
-        par->type = new_struct_type(tp_name);
+        par->type = new_struct_type(struct_name_tkn->data);
         par->name = NULL;
         tkn = struct_name_tkn->next;
     }

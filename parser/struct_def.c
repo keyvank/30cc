@@ -76,8 +76,7 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
                 node->apply = struct_def_apply;
                 node_struct_def *sd = (node_struct_def *)node->data;
                 sd->typedef_name = NULL;
-                sd->struct_name = malloc(128);
-                strcpy(sd->struct_name, (char *)struct_name_tkn->data);
+                sd->struct_name = (char *)struct_name_tkn->data;
                 sd->fields = NULL;
                 sd->num_fields = 0;
                 return node;
@@ -119,13 +118,11 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
                         sd->typedef_name = NULL;
                         if (struct_name_tkn)
                         {
-                            sd->struct_name = malloc(128);
-                            strcpy(sd->struct_name, (char *)struct_name_tkn->data);
+                            sd->struct_name = (char *)struct_name_tkn->data;
                         }
                         if (typedef_name_tkn)
                         {
-                            sd->typedef_name = malloc(128);
-                            strcpy(sd->typedef_name, (char *)typedef_name_tkn->data);
+                            sd->typedef_name = (char *)typedef_name_tkn->data;
                         }
                         sd->fields = fields;
                         sd->num_fields = num_fields;

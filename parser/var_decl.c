@@ -89,8 +89,7 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             node->apply = var_decl_apply;
             node_var_decl *decl = (node_var_decl *)node->data;
             decl->type = tp;
-            decl->identity = malloc(128);
-            strcpy(decl->identity, ((node_type *)tp->data)->name);
+            decl->identity = ((node_type *)tp->data)->name;
             decl->value = val_expr;
 
             return node;
