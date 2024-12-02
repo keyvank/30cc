@@ -15,6 +15,7 @@ void strcat(char *, char *);
 void strcpy(char *, char *);
 void *malloc(int);
 void *calloc(int, int);
+void *realloc(void *, int);
 void free(void *);
 void sprintf(char *, char *, ...);
 void fprintf(void *, char *, ...);
@@ -24,6 +25,7 @@ void *fopen(char *, char *);
 int fclose(void *);
 int fread(void *, int, int, void *);
 void exit(int);
+void memcpy(void *, void *, int);
 #endif
 
 #endif
