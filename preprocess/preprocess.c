@@ -68,7 +68,7 @@ typed_token *preprocess(prep_ctx *ctx, char *path)
                 int endif_found = 0;
                 while (tkn->type_id != TKN_EOF)
                 {
-                    if (is_endif(tkn))
+                    if (tkn == ifndef->endif)
                     {
                         endif_found = 1;
                         break;

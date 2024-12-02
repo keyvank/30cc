@@ -7,6 +7,7 @@
 typedef struct
 {
     char *def;
+    typed_token *endif;
 } seg_ifndef;
 
 seg_ifndef *parse_ifndef(prep_ctx *ctx, typed_token **tkns_ptr);
