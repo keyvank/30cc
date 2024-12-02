@@ -15,6 +15,20 @@ struct MyStruct
     int e;
 };
 
+struct B;
+
+struct A
+{
+    int v;
+    struct B *b;
+};
+
+struct B
+{
+    int v;
+    struct A *a;
+};
+
 int main()
 {
     struct MyStruct m;
@@ -29,6 +43,16 @@ int main()
     salam[5] = 987;
     int *s5 = &salam[5];
     printf("%u\n", *s5);
-    
+
+    struct A a;
+    struct B b;
+    a.v = 123;
+    b.v = 234;
+    a.b = &b;
+    b.a = &a;
+
+    printf("%u\n", a.b->a->b->a->b->a->v);
+    printf("%u\n", a.b->a->b->a->b->a->b->v);
+
     return 0;
 }
