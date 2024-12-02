@@ -192,6 +192,124 @@ Program(
 )
           Deref:
             Variable(s5)
+      VarDecl(a):
+        Type(Name: a):
+          struct A
+      VarDecl(b):
+        Type(Name: b):
+          struct B
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(a)
+            Field: v
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 123)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(b)
+            Field: v
+            IsPtr: 0
+        Right:
+          Literal(Type: 34, Value: 234)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(a)
+            Field: b
+            IsPtr: 0
+        Right:
+          Ref:
+            Variable(b)
+      BinaryOp(Op: 64)
+        Left:
+          Access:
+            Object:
+              Variable(b)
+            Field: a
+            IsPtr: 0
+        Right:
+          Ref:
+            Variable(a)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          Access:
+            Object:
+              Access:
+                Object:
+                  Access:
+                    Object:
+                      Access:
+                        Object:
+                          Access:
+                            Object:
+                              Access:
+                                Object:
+                                  Access:
+                                    Object:
+                                      Variable(a)
+                                    Field: b
+                                    IsPtr: 0
+                                Field: a
+                                IsPtr: 1
+                            Field: b
+                            IsPtr: 1
+                        Field: a
+                        IsPtr: 1
+                    Field: b
+                    IsPtr: 1
+                Field: a
+                IsPtr: 1
+            Field: v
+            IsPtr: 1
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          Access:
+            Object:
+              Access:
+                Object:
+                  Access:
+                    Object:
+                      Access:
+                        Object:
+                          Access:
+                            Object:
+                              Access:
+                                Object:
+                                  Access:
+                                    Object:
+                                      Access:
+                                        Object:
+                                          Variable(a)
+                                        Field: b
+                                        IsPtr: 0
+                                    Field: a
+                                    IsPtr: 1
+                                Field: b
+                                IsPtr: 1
+                            Field: a
+                            IsPtr: 1
+                        Field: b
+                        IsPtr: 1
+                    Field: a
+                    IsPtr: 1
+                Field: b
+                IsPtr: 1
+            Field: v
+            IsPtr: 1
       Return:
         Literal(Type: 34, Value: 0)
   )
@@ -215,4 +333,21 @@ Program(
     VarDecl(e):
       Type(Name: e):
         TKN_INT
+  Struct(Name: B, Typedef: (null))
+  Struct(Name: A, Typedef: (null))
+    VarDecl(v):
+      Type(Name: v):
+        TKN_INT
+    VarDecl(b):
+      Type(Name: b):
+        Pointer of:
+          struct B
+  Struct(Name: B, Typedef: (null))
+    VarDecl(v):
+      Type(Name: v):
+        TKN_INT
+    VarDecl(a):
+      Type(Name: a):
+        Pointer of:
+          struct A
 )

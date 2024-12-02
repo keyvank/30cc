@@ -22,6 +22,9 @@ void struct_def_debug(int depth, parser_node *node)
 apply_result *struct_def_apply(parser_node *node, context *ctx)
 {
     node_struct_def *sd = (node_struct_def *)node->data;
+    if (sd->fields == NULL)
+        return NULL;
+
     general_type **fields = (general_type **)malloc(sizeof(general_type *) * sd->num_fields);
     char **field_names = (char **)malloc(sizeof(char *) * sd->num_fields);
     for (int j = 0; j < sd->num_fields; j++)
@@ -62,6 +65,23 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
         {
             struct_name_tkn = tkn;
             tkn = tkn->next;
+
+            if (tkn->type_id == TKN_SEMICOLON)
+            {
+                tkn = tkn->next;
+                *tkns_ptr = tkn;
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
+                node->data = (void *)malloc(sizeof(node_struct_def));
+                node->debug = struct_def_debug;
+                node->apply = struct_def_apply;
+                node_struct_def *sd = (node_struct_def *)node->data;
+                sd->typedef_name = NULL;
+                sd->struct_name = malloc(128);
+                strcpy(sd->struct_name, (char *)struct_name_tkn->data);
+                sd->fields = NULL;
+                sd->num_fields = 0;
+                return node;
+            }
         }
         if (tkn->type_id == TKN_L_BRACE)
         {
