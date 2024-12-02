@@ -18,6 +18,30 @@ Program(
         TKN_INT
     Params:
     Statements:
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: ABC defined!
+)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: AB defined!
+)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: A defined!
+)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: D not defined!
+)
       Return:
         Literal(Type: 34, Value: 0)
   )

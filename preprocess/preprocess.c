@@ -7,7 +7,7 @@
 #include "macro_define.h"
 #include "macro_call.h"
 #include "macro_include.h"
-#include "macro_ifndef.h"
+#include "macro_ifdef.h"
 #include "token.h"
 
 typed_token *clone_token(typed_token *a)
@@ -58,15 +58,16 @@ typed_token *preprocess(prep_ctx *ctx, char *path)
             continue;
         }
 
-        seg_ifndef *ifndef = parse_ifndef(ctx, &tkn);
-        if (ifndef)
+        seg_ifdef *ifdef = parse_ifdef(ctx, &tkn);
+        if (ifdef)
         {
-            if (find_define(ctx, ifndef->def))
+            int def_found = find_define(ctx, ifdef->def) != 0;
+            if ((ifdef->ndef && def_found) || (!ifdef->ndef && !def_found))
             {
                 int endif_found = 0;
                 while (tkn->type_id != TKN_EOF)
                 {
-                    if (is_endif(tkn))
+                    if (tkn == ifdef->endif)
                     {
                         endif_found = 1;
                         break;
