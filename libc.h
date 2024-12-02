@@ -14,6 +14,7 @@ int strcmp(char *, char *);
 void strcat(char *, char *);
 void strcpy(char *, char *);
 void *malloc(int);
+void *calloc(int, int);
 void free(void *);
 void sprintf(char *, char *, ...);
 void fprintf(void *, char *, ...);
