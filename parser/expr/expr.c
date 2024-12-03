@@ -260,6 +260,11 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
         add_text(ctx, "sub %s, %s", rega, regb);
         move_reg_to_var(ctx, left, rega);
         break;
+    case TKN_MOD:
+        add_text(ctx, "mov rdx, 0");
+        add_text(ctx, "div %s", regb);
+        add_text(ctx, "mov %s, %s", rega, reg_typed("rdx", left->type, ctx));
+        break;
     case TKN_STAR:
         // TODO: check sign for mul/imul
         add_text(ctx, "mul %s", regb);

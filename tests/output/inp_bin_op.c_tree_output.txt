@@ -1,4 +1,15 @@
 Program(
+  FunctionDecl(
+    Name:
+      printf
+    Returns:
+      Type(Name: (null)):
+        TKN_VOID
+    Params:
+      Type(Name: (null)):
+        Pointer of:
+          TKN_CHAR
+  )
   Function(
     Name:
       main
@@ -36,6 +47,39 @@ Program(
               Variable(b)
             Right:
               Literal(Type: 34, Value: 1)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          BinaryOp(Op: 91)
+            Left:
+              Literal(Type: 34, Value: 23)
+            Right:
+              Literal(Type: 34, Value: 16)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          BinaryOp(Op: 91)
+            Left:
+              Literal(Type: 34, Value: 19)
+            Right:
+              Literal(Type: 34, Value: 16)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
+          Literal(Type: 33, Value: %u
+)
+          BinaryOp(Op: 91)
+            Left:
+              Literal(Type: 34, Value: 32)
+            Right:
+              Literal(Type: 34, Value: 16)
       Return:
         Literal(Type: 34, Value: 0)
   )

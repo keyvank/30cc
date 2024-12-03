@@ -1,6 +1,10 @@
 section .data
-__main_size: equ 112
+__temp_str_0 db `%u\n`, 0
+__temp_str_1 db `%u\n`, 0
+__temp_str_2 db `%u\n`, 0
+__main_size: equ 208
 section .text
+extern printf
 global main
 main:
 push rbp
@@ -54,6 +58,54 @@ mul rbx
 mov rbx, [rbp-72]
 mov [rbx], rax
 mov [rbp-96], rax
+mov rax, __temp_str_0
+mov [rbp-104], rax
+mov rax, 23
+mov rbx, 16
+mov rdx, 0
+div rbx
+mov rax, rdx
+mov [rbp-112], rax
+mov rax, [rbp-112]
+mov [rbp-120], rax
+mov rdi, [rbp-104]
+mov rsi, [rbp-120]
+mov rax, rbp
+sub rax, 8
+mov [rbp-128], rax
+call printf
+mov rax, __temp_str_1
+mov [rbp-136], rax
+mov rax, 19
+mov rbx, 16
+mov rdx, 0
+div rbx
+mov rax, rdx
+mov [rbp-144], rax
+mov rax, [rbp-144]
+mov [rbp-152], rax
+mov rdi, [rbp-136]
+mov rsi, [rbp-152]
+mov rax, rbp
+sub rax, 8
+mov [rbp-160], rax
+call printf
+mov rax, __temp_str_2
+mov [rbp-168], rax
+mov rax, 32
+mov rbx, 16
+mov rdx, 0
+div rbx
+mov rax, rdx
+mov [rbp-176], rax
+mov rax, [rbp-176]
+mov [rbp-184], rax
+mov rdi, [rbp-168]
+mov rsi, [rbp-184]
+mov rax, rbp
+sub rax, 8
+mov [rbp-192], rax
+call printf
 mov rax, 0
 mov rsp, rbp
 pop rbp
