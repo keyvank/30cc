@@ -1,7 +1,5 @@
 
-
-#include <stdlib.h>
-
+#include "../../libc.h"
 #include "../../lexer.h"
 #include "../parser.h"
 #include "deref.h"

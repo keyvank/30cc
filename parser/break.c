@@ -1,7 +1,5 @@
 #include "break.h"
-#include <stdlib.h>
-#include <string.h>
-
+#include "../libc.h"
 #include "parser.h"
 
 void break_debug(int depth, parser_node *node)

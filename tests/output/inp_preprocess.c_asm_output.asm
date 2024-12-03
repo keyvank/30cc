@@ -1,9 +1,10 @@
 section .data
-__temp_str_0 db `ABC defined!\n`, 0
-__temp_str_1 db `AB defined!\n`, 0
-__temp_str_2 db `A defined!\n`, 0
-__temp_str_3 db `D not defined!\n`, 0
-__main_size: equ 80
+__temp_str_0 db `30CC is compiling this!\n`, 0
+__temp_str_1 db `ABC defined!\n`, 0
+__temp_str_2 db `AB defined!\n`, 0
+__temp_str_3 db `A defined!\n`, 0
+__temp_str_4 db `D not defined!\n`, 0
+__main_size: equ 96
 section .text
 extern printf
 global main
@@ -38,6 +39,13 @@ mov rdi, [rbp-56]
 mov rax, rbp
 sub rax, 8
 mov [rbp-64], rax
+call printf
+mov rax, __temp_str_4
+mov [rbp-72], rax
+mov rdi, [rbp-72]
+mov rax, rbp
+sub rax, 8
+mov [rbp-80], rax
 call printf
 mov rax, 0
 mov rsp, rbp

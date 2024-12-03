@@ -22,6 +22,12 @@ Program(
         Function:
           Variable(printf)
         Args:
+          Literal(Type: 33, Value: 30CC is compiling this!
+)
+      FunctionCall:
+        Function:
+          Variable(printf)
+        Args:
           Literal(Type: 33, Value: ABC defined!
 )
       FunctionCall:

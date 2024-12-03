@@ -1,5 +1,4 @@
-#include <stdlib.h>
-
+#include "../libc.h"
 #include "parser.h"
 
 void printtabs(int depth)

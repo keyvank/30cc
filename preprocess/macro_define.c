@@ -1,7 +1,6 @@
-#include <stdlib.h>
+#include "../libc.h"
 #include "macro_define.h"
 #include "preprocess.h"
-#include <string.h>
 
 
 linked_list *parse_arg_names(typed_token **tkns_ptr)

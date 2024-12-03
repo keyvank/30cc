@@ -1,7 +1,6 @@
 
 #ifndef PARSER_H
 #define PARSER_H
-#include <stdio.h>
 #include "../codegen/codegen.h"
 
 void printtabs(int depth);

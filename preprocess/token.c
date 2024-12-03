@@ -1,5 +1,5 @@
 
-#include <stdlib.h>
+#include "../libc.h"
 #include "token.h"
 #include "macro_define.h"
 

@@ -1,10 +1,5 @@
 
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
+#include "libc.h"
 #include "lexer.h"
 
 char is_num(char c)
@@ -48,7 +43,7 @@ void str_tkn_debug(typed_token *tkn)
 }
 void directive_tkn_debug(typed_token *tkn)
 {
-    typed_token *curr = tkn->data;
+    typed_token *curr = (typed_token *)tkn->data;
     printf("%s:\n", STR(TKN_DIRECTIVE));
     while (curr)
     {
@@ -79,7 +74,7 @@ typed_token *next_keyword_or_identifier(char **inp_ptr)
         char *val_ptr = val;
         *val_ptr = c;
         val_ptr++;
-        while (*inp && (c = is_letter_or_num(*inp)))
+        while ((*inp != '\0') && ((c = is_letter_or_num(*inp)) != '\0'))
         {
             *val_ptr = c;
             inp++;
@@ -142,13 +137,13 @@ typed_token *next_op(char **inp_ptr, int is_newline)
     char *inp = *inp_ptr;
     if (is_num(*inp))
     {
-        int a = *inp - 48;
+        int a = (int)*inp - 48;
         inp++;
         while (is_num(*inp))
         {
 
             a = a * 10;
-            a += (*inp - 48);
+            a += ((int)*inp - 48);
             inp++;
         }
         *inp_ptr = inp;
@@ -297,7 +292,7 @@ typed_token *next_op(char **inp_ptr, int is_newline)
             {
                 *inp_ptr += 4;
                 char e = *(inp + 2);
-                char *ch = malloc(1);
+                char *ch = (char *)malloc(1);
                 if (e == 'n')
                 {
                     *ch = '\n';
@@ -316,7 +311,7 @@ typed_token *next_op(char **inp_ptr, int is_newline)
         else if (*(inp + 1) != '\0' && *(inp + 2) == '\'')
         {
             *inp_ptr += 3;
-            char *ch = malloc(1);
+            char *ch = (char *)malloc(1);
             *ch = *(inp + 1);
             return new_tkn(TKN_LIT_CHAR, (void *)ch, char_tkn_debug);
         }
@@ -532,7 +527,7 @@ int skip_whitespaces(char **inp_ptr, int is_start)
 {
     char *inp = *inp_ptr;
     int is_newline = is_start || (*inp == '\n');
-    while (*inp != 0 && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
+    while (*inp != '\0' && (*inp == ' ' || *inp == '\n' || *inp == '\t'))
     {
         is_newline = (*inp == '\n');
         inp++;
@@ -561,7 +556,7 @@ typed_token *next_token(char **inp_ptr, int *is_start)
     }
     else
     {
-        fprintf(stderr, "Unexpected character '%c': %s", **inp_ptr, strerror(errno));
+        fprintf(stderr, "Unexpected character '%c'!\n", **inp_ptr);
         exit(0);
     }
 }
@@ -596,7 +591,7 @@ typed_token *tokenize(char *inp)
 
 typed_token *tokenize_file(char *path)
 {
-    FILE *fp = NULL;
+    void *fp = NULL;
 
     fp = fopen(path, "rb");
     if (fp == NULL)
@@ -606,28 +601,19 @@ typed_token *tokenize_file(char *path)
     }
 
     char *data = NULL;
-    struct stat st;
-
-    if (fstat(fileno(fp), &st) == -1)
-        goto ret;
-
-    data = calloc(st.st_size + 1, sizeof(char));
+    data = (char *)calloc(32768, sizeof(char));
     if (!data)
         goto ret;
 
-    int rd = fread(data, sizeof(char), st.st_size, fp);
-    if (rd != st.st_size)
-    {
-        data = NULL;
-        goto ret;
-    }
-    data[st.st_size] = '\0';
+    int rd = fread(data, sizeof(char), 32768, fp);
+    data[rd] = '\0';
 
     return tokenize(data);
 ret:
     return NULL;
 }
 
-typed_token *eof_token() {
+typed_token *eof_token()
+{
     return new_simp_tkn(TKN_EOF);
 }

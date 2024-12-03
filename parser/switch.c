@@ -1,11 +1,10 @@
 
+#include "../libc.h"
 #include "switch.h"
 #include "expr/expr.h"
 #include "parser.h"
 #include "../lexer.h"
 #include "statement.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 void switch_debug(int depth, parser_node *node)
 {

@@ -1,10 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include "../libc.h"
 #include "macro_ifdef.h"
 #include "preprocess.h"
-#include <string.h>
 
-char *is_ifdef(typed_token *tkn, int * not )
+char *is_ifdef(typed_token *tkn, int *ndef)
 {
     if (tkn->type_id == TKN_DIRECTIVE)
     {
@@ -14,7 +12,7 @@ char *is_ifdef(typed_token *tkn, int * not )
         {
             if (strcmp((char *)inner_tkn->data, "ifndef") == 0 || strcmp((char *)inner_tkn->data, "ifdef") == 0)
             {
-                *not = strcmp((char *)inner_tkn->data, "ifndef") == 0;
+                *ndef = strcmp((char *)inner_tkn->data, "ifndef") == 0;
                 inner_tkn = inner_tkn->next;
                 if (inner_tkn->type_id == TKN_ID)
                 {
