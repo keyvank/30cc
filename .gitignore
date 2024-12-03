@@ -2,6 +2,9 @@
 out
 out.asm
 output.txt
+/target
+30cc
+30cc_gcc
 
 # Prerequisites
 *.d
