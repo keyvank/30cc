@@ -297,6 +297,10 @@ typed_token *next_op(char **inp_ptr, int is_newline)
                 {
                     *ch = '\n';
                 }
+                else if (e == 't')
+                {
+                    *ch = '\t';
+                }
                 else if (e == '0')
                 {
                     *ch = '\0';
@@ -337,6 +341,10 @@ typed_token *next_op(char **inp_ptr, int is_newline)
                 if (*inp == 'n')
                 {
                     c = '\n';
+                }
+                else if (*inp == 't')
+                {
+                    c = '\t';
                 }
                 else
                 {
