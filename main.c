@@ -12,7 +12,7 @@ typed_token *process(char *filename, int log_lex, int log_prep)
     ctx->defs = new_linked_list();
 
     seg_define *_30cc_define = (seg_define *)malloc(sizeof(seg_define));
-    _30cc_define->arg_names=new_linked_list();
+    _30cc_define->arg_names = new_linked_list();
     _30cc_define->id = "_30CC";
     _30cc_define->replace = new_linked_list();
     add_to_list(ctx->defs, _30cc_define);
@@ -82,9 +82,9 @@ int main(int argc, char **argv)
 
     if (strcmp(argv[2], "--asm") == 0)
     {
-        context ctx = new_context();
-        prog->apply(prog, &ctx);
-        list_node *curr = ctx.data->first;
+        context *ctx = new_context();
+        prog->apply(prog, ctx);
+        list_node *curr = ctx->data->first;
         printf("section .data\n");
         while (curr)
         {
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
             curr = curr->next;
         }
         printf("section .text\n");
-        curr = ctx.text->first;
+        curr = ctx->text->first;
         while (curr)
         {
             printf("%s\n", (char *)curr->value);

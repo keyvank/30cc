@@ -29,13 +29,21 @@ for f in glob.glob("**/*.c", recursive=True):
         os.makedirs(pathlib.Path(obj_filename).parent, exist_ok=True)
         with io.open(asm_filename, "w") as f:
             f.write(asm)
-        subprocess.run(["nasm", "-f", "elf64", asm_filename, "-o", obj_filename])
+        subprocess.run(
+            ["nasm", "-f", "elf64", asm_filename, "-o", obj_filename], check=True
+        )
     except Exception as e:
         has_error = True
         print("Error compiling:", f, e)
 
 
-objs = list(glob.glob("target/obj/**/*.o", recursive=True))
+objs = list(
+    [
+        p
+        for p in glob.glob("target/obj/**/*.o", recursive=True)
+        if not p.startswith("target/obj/examples")
+    ]
+)
 
 if not has_error:
     subprocess.run(

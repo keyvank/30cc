@@ -66,7 +66,7 @@ general_type *new_pointer_type(general_type *of);
 general_type *new_func_type(general_type *return_type, linked_list *arg_types);
 int types_equal(general_type *a, general_type *b, context *ctx);
 
-context new_context();
+context *new_context();
 void add_text(context *ctx, char *fmt, ...);
 void add_data(context *ctx, char *fmt, ...);
 void replace_text(context *ctx, char *a, char *b);
@@ -86,9 +86,9 @@ symbol *new_global_symbol(context *ctx, char *name, char *repl, general_type *ty
 symbol *new_temp_symbol(context *ctx, general_type *type);
 char *new_label(context *ctx);
 char *new_loop_end_label(context *ctx);
-char *get_current_loop_end_label_counter(context *ctx, char* name);
+char *get_current_loop_end_label_counter(context *ctx, char *name);
 char *new_loop_start_label(context *ctx);
-char *get_current_loop_start_label_counter(context *ctx, char* name);
+char *get_current_loop_start_label_counter(context *ctx, char *name);
 void exit_loop(context *ctx);
 
 context_struct *find_struct(context *ctx, char *name);

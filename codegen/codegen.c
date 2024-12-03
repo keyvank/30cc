@@ -1,24 +1,9 @@
 #include "../libc.h"
 #include "codegen.h"
 #include "../linked_list.h"
-#include "stdarg.h"
-#define UNUSED(x) (void)(x)
 
-context new_context()
-{
-    context ctx;
-    ctx.data = new_linked_list();
-    ctx.text = new_linked_list();
-    ctx.global_table = new_linked_list();
-    ctx.symbol_table = new_linked_list();
-    ctx.structs = new_linked_list();
-    ctx.label_counter = 0;
-    ctx.loop_end_labels = new_linked_list();
-    ctx.loop_start_labels = new_linked_list();
-    ctx.stack_size = 0;
-    return ctx;
-}
-
+#ifndef _30CC
+#include <stdarg.h>
 char *cc_asprintf(char *fmt, ...)
 {
     char *txt = (char *)malloc(128);
@@ -48,6 +33,72 @@ void add_text(context *ctx, char *fmt, ...)
     va_end(args);
     add_to_list(ctx->text, txt);
 }
+#endif
+
+#ifdef _30CC
+#define PUSHARGS() __asm__("push rdi" \
+                           "push rsi" \
+                           "push rdx" \
+                           "push rcx" \
+                           "push r8"  \
+                           "push r9")
+#define SRARGS() __asm__("mov r9, r8"   \
+                         "mov r8, rcx"  \
+                         "mov rcx, rdx" \
+                         "mov rdx, rsi" \
+                         "mov rsi, rdi" \
+                         "mov rdi, 0")
+#define POPARGS() __asm__("pop r9"  \
+                          "pop r8"  \
+                          "pop rcx" \
+                          "pop rdx" \
+                          "pop rsi" \
+                          "pop rdi")
+char *cc_asprintf(char *fmt, ...)
+{
+    SRARGS();
+    PUSHARGS();
+    char *txt = (char *)malloc(128);
+    POPARGS();
+    sprintf(txt, fmt);
+    return txt;
+}
+
+void add_data(context *ctx, char *fmt, ...)
+{
+    PUSHARGS();
+    char *txt = (char *)malloc(128);
+    POPARGS();
+    sprintf(txt, fmt);
+    add_to_list(ctx->data, txt);
+}
+
+void add_text(context *ctx, char *fmt, ...)
+{
+    PUSHARGS();
+    char *txt = (char *)malloc(128);
+    POPARGS();
+    sprintf(txt, fmt);
+    add_to_list(ctx->text, txt);
+}
+#endif
+
+#define UNUSED(x) x
+
+context *new_context()
+{
+    context *ctx = (context *)malloc(sizeof(context));
+    ctx->data = new_linked_list();
+    ctx->text = new_linked_list();
+    ctx->global_table = new_linked_list();
+    ctx->symbol_table = new_linked_list();
+    ctx->structs = new_linked_list();
+    ctx->label_counter = 0;
+    ctx->loop_end_labels = new_linked_list();
+    ctx->loop_start_labels = new_linked_list();
+    ctx->stack_size = 0;
+    return ctx;
+}
 
 void replace_text(context *ctx, char *a, char *b)
 {
@@ -56,7 +107,7 @@ void replace_text(context *ctx, char *a, char *b)
     {
         if (strcmp(curr->value, a) == 0)
         {
-            curr->value = b;
+            curr->value = (void *)b;
         }
         curr = curr->next;
     }
@@ -100,7 +151,7 @@ char *new_label(context *ctx)
 char *new_loop_end_label(context *ctx)
 {
     char *name = new_label(ctx);
-    int *label_id = malloc(sizeof(int));
+    int *label_id = (int *)malloc(sizeof(int));
     *label_id = ctx->label_counter - 1;
     add_to_list(ctx->loop_end_labels, label_id);
     return name;
@@ -121,7 +172,7 @@ char *get_current_loop_end_label_counter(context *ctx, char *name)
 char *new_loop_start_label(context *ctx)
 {
     char *name = new_label(ctx);
-    int *label_id = malloc(sizeof(int));
+    int *label_id = (int *)malloc(sizeof(int));
     *label_id = ctx->label_counter - 1;
     add_to_list(ctx->loop_start_labels, label_id);
 
@@ -306,7 +357,7 @@ general_type *new_primitive_type(char *type_name)
     primitive_type *data = (primitive_type *)malloc(sizeof(primitive_type));
     data->type_name = type_name;
     ret->kind = TYPE_PRIMITIVE;
-    ret->data = data;
+    ret->data = (void *)data;
     ret->debug = primitive_type_debug;
     ret->size = primitive_type_size;
     return ret;
@@ -318,7 +369,7 @@ general_type *new_pointer_type(general_type *of)
     pointer_type *data = (pointer_type *)malloc(sizeof(pointer_type));
     data->of = of;
     ret->kind = TYPE_POINTER;
-    ret->data = data;
+    ret->data = (void *)data;
     ret->debug = pointer_type_debug;
     ret->size = pointer_type_size;
     return ret;
@@ -331,7 +382,7 @@ general_type *new_func_type(general_type *return_type, linked_list *arg_types)
     data->return_type = return_type;
     data->arg_types = arg_types;
     ret->kind = TYPE_FUNC;
-    ret->data = data;
+    ret->data = (void *)data;
     ret->debug = func_type_debug;
     ret->size = func_type_size;
     return ret;
@@ -343,7 +394,7 @@ general_type *new_struct_type(char *struct_name)
     struct_type *data = (struct_type *)malloc(sizeof(struct_type));
     data->struct_name = struct_name;
     ret->kind = TYPE_STRUCT;
-    ret->data = data;
+    ret->data = (void *)data;
     ret->debug = struct_type_debug;
     ret->size = struct_type_size;
     return ret;
