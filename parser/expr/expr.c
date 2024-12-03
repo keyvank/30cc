@@ -185,9 +185,12 @@ apply_result *binary_op_apply(parser_node *node, context *ctx)
 
         if (left->type->kind == TYPE_POINTER && right->type->kind == TYPE_POINTER)
         {
-            fprintf(stderr,
-                    "Left-hand-size and Right-hand-side can't be pointers at the same time!\n");
-            exit(1);
+            if (binop->op != TKN_EQ && binop->op != TKN_NEQ)
+            {
+                fprintf(stderr,
+                        "Left-hand-size and Right-hand-side can't be pointers at the same time!\n");
+                exit(1);
+            }
         }
     }
 
