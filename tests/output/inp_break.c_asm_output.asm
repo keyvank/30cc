@@ -45,7 +45,7 @@ mov [rbp-48], rax
 call printf
 jmp __tmp_label_1
 __tmp_label_4:
-jmp __tmp_label_1
+jmp __tmp_label_0
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop
@@ -94,7 +94,6 @@ mov rax, rbp
 sub rax, 8
 mov [rbp-80], rax
 call printf
-jmp __tmp_label_6
 __tmp_label_11:
 mov rax, rbp
 sub rax, 16
@@ -143,9 +142,9 @@ mov rax, rbp
 sub rax, 16
 mov [rbp-24], rax
 mov rax, [rbp-16]
-mov rbx, 0
+mov rbx, 10
 cmp rax, rbx
-jge __tmp_label_17
+jle __tmp_label_17
 mov rax, 0
 jmp __tmp_label_18
 __tmp_label_17:
@@ -234,7 +233,6 @@ mov [rbx], rax
 jmp __tmp_label_19
 __tmp_label_20:
 ; exit loop
-jmp __tmp_label_16
 mov rax, rbp
 sub rax, 16
 mov [rbp-48], rax

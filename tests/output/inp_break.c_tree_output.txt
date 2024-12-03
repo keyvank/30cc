@@ -44,7 +44,7 @@ Program(
                       Literal(Type: 33, Value: i is 0
 )
                   Break
-            Break
+            Continue
       For(
         Init:
           VarDecl(i):
@@ -85,7 +85,6 @@ Program(
                     Args:
                       Literal(Type: 33, Value: i is 0
 )
-                  Break
             If(
               Cond:
                 BinaryOp(Op: 65)
@@ -104,11 +103,11 @@ Program(
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
-          BinaryOp(Op: 69)
+          BinaryOp(Op: 68)
             Left:
               Variable(i)
             Right:
-              Literal(Type: 34, Value: 0)
+              Literal(Type: 34, Value: 10)
         Act:
           BinaryOp(Op: 64)
             Left:
@@ -164,7 +163,6 @@ Program(
                     Body:
                       CompoundStatement
                         Break
-            Break
       Return:
         Literal(Type: 34, Value: 0)
   )
