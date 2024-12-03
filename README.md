@@ -1,6 +1,6 @@
 # 30 C Compiler!
 
-`30cc` (Pronounced as *CCC*, because in the Persian language, the number 30 is pronounced as C) is a toy C compiler written in C, with the goal of being able to compile itself 🤝 This is my first attempt in writing a self-hosting software! What is a self-hosting software?
+`30cc` (Pronounced as *CCC*, because in the Persian language, the number 30 is pronounced as C) is a toy C compiler written in C, which is strong enough to compile itself 🤝 This was my first attempt in writing a self-hosting software! What is a self-hosting software?
 
 - Imagine `30cc` gets strong enough to be able to compile itself.
 - I will first compile `30cc` with `gcc` to get the `30cc` compiler's binary.
@@ -10,69 +10,15 @@
 
 `30cc` emits x86-64 assembly as its output. The outputs are totally unoptimized, but that's fine, the project aims to be educational.
 
-Currently, this is the most complicated code `30cc` is able to successfully parse and compile a simple implementation of a linked-list:
-
-```c
-void *malloc(int sz);
-void printf(char *s, ...);
-
-struct node
-{
-    int val;
-    void *next;
-};
-
-struct linked_list
-{
-    struct node *first;
-};
-
-struct linked_list *new_list()
-{
-    struct linked_list *ret = (struct linked_list *)malloc(8);
-    return ret;
-}
-
-void add_val(struct linked_list *lst, int val)
-{
-    struct node *new = (struct node *)malloc(16);
-    *((int *)(&new->next)) = new;
-    new->val = val;
-    if (lst->first)
-    {
-        struct node *curr = lst->first;
-        while (curr->next)
-        {
-            curr = (struct node *)curr->next;
-        }
-        curr->next = (void *)new;
-    }
-    else
-    {
-        lst->first = new;
-    }
-}
-
-int main()
-{
-    struct linked_list *lst = new_list();
-    add_val(lst, 123);
-    add_val(lst, 432);
-    add_val(lst, 999);
-    add_val(lst, 873);
-    struct node *curr = lst->first;
-    while (curr)
-    {
-        printf("%u\n", curr->val);
-        curr = (struct node *)curr->next;
-    }
-}
-```
-
 ## Usage
 
+- You'll first need to bootstrap the compiler by running `make`
+- Then run `./build.py`. This will use the bootstrapped 30cc-compiler to compile 30cc itself. It then again uses the 30cc-compiled compiler to compile 30cc once again. The final compiler is then stored as `./30cc`.
+
+Running independent source-files through `make`:
+
 ```
-make run program=./examples/inp.c argumnets=something
+make run program=./examples/inp.c arguments=something
 ```
 
 ## Contribute
