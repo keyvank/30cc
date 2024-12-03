@@ -165,7 +165,7 @@ parser_node *parse_switch(typed_token **tkns_ptr)
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
 
-                parser_node *node = malloc(sizeof(parser_node));
+                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
                 node->data = (void *)malloc(sizeof(node_switch));
                 node->debug = switch_debug;
                 node->apply = switch_apply;

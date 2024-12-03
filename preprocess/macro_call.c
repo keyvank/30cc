@@ -85,7 +85,7 @@ linked_list *seg_macro_call_gen(seg *self, prep_ctx *ctx)
         else if (tkn->type_id == TKN_SHARP)
         {
             repl_tkn = repl_tkn->next;
-            tkn = repl_tkn->value;
+            tkn = (typed_token *)repl_tkn->value;
             if (tkn->type_id != TKN_ID)
             {
                 fprintf(stderr, "Expected identifier!\n");

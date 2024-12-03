@@ -14,7 +14,7 @@ def compile(path):
         text=True,
     )
     if out.returncode != 0:
-        raise Exception(out.stderr)
+        raise Exception(out.stderr + "\n" + out.stdout)
     else:
         return out.stdout
 
@@ -33,12 +33,19 @@ for f in glob.glob("**/*.c", recursive=True):
     except Exception as e:
         has_error = True
         print("Error compiling:", f, e)
-        
+
 
 objs = list(glob.glob("target/obj/**/*.o", recursive=True))
 
 if not has_error:
     subprocess.run(
-        ["ld", "-dynamic-linker", "/lib64/ld-linux-x86-64.so.2", "-lc", "-o", "target/30cc"]
+        [
+            "ld",
+            "-dynamic-linker",
+            "/lib64/ld-linux-x86-64.so.2",
+            "-lc",
+            "-o",
+            "target/30cc",
+        ]
         + objs
     )

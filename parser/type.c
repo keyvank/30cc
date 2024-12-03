@@ -83,7 +83,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
 
         if (allow_naming && tkn->type_id == TKN_ID)
         {
-            fun_name = tkn->data;
+            fun_name = (char *)tkn->data;
             tkn = tkn->next;
         }
 
@@ -93,7 +93,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
             if (tkn->type_id == TKN_L_PAREN)
             {
                 tkn = tkn->next;
-                parser_node **arg_types = malloc(sizeof(parser_node *) * 128);
+                parser_node **arg_types = (parser_node **)malloc(sizeof(parser_node *) * 128);
                 int arg_count = 0;
                 while (1)
                 {
@@ -134,7 +134,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
     if (allow_naming && tkn->type_id == TKN_ID)
     {
         node_type *par = (node_type *)node->data;
-        par->name = tkn->data;
+        par->name = (char *)tkn->data;
         tkn = tkn->next;
     }
 
