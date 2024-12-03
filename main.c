@@ -44,6 +44,20 @@ typed_token *process(char *filename, int log_lex, int log_prep)
 
 int main(int argc, char **argv)
 {
+    if (argc == 2)
+    {
+        if (strcmp(argv[1], "-v") == 0)
+        {
+#ifdef _30CC
+            char *compiler = "30cc";
+#endif
+#ifndef _30CC
+            char *compiler = "gcc";
+#endif
+            printf("30cc compiler version 0.1.0 (Compiled with %s)\n", compiler);
+            return 0;
+        }
+    }
     if (argc != 3)
     {
         fprintf(stderr, "Usage: %s <filename> <mode> (<mode>: --lex, --prep, --asm or --tree)\n", argv[0]);
