@@ -63,4 +63,4 @@ print("Compiling 30cc with gcc-generated compiler")
 compile_30cc('./a.out', '30cc_gcc')
 
 print("Compiling 30cc with 30cc-generated compiler")
-compile_30cc('./30cc', '30cc')
+compile_30cc('./30cc_gcc', '30cc')
