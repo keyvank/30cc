@@ -16,6 +16,11 @@ char *escape(char *inp)
             ret[cnt++] = '\\';
             ret[cnt++] = 'n';
         }
+        else if (c == '`')
+        {
+            ret[cnt++] = '\\';
+            ret[cnt++] = '`';
+        }
         else
         {
             ret[cnt++] = c;
