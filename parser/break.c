@@ -38,7 +38,7 @@ parser_node *parse_break(typed_token **tkns_ptr)
 void continue_debug(int depth, parser_node *node)
 {
     printtabs(depth);
-    printf("continue\n");
+    printf("Continue\n");
 }
 
 apply_result *continue_apply(parser_node *node, context *ctx)
@@ -59,8 +59,8 @@ parser_node *parse_continue(typed_token **tkns_ptr)
             return NULL;
         }
         parser_node *continue_node = (parser_node *)malloc(sizeof(parser_node));
-        continue_node->debug = break_debug;
-        continue_node->apply = break_apply;
+        continue_node->debug = continue_debug;
+        continue_node->apply = continue_apply;
         *tkns_ptr = tkn->next->next;
         return continue_node;
     }

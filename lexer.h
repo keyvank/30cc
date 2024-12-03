@@ -80,10 +80,10 @@ typed_token *eof_token();
 #define TKN_OREQ 93
 #define TKN_ANDEQ 94
 #define TKN_BREAK 96
-#define TKN_CONTINUE 96
-#define TKN_SWITCH 97
-#define TKN_CASE 98
-#define TKN_DEFAULT 99
+#define TKN_CONTINUE 97
+#define TKN_SWITCH 98
+#define TKN_CASE 99
+#define TKN_DEFAULT 100
 
 #define TKN_COMMENT 128
 #define TKN_DIRECTIVE 129
