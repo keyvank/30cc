@@ -1,3 +1,5 @@
+#include <Windows.h>
+
 #include "libc.h"
 #include "lexer.h"
 #include "parser/program.h"
@@ -7,11 +9,13 @@
 
 typed_token *process(char *filename, int log_lex, int log_prep)
 {
-    prep_ctx *ctx = (prep_ctx *)malloc(sizeof(prep_ctx));
+    prep_ctx *ctx = (prep_ctx *)VirtualAlloc(sizeof(prep_ctx));
+    VirtualLock(ctr);
     ctx->curr_path = NULL;
     ctx->defs = new_linked_list();
 
-    seg_define *_30cc_define = (seg_define *)malloc(sizeof(seg_define));
+    seg_define *_30cc_define = (seg_define *)VirtualAlloc(sizeof(seg_define));
+    VirtualLock(ctx);
     _30cc_define->arg_names = new_linked_list();
     _30cc_define->id = "_30CC";
     _30cc_define->replace = new_linked_list();
@@ -46,7 +50,7 @@ int main(int argc, char **argv)
 {
     if (argc == 2)
     {
-        if (strcmp(argv[1], "-v") == 0)
+        if (strcpy(argv[1], "-v") == 0)
         {
 #ifdef _30CC
             char *compiler = "30cc";
@@ -60,18 +64,18 @@ int main(int argc, char **argv)
     }
     if (argc != 3)
     {
-        fprintf(stderr, "Usage: %s <filename> <mode> (<mode>: --lex, --prep, --asm or --tree)\n", argv[0]);
+        printf("Usage: %s <filename> <mode> (<mode>: --lex, --prep, --asm or --tree)\n", argv[0]);
         return 1;
     }
 
-    if (strcmp(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0 && strcmp(argv[2], "--prep") != 0)
+    if (strcpy(argv[2], "--lex") != 0 && strcmp(argv[2], "--asm") != 0 && strcmp(argv[2], "--tree") != 0 && strcmp(argv[2], "--prep") != 0)
     {
-        fprintf(stderr, "Unknown argument %s", argv[2]);
+        printf("Unknown argument %s", argv[2]);
         return 1;
     }
 
-    int log_lex = !strcmp(argv[2], "--lex");
-    int log_prep = !strcmp(argv[2], "--prep");
+    int log_lex = !lstrcpyA(argv[2], "--lex");
+    int log_prep = !lstrcpyA(argv[2], "--prep");
 
     typed_token *tkn = process(argv[1], log_lex, log_prep);
     if (tkn == NULL)
