@@ -8,7 +8,7 @@ __temp_str_5 db `%d\n`, 0
 __temp_str_6 db `%d\n`, 0
 __temp_str_7 db `%d\n`, 0
 __temp_str_8 db `%d\n`, 0
-__main_size: equ 432
+__main_size: equ 448
 section .text
 extern printf
 global main
@@ -213,31 +213,31 @@ jmp __tmp_label_3
 __tmp_label_2:
 mov rax, 1
 __tmp_label_3:
-mov [rbp-376], rax
-mov rax, [rbp-376]
+mov [rbp-384], rax
+mov rax, [rbp-384]
 cmp rax, 0
 je __tmp_label_1
 mov rax, __temp_str_8
-mov [rbp-384], rax
+mov [rbp-392], rax
+mov rax, rbp
+sub rax, 352
+mov [rbp-400], rax
+mov rax, [rbp-352]
+mov [rbp-408], rax
+mov rdi, [rbp-392]
+mov rsi, [rbp-408]
+mov rax, rbp
+sub rax, 8
+mov [rbp-416], rax
+call printf
+; postfix op apply
 mov rax, rbp
 sub rax, 352
 mov [rbp-392], rax
 mov rax, [rbp-352]
 mov [rbp-400], rax
-mov rdi, [rbp-384]
-mov rsi, [rbp-400]
-mov rax, rbp
-sub rax, 8
-mov [rbp-408], rax
-call printf
-; postfix op apply
-mov rax, rbp
-sub rax, 352
-mov [rbp-384], rax
-mov rax, [rbp-352]
-mov [rbp-392], rax
 add rax, 1
-mov rbx, [rbp-384]
+mov rbx, [rbp-392]
 mov [rbx], rax
 ; postfix op finish
 jmp __tmp_label_0

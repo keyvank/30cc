@@ -2,7 +2,7 @@ section .data
 __temp_str_0 db `inside do while\n`, 0
 __temp_str_1 db `i %d\n`, 0
 __temp_str_2 db `i %d\n`, 0
-__main_size: equ 176
+__main_size: equ 192
 section .text
 extern printf
 global main
@@ -66,8 +66,8 @@ jmp __tmp_label_5
 __tmp_label_4:
 mov rax, 1
 __tmp_label_5:
-mov [rbp-32], rax
-mov rax, [rbp-32]
+mov [rbp-40], rax
+mov rax, [rbp-40]
 cmp rax, 0
 je __tmp_label_3
 jmp __tmp_label_2
@@ -77,7 +77,7 @@ __tmp_label_3:
 __tmp_label_6:
 mov rax, rbp
 sub rax, 8
-mov [rbp-40], rax
+mov [rbp-48], rax
 mov rax, [rbp-8]
 mov rbx, 0
 cmp rax, rbx
@@ -87,32 +87,32 @@ jmp __tmp_label_9
 __tmp_label_8:
 mov rax, 1
 __tmp_label_9:
-mov [rbp-56], rax
-mov rax, [rbp-56]
+mov [rbp-72], rax
+mov rax, [rbp-72]
 cmp rax, 0
 je __tmp_label_7
 ; postfix op apply
 mov rax, rbp
 sub rax, 8
-mov [rbp-64], rax
+mov [rbp-80], rax
 mov rax, [rbp-8]
-mov [rbp-72], rax
+mov [rbp-88], rax
 sub rax, 1
-mov rbx, [rbp-64]
+mov rbx, [rbp-80]
 mov [rbx], rax
 ; postfix op finish
 mov rax, __temp_str_2
-mov [rbp-80], rax
-mov rax, rbp
-sub rax, 8
-mov [rbp-88], rax
-mov rax, [rbp-8]
 mov [rbp-96], rax
-mov rdi, [rbp-80]
-mov rsi, [rbp-96]
 mov rax, rbp
 sub rax, 8
 mov [rbp-104], rax
+mov rax, [rbp-8]
+mov [rbp-112], rax
+mov rdi, [rbp-96]
+mov rsi, [rbp-112]
+mov rax, rbp
+sub rax, 8
+mov [rbp-120], rax
 call printf
 jmp __tmp_label_6
 __tmp_label_7:

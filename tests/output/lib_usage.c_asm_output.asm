@@ -117,23 +117,23 @@ mov [rbp-224], rax
 ; unary op apply
 mov rax, rbp
 sub rax, 176
-mov [rbp-232], rax
+mov [rbp-240], rax
 ; operand code: [rbp-176]
 mov rax, [rbp-176]
 cmp rax, 0
 sete al
 movzx rax, al
-mov [rbp-240], rax
+mov [rbp-248], rax
 ; unary op finish
 mov rax, 0
-cmp rax, [rbp-240]
+cmp rax, [rbp-248]
 je __tmp_label_0
 mov rax, __temp_str_5
-mov [rbp-248], rax
-mov rdi, [rbp-248]
+mov [rbp-256], rax
+mov rdi, [rbp-256]
 mov rax, rbp
 sub rax, 8
-mov [rbp-256], rax
+mov [rbp-264], rax
 call printf
 mov rax, 1
 mov rsp, rbp
@@ -142,28 +142,28 @@ ret
 __tmp_label_0:
 mov rax, rbp
 sub rax, 176
-mov [rbp-248], rax
-mov rax, [rbp-176]
 mov [rbp-256], rax
-mov rax, __temp_str_6
+mov rax, [rbp-176]
 mov [rbp-264], rax
-mov rdi, [rbp-256]
-mov rsi, [rbp-264]
+mov rax, __temp_str_6
+mov [rbp-272], rax
+mov rdi, [rbp-264]
+mov rsi, [rbp-272]
 mov rax, rbp
 sub rax, 8
-mov [rbp-272], rax
+mov [rbp-280], rax
 call fprintf
 mov rax, rbp
 sub rax, 176
-mov [rbp-280], rax
-mov rax, [rbp-176]
 mov [rbp-288], rax
-mov rdi, [rbp-288]
+mov rax, [rbp-176]
+mov [rbp-296], rax
+mov rdi, [rbp-296]
 mov rax, rbp
 sub rax, 8
-mov [rbp-296], rax
-call fclose
 mov [rbp-304], rax
+call fclose
+mov [rbp-312], rax
 mov rax, 0
 mov rsp, rbp
 pop rbp

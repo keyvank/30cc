@@ -8,7 +8,7 @@ __temp_str_5 db `Invalid grade\n`, 0
 __temp_str_6 db `default case\n`, 0
 __temp_str_7 db `is two\n`, 0
 __temp_str_8 db `%s\n`, 0
-__main_size: equ 192
+__main_size: equ 224
 section .text
 extern printf
 global main
@@ -62,52 +62,52 @@ case___tmp_label_0_3:
 case___tmp_label_0_3:
 mov rax, rbp
 sub rax, 9
-mov [rbp-57], rax
+mov [rbp-65], rax
 mov rax, [rbp-9]
 mov rbx, __temp_str_2
-mov rax, [rbp-57]
+mov rax, [rbp-65]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-65], rax
+mov [rbp-73], rax
 ; stmt loc 4
 jmp __tmp_label_0
 ; stmt loc 5
 case___tmp_label_0_5:
 mov rax, rbp
 sub rax, 9
-mov [rbp-73], rax
+mov [rbp-89], rax
 mov rax, [rbp-9]
 mov rbx, __temp_str_3
-mov rax, [rbp-73]
+mov rax, [rbp-89]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-81], rax
+mov [rbp-97], rax
 ; stmt loc 6
 jmp __tmp_label_0
 ; stmt loc 7
 case___tmp_label_0_7:
 mov rax, rbp
 sub rax, 9
-mov [rbp-89], rax
+mov [rbp-113], rax
 mov rax, [rbp-9]
 mov rbx, __temp_str_4
-mov rax, [rbp-89]
+mov rax, [rbp-113]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-97], rax
+mov [rbp-121], rax
 ; stmt loc 8
 jmp __tmp_label_0
 ; stmt loc 9
 case___tmp_label_0_9:
 mov rax, rbp
 sub rax, 9
-mov [rbp-105], rax
+mov [rbp-137], rax
 mov rax, [rbp-9]
 mov rbx, __temp_str_5
-mov rax, [rbp-105]
+mov rax, [rbp-137]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-113], rax
+mov [rbp-145], rax
 ; end switch
 __tmp_label_0:
 ;start switch
@@ -116,11 +116,11 @@ jmp case___tmp_label_1_0
 ; stmt loc 0
 case___tmp_label_1_0:
 mov rax, __temp_str_6
-mov [rbp-121], rax
-mov rdi, [rbp-121]
+mov [rbp-161], rax
+mov rdi, [rbp-161]
 mov rax, rbp
 sub rax, 8
-mov [rbp-129], rax
+mov [rbp-169], rax
 call printf
 ; end switch
 __tmp_label_1:
@@ -133,26 +133,26 @@ jmp case___tmp_label_2_0
 case___tmp_label_2_0:
 case___tmp_label_2_0:
 mov rax, __temp_str_7
-mov [rbp-137], rax
-mov rdi, [rbp-137]
+mov [rbp-177], rax
+mov rdi, [rbp-177]
 mov rax, rbp
 sub rax, 8
-mov [rbp-145], rax
+mov [rbp-185], rax
 call printf
 ; end switch
 __tmp_label_2:
 mov rax, __temp_str_8
-mov [rbp-153], rax
+mov [rbp-193], rax
 mov rax, rbp
 sub rax, 9
-mov [rbp-161], rax
+mov [rbp-201], rax
 mov rax, [rbp-9]
-mov [rbp-169], rax
-mov rdi, [rbp-153]
-mov rsi, [rbp-169]
+mov [rbp-209], rax
+mov rdi, [rbp-193]
+mov rsi, [rbp-209]
 mov rax, rbp
 sub rax, 8
-mov [rbp-177], rax
+mov [rbp-217], rax
 call printf
 mov rax, 0
 mov rsp, rbp

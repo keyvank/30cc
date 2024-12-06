@@ -2,7 +2,7 @@ section .data
 __temp_str_0 db `first\n`, 0
 __temp_str_1 db `second\n`, 0
 __temp_str_2 db `%d\n`, 0
-__main_size: equ 96
+__main_size: equ 112
 section .text
 extern printf
 global main
@@ -30,27 +30,27 @@ mov rbx, 69
 mov rax, [rbp-32]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-40], rax
-mov rax, __temp_str_1
 mov [rbp-48], rax
-mov rdi, [rbp-48]
+mov rax, __temp_str_1
+mov [rbp-56], rax
+mov rdi, [rbp-56]
 mov rax, rbp
 sub rax, 8
-mov [rbp-56], rax
+mov [rbp-64], rax
 call printf
 end:
 mov rax, __temp_str_2
-mov [rbp-64], rax
-mov rax, rbp
-sub rax, 8
 mov [rbp-72], rax
-mov rax, [rbp-8]
-mov [rbp-80], rax
-mov rdi, [rbp-64]
-mov rsi, [rbp-80]
 mov rax, rbp
 sub rax, 8
+mov [rbp-80], rax
+mov rax, [rbp-8]
 mov [rbp-88], rax
+mov rdi, [rbp-72]
+mov rsi, [rbp-88]
+mov rax, rbp
+sub rax, 8
+mov [rbp-96], rax
 call printf
 mov rax, 0
 mov rsp, rbp

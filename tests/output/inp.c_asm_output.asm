@@ -1,7 +1,7 @@
 section .data
 __temp_str_0 db `%u `, 0
 __temp_str_1 db `%u `, 0
-__main_size: equ 160
+__main_size: equ 176
 section .text
 extern printf
 global main
@@ -31,43 +31,43 @@ jmp __tmp_label_3
 __tmp_label_2:
 mov rax, 1
 __tmp_label_3:
-mov [rbp-40], rax
-mov rax, [rbp-40]
+mov [rbp-48], rax
+mov rax, [rbp-48]
 cmp rax, 0
 je __tmp_label_1
 ;define variable i
 mov rax, 2
-mov [rbp-48], rax
+mov [rbp-56], rax
 ;end define variable i
 mov rax, __temp_str_0
-mov [rbp-56], rax
-mov rax, rbp
-sub rax, 48
 mov [rbp-64], rax
-mov rax, [rbp-48]
+mov rax, rbp
+sub rax, 56
 mov [rbp-72], rax
-mov rdi, [rbp-56]
-mov rsi, [rbp-72]
+mov rax, [rbp-56]
+mov [rbp-80], rax
+mov rdi, [rbp-64]
+mov rsi, [rbp-80]
 mov rax, rbp
 sub rax, 8
-mov [rbp-80], rax
+mov [rbp-88], rax
 call printf
 mov rax, rbp
 sub rax, 16
-mov [rbp-48], rax
+mov [rbp-56], rax
 mov rax, rbp
 sub rax, 16
-mov [rbp-56], rax
+mov [rbp-64], rax
 mov rax, [rbp-16]
 mov rbx, 1
 add rax, rbx
-mov [rbp-64], rax
+mov [rbp-80], rax
 mov rax, [rbp-16]
-mov rbx, [rbp-64]
-mov rax, [rbp-48]
+mov rbx, [rbp-80]
+mov rax, [rbp-56]
 mov [rax], rbx
 mov rax, rbx
-mov [rbp-72], rax
+mov [rbp-96], rax
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop

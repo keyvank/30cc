@@ -27,7 +27,7 @@ TEST_FILES = {
     "./examples/inp_arg_macro.c": [],
     "./examples/inp_extern.c": [],
 }
-C_PROGRAM_NAME = "./a.out"
+C_PROGRAM_NAME = "./30cc"
 OUTPUT_FOLDER = "tests/output"
 TEMP_FOLDER = "temp_snapshots"
 

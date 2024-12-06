@@ -2,7 +2,7 @@ section .data
 __temp_str_0 db `%u\n`, 0
 __temp_str_1 db `%u\n`, 0
 __temp_str_2 db `%u\n`, 0
-__main_size: equ 208
+__main_size: equ 256
 section .text
 extern printf
 global main
@@ -29,82 +29,82 @@ mov rbx, [rbp-16]
 add rax, rbx
 mov rbx, [rbp-24]
 mov [rbx], rax
-mov [rbp-40], rax
-mov rax, rbp
-sub rax, 8
 mov [rbp-48], rax
 mov rax, rbp
-sub rax, 16
+sub rax, 8
 mov [rbp-56], rax
+mov rax, rbp
+sub rax, 16
+mov [rbp-64], rax
 mov rax, [rbp-8]
 mov rbx, [rbp-16]
 sub rax, rbx
-mov rbx, [rbp-48]
+mov rbx, [rbp-56]
 mov [rbx], rax
-mov [rbp-64], rax
+mov [rbp-80], rax
 mov rax, rbp
 sub rax, 8
-mov [rbp-72], rax
+mov [rbp-88], rax
 mov rax, rbp
 sub rax, 16
-mov [rbp-80], rax
+mov [rbp-96], rax
 mov rax, [rbp-16]
 mov rbx, 1
 add rax, rbx
-mov [rbp-88], rax
+mov [rbp-112], rax
 mov rax, [rbp-8]
-mov rbx, [rbp-88]
+mov rbx, [rbp-112]
 mul rbx
-mov rbx, [rbp-72]
+mov rbx, [rbp-88]
 mov [rbx], rax
-mov [rbp-96], rax
+mov [rbp-128], rax
 mov rax, __temp_str_0
-mov [rbp-104], rax
+mov [rbp-136], rax
 mov rax, 23
 mov rbx, 16
 mov rdx, 0
 div rbx
 mov rax, rdx
-mov [rbp-112], rax
-mov rax, [rbp-112]
-mov [rbp-120], rax
-mov rdi, [rbp-104]
-mov rsi, [rbp-120]
+mov [rbp-152], rax
+mov rax, [rbp-152]
+mov [rbp-160], rax
+mov rdi, [rbp-136]
+mov rsi, [rbp-160]
 mov rax, rbp
 sub rax, 8
-mov [rbp-128], rax
+mov [rbp-168], rax
 call printf
 mov rax, __temp_str_1
-mov [rbp-136], rax
+mov [rbp-176], rax
 mov rax, 19
 mov rbx, 16
 mov rdx, 0
 div rbx
 mov rax, rdx
-mov [rbp-144], rax
-mov rax, [rbp-144]
-mov [rbp-152], rax
-mov rdi, [rbp-136]
-mov rsi, [rbp-152]
+mov [rbp-192], rax
+mov rax, [rbp-192]
+mov [rbp-200], rax
+mov rdi, [rbp-176]
+mov rsi, [rbp-200]
 mov rax, rbp
 sub rax, 8
-mov [rbp-160], rax
+mov [rbp-208], rax
 call printf
 mov rax, __temp_str_2
-mov [rbp-168], rax
+mov [rbp-216], rax
 mov rax, 32
 mov rbx, 16
 mov rdx, 0
 div rbx
 mov rax, rdx
-mov [rbp-176], rax
-mov rax, [rbp-176]
-mov [rbp-184], rax
-mov rdi, [rbp-168]
-mov rsi, [rbp-184]
+mov [rbp-232], rax
+mov rax, [rbp-232]
+mov [rbp-240], rax
+mov rdi, [rbp-216]
+mov rsi, [rbp-240]
 mov rax, rbp
 sub rax, 8
-mov [rbp-192], rax
+mov [rbp-248], rax
 call printf
 mov rax, 0
 mov rsp, rbp
