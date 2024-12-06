@@ -2,8 +2,10 @@
 out
 out.asm
 output.txt
-/target
+/target1
+/target2
 30cc
+30cc_30cc
 30cc_gcc
 
 # Prerequisites
