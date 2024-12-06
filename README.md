@@ -12,12 +12,11 @@
 
 ## Usage
 
-- You'll first need to bootstrap the compiler by running `make`. This will compile the 30cc compiler and store its binary in `a.out`.
-- Then run `./build.py`. This will use the bootstrapped 30cc-compiler to compile 30cc itself. It then again uses the 30cc-compiled compiler to compile 30cc once again. The final compiler is then stored as `./30cc`.
-- In the end, you will have 3 binary files which should all behave the same:
-    1. `30cc_gcc` which is the bootstrapped gcc-compiled version of 30cc
-    2. `30cc_30cc` which is the output of gcc-compiled 30cc compiler, compiling the 30cc compiler
-    3. `30cc` which is the output of 30cc-compiled 30cc compiler, compiling the 30cc compiler
+Bootstrap the compiler by running `make`. This will generate 3 different versions of 30cc compiler:
+
+1. `30cc_gcc` which is the bootstrapped gcc-compiled version of 30cc
+2. `30cc_30cc` which is the output of gcc-compiled 30cc compiler, compiling the 30cc compiler
+3. `30cc` which is the output of 30cc-compiled 30cc compiler, compiling the 30cc compiler
 
 Running independent source-files through `make`:
 
