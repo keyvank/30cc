@@ -12,7 +12,7 @@ I: 8
 I: 9
 a n 99
 Result: 42700
-Addr of c - Addr of a: 4294967280
+Addr of c - Addr of a: 16
 Double of 123: 242074
 Fact: 5
 Fact: 4

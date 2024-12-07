@@ -214,15 +214,15 @@ Program(
             Left:
               Cast:
                 Val:
-                  Variable(cc)
+                  Ref:
+                    Variable(a)
                 Type:
                   Type(Name: (null)):
                     TKN_INT
             Right:
               Cast:
                 Val:
-                  Ref:
-                    Variable(a)
+                  Variable(cc)
                 Type:
                   Type(Name: (null)):
                     TKN_INT
