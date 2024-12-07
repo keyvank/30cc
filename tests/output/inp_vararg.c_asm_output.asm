@@ -91,7 +91,7 @@ mov [rbp-33], al
 mov rdi, [rbp-16]
 mov rsi, [rbp-24]
 mov rdx, [rbp-32]
-mov rcx, [rbp-33]
+mov cl, [rbp-33]
 mov rax, rbp
 sub rax, 8
 mov [rbp-41], rax

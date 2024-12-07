@@ -26,6 +26,7 @@ TEST_FILES = {
     "./examples/lots_of_variables.c": [],
     "./examples/inp_arg_macro.c": [],
     "./examples/inp_extern.c": [],
+    "./examples/inp_vararg.c": [],
 }
 C_PROGRAM_NAME = "./30cc"
 OUTPUT_FOLDER = "tests/output"
