@@ -27,7 +27,7 @@ void asm_debug(int depth, parser_node *node)
     while (curr)
     {
         printtabs(depth + 1);
-        printf("\"%s\"", (char *)curr->value);
+        printf("\"%s\"\n", (char *)curr->value);
         curr = curr->next;
     }
 }

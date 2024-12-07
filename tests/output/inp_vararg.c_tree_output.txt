@@ -48,8 +48,20 @@ Program(
           TKN_CHAR
     Statements:
       Asm:
-        "mov r9, r8"        "mov r8, rcx"        "mov rcx, rdx"        "mov rdx, rsi"        "mov rsi, rdi"        "mov rdi, 0"      Asm:
-        "push rdi"        "push rsi"        "push rdx"        "push rcx"        "push r8"        "push r9"      VarDecl(ret):
+        "mov r9, r8"
+        "mov r8, rcx"
+        "mov rcx, rdx"
+        "mov rdx, rsi"
+        "mov rsi, rdi"
+        "mov rdi, 0"
+      Asm:
+        "push rdi"
+        "push rsi"
+        "push rdx"
+        "push rcx"
+        "push r8"
+        "push r9"
+      VarDecl(ret):
         Type(Name: ret):
           Pointer of:
             TKN_CHAR
@@ -66,7 +78,13 @@ Program(
                 Pointer of:
                   TKN_CHAR
       Asm:
-        "pop r9"        "pop r8"        "pop rcx"        "pop rdx"        "pop rsi"        "pop rdi"      FunctionCall:
+        "pop r9"
+        "pop r8"
+        "pop rcx"
+        "pop rdx"
+        "pop rsi"
+        "pop rdi"
+      FunctionCall:
         Function:
           Variable(sprintf)
         Args:
