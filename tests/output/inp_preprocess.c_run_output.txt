@@ -1,4 +1,7 @@
 ./out ""
 -------------
-function(): 69
-function2(): 99
+30CC is compiling this!
+ABC defined!
+AB defined!
+A defined!
+D not defined!

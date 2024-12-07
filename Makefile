@@ -40,7 +40,7 @@ $(STAGE3_BIN): $(STAGE2_BIN) **/*.h **/*.c
 	rm -rf target2
 
 run: $(BIN)
-	@./a.out $(program) --asm > out.asm
+	@./30cc $(program) --asm > out.asm
 	@nasm -f elf64 out.asm -o out.o
 	@ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc -o out out.o
 	@echo "$ ./out \"$(arguments)\""

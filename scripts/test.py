@@ -93,7 +93,7 @@ def git_add_and_diff(file_path):
 
 def main():
     mode = None
-    if len(sys.argv) > 2:
+    if len(sys.argv) >= 2:
         mode = sys.argv[1]
         if mode not in ["update", "revert", "run"]:
             print("Invalid mode. Use 'update' or 'revert' or 'run'.")
@@ -120,20 +120,20 @@ def main():
     diff_count = 0
     failed = False
     for test_file in TEST_FILES.keys():
-        for mode in ['lex', 'prep', 'tree', 'asm']:
+        for md in ['lex', 'prep', 'tree', 'asm']:
             extension = "txt"
-            if mode == "asm":
+            if md == "asm":
                 extension = "asm"
             output_file = os.path.join(
                 OUTPUT_FOLDER,
-                f"{os.path.basename(test_file)}_{mode}_output.{extension}",
+                f"{os.path.basename(test_file)}_{md}_output.{extension}",
             )
-            print(test_file, mode)
-            output = run(test_file, mode)
+            print(test_file, md)
+            output = run(test_file, md)
             if output is None:
                 failed = True
 
-            if mode == "revert":
+            if md == "revert":
                 revert_snapshot(output_file)
                 continue
 
@@ -147,7 +147,7 @@ def main():
                     update_output(output_file, output, True)
             else:
                 update_output(output_file, output)
-
+    
     if mode == "run":
         for test_file, inputs in TEST_FILES.items():
             if len(inputs) == 0:
