@@ -366,17 +366,18 @@ apply_result *cond_apply(parser_node *node, context *ctx)
     node_cond *cond = (node_cond *)node->data;
     apply_result *cond_res = cond->cond->apply(cond->cond, ctx);
     char *rega_cond = reg_a(cond_res->type, ctx);
-    apply_result *yes_val = cond->true_val->apply(cond->true_val, ctx);
-    apply_result *no_val = cond->false_val->apply(cond->false_val, ctx);
-    char *rega_val = reg_a(yes_val->type, ctx);
+
     char *l1 = new_label(ctx);
     char *l2 = new_label(ctx);
     add_text(ctx, "mov %s, %s", rega_cond, cond_res->code);
     add_text(ctx, "cmp %s, 0", rega_cond);
     add_text(ctx, "je %s", l1);
+    apply_result *yes_val = cond->true_val->apply(cond->true_val, ctx);
+    char *rega_val = reg_a(yes_val->type, ctx);
     add_text(ctx, "mov %s, %s", rega_val, yes_val->code);
     add_text(ctx, "jmp %s", l2);
     add_text(ctx, "%s:", l1);
+    apply_result *no_val = cond->false_val->apply(cond->false_val, ctx);
     add_text(ctx, "mov %s, %s", rega_val, no_val->code);
     add_text(ctx, "%s:", l2);
     symbol *sym = new_temp_symbol(ctx, yes_val->type);
