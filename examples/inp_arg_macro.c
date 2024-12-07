@@ -9,4 +9,5 @@ int main()
     int cde = ADD(a, 20);
     char *s = STR(cde);
     printf("%s: %d\n", s, cde);
+    return 0;
 }

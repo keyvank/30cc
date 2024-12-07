@@ -58,5 +58,7 @@ Program(
 )
           Variable(s)
           Variable(cde)
+      Return:
+        Literal(Type: 34, Value: 0)
   )
 )

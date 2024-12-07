@@ -59,6 +59,10 @@ mov rax, rbp
 sub rax, 8
 mov [rbp-112], rax
 call printf
+mov rax, 0
+mov rsp, rbp
+pop rbp
+ret
 mov rsp, rbp
 pop rbp
 ret
