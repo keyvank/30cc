@@ -32,7 +32,7 @@ void switch_debug(int depth, parser_node *node)
     while (stmt_case)
     {
         parser_node *stmt_data = (parser_node *)stmt_case->value;
-        printf("%d: ", (int)location->value);
+        printf("%d: ", *(int *)location->value);
         stmt_data->debug(depth + 3, stmt_data);
         stmt_case = stmt_case->next;
         location = location->next;
@@ -66,7 +66,7 @@ apply_result *switch_apply(parser_node *node, context *ctx)
         apply_result *case_apply = case_data->apply(case_data, ctx);
         char *rega = reg_a(case_apply->type, ctx);
         add_text(ctx, "cmp %s, %s", rega, case_apply->code);
-        add_text(ctx, "je case_%s_%d", end_switch_label, (int)location->value);
+        add_text(ctx, "je case_%s_%d", end_switch_label, *(int *)location->value);
         stmt_case = stmt_case->next;
         location = location->next;
     }
@@ -81,9 +81,9 @@ apply_result *switch_apply(parser_node *node, context *ctx)
         add_text(ctx, "; stmt loc %d", stmt_count);
         if (location != NULL)
         {
-            while (stmt_count == (int)location->value)
+            while (stmt_count == *(int *)location->value)
             {
-                add_text(ctx, "case_%s_%d:", end_switch_label, (int)location->value);
+                add_text(ctx, "case_%s_%d:", end_switch_label, *(int *)location->value);
                 location = location->next;
                 if (location == NULL)
                     break;
@@ -203,7 +203,9 @@ parser_node *parse_switch(typed_token **tkns_ptr)
             if (stmt)
             {
                 add_to_list(cases, stmt);
-                add_to_list(case_locations, (void *)stmts->count);
+                int *loc = (int *)malloc(sizeof(int));
+                *loc = stmts->count;
+                add_to_list(case_locations, loc);
                 continue;
             }
 
