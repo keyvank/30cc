@@ -83,10 +83,7 @@ parser_node *parse_if(typed_token **tkns_ptr)
 
                         *tkns_ptr = tkn;
 
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_if));
-                        node->debug = if_debug;
-                        node->apply = if_apply;
+                        parser_node *node = new_node(if_debug, if_apply, sizeof(node_if));
                         node_if *f = (node_if *)node->data;
                         f->body = body;
                         f->else_body = else_body;

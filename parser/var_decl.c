@@ -80,10 +80,7 @@ parser_node *parse_var_decl(typed_token **tkns_ptr)
             }
 
             *tkns_ptr = tkn;
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_var_decl));
-            node->debug = var_decl_debug;
-            node->apply = var_decl_apply;
+            parser_node *node = new_node(var_decl_debug, var_decl_apply, sizeof(node_var_decl));
             node_var_decl *decl = (node_var_decl *)node->data;
             decl->type = tp;
             decl->identity = ((node_type *)tp->data)->name;

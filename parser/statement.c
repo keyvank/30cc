@@ -83,10 +83,7 @@ parser_node *parse_return(typed_token **tkns_ptr)
         {
             tkn = tkn->next;
             *tkns_ptr = tkn;
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_return));
-            node->debug = return_debug;
-            node->apply = return_apply;
+            parser_node *node = new_node(return_debug, return_apply, sizeof(node_return));
             node_return *ret = (node_return *)node->data;
             ret->exp = NULL;
 
@@ -102,10 +99,7 @@ parser_node *parse_return(typed_token **tkns_ptr)
                     tkn = tkn->next;
                     *tkns_ptr = tkn;
 
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_return));
-                    node->debug = return_debug;
-                    node->apply = return_apply;
+                    parser_node *node = new_node(return_debug, return_apply, sizeof(node_return));
                     node_return *ret = (node_return *)node->data;
                     ret->exp = exp;
 
@@ -136,10 +130,7 @@ parser_node *parse_compound_statement(typed_token **tkns_ptr)
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
 
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_compound_statement));
-                node->debug = compound_statement_debug;
-                node->apply = compound_statement_apply;
+                parser_node *node = new_node(compound_statement_debug, compound_statement_apply, sizeof(node_compound_statement));
                 node_compound_statement *comp = (node_compound_statement *)node->data;
                 comp->num_statements = num_stmts;
                 comp->statements = stmts;

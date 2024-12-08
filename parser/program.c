@@ -110,10 +110,7 @@ parser_node *parse_program(typed_token **tkn_ptr)
     {
         if (tkn->type_id == TKN_EOF)
         {
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_program));
-            node->debug = program_debug;
-            node->apply = program_apply;
+            parser_node *node = new_node(program_debug, program_apply, sizeof(node_program));
             node_program *prog = (node_program *)node->data;
             prog->externs = externs;
             prog->num_functions = func_count;

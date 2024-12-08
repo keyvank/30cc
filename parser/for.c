@@ -87,10 +87,7 @@ parser_node *parse_for(typed_token **tkns_ptr)
                                 {
                                     *tkns_ptr = tkn;
 
-                                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                                    node->data = (void *)malloc(sizeof(node_for));
-                                    node->debug = for_debug;
-                                    node->apply = for_apply;
+                                    parser_node *node = new_node(for_debug, for_apply, sizeof(node_for));
                                     node_for *f = (node_for *)node->data;
                                     f->act = act;
                                     f->body = body;

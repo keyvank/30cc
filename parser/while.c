@@ -61,10 +61,7 @@ parser_node *parse_while(typed_token **tkns_ptr)
                     {
                         *tkns_ptr = tkn;
 
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_while));
-                        node->debug = while_debug;
-                        node->apply = while_apply;
+                        parser_node *node = new_node(while_debug, while_apply, sizeof(node_while));
                         node_while *w = (node_while *)node->data;
                         w->body = body;
                         w->cond = cond;
@@ -147,10 +144,7 @@ parser_node *parse_do_while(typed_token **tkns_ptr)
                         tkn = tkn->next;
                         *tkns_ptr = tkn;
 
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_while));
-                        node->debug = do_while_debug;
-                        node->apply = do_while_apply;
+                        parser_node *node = new_node(do_while_debug, do_while_apply, sizeof(node_while));
                         node_while *w = (node_while *)node->data;
                         w->body = body;
                         w->cond = cond;

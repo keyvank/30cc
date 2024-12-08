@@ -178,10 +178,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                     tkn = tkn->next;
                     *tkns_ptr = tkn;
 
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_func_def));
-                    node->debug = func_def_debug;
-                    node->apply = func_def_apply;
+                    parser_node *node = new_node(func_def_debug, func_def_apply, sizeof(node_func_def));
                     node_func_def *decl = (node_func_def *)node->data;
 
                     decl->identity = (char *)name_tkn->data;
@@ -215,10 +212,7 @@ parser_node *parse_function(typed_token **tkns_ptr)
                         tkn = tkn->next;
                         *tkns_ptr = tkn;
 
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_func_def));
-                        node->debug = func_def_debug;
-                        node->apply = func_def_apply;
+                        parser_node *node = new_node(func_def_debug, func_def_apply, sizeof(node_func_def));
                         node_func_def *func = (node_func_def *)node->data;
 
                         func->identity = (char *)name_tkn->data;

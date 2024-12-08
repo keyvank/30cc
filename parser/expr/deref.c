@@ -46,10 +46,7 @@ parser_node *parse_deref(typed_token **tkns_ptr)
         if (n)
         {
             *tkns_ptr = tkn;
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_deref));
-            node->debug = deref_debug;
-            node->apply = deref_apply;
+            parser_node *node = new_node(deref_debug, deref_apply, sizeof(node_deref));
             node_deref *ref = (node_deref *)node->data;
             ref->var = n;
 

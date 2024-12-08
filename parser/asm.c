@@ -53,10 +53,7 @@ parser_node *parse_asm(typed_token **tkns_ptr)
                         tkn = tkn->next;
                         *tkns_ptr = tkn;
 
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_compound_statement));
-                        node->debug = asm_debug;
-                        node->apply = asm_apply;
+                        parser_node *node = new_node(asm_debug, asm_apply, sizeof(node_asm));
                         node_asm *as = (node_asm *)node->data;
                         as->lines = lines;
 

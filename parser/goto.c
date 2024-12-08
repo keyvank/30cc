@@ -28,10 +28,7 @@ parser_node *parse_label(typed_token **tkns_ptr)
         {
             tkn = tkn->next;
             *tkns_ptr = tkn;
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_label));
-            node->debug = label_debug;
-            node->apply = label_apply;
+            parser_node *node = new_node(label_debug, label_apply, sizeof(node_label));
             node_label *lab = (node_label *)node->data;
             lab->name = (char *)name_tkn->data;
 
@@ -72,10 +69,7 @@ parser_node *parse_goto(typed_token **tkns_ptr)
             {
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_goto));
-                node->debug = goto_debug;
-                node->apply = goto_apply;
+                parser_node *node = new_node(goto_debug, goto_apply, sizeof(node_goto));
                 node_goto *go = (node_goto *)node->data;
                 go->label = (char *)label_tkn->data;
 

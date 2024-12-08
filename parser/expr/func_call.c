@@ -114,10 +114,7 @@ parser_node *parse_func_call(typed_token **tkns_ptr, parser_node *func)
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
 
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_func_call));
-                node->debug = func_call_debug;
-                node->apply = func_call_apply;
+                parser_node *node = new_node(func_call_debug, func_call_apply, sizeof(node_func_call));
                 node_func_call *call = (node_func_call *)node->data;
 
                 call->func = func;

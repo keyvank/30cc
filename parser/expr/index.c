@@ -61,10 +61,7 @@ parser_node *parse_index(typed_token **tkns_ptr, parser_node *arr)
             {
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_index));
-                node->debug = index_debug;
-                node->apply = index_apply;
+                parser_node *node = new_node(index_debug, index_apply, sizeof(node_index));
                 node_index *idx = (node_index *)node->data;
                 idx->arr = arr;
                 idx->ind = ind;

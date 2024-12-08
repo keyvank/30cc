@@ -94,10 +94,7 @@ parser_node *parse_access(typed_token **tkns_ptr, parser_node *obj)
             typed_token *field_tkn = tkn;
             tkn = tkn->next;
             *tkns_ptr = tkn;
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_access));
-            node->debug = access_debug;
-            node->apply = access_apply;
+            parser_node *node = new_node(access_debug, access_apply, sizeof(node_access));
             node_access *acc = (node_access *)node->data;
             acc->object = obj;
             acc->field_name = cc_asprintf("%s", field_tkn->data);

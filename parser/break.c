@@ -25,9 +25,7 @@ parser_node *parse_break(typed_token **tkns_ptr)
         if (tkn->next->type_id != TKN_SEMICOLON) {
             return NULL;
         }
-        parser_node *break_node = (parser_node *)malloc(sizeof(parser_node));
-        break_node->debug = break_debug;
-        break_node->apply = break_apply;
+        parser_node *break_node = new_node(break_debug, break_apply, 0);
         *tkns_ptr = tkn->next->next;
         return break_node;
     }
@@ -58,9 +56,7 @@ parser_node *parse_continue(typed_token **tkns_ptr)
         if (tkn->next->type_id != TKN_SEMICOLON) {
             return NULL;
         }
-        parser_node *continue_node = (parser_node *)malloc(sizeof(parser_node));
-        continue_node->debug = continue_debug;
-        continue_node->apply = continue_apply;
+        parser_node *continue_node = new_node(continue_debug, continue_apply, 0);
         *tkns_ptr = tkn->next->next;
         return continue_node;
     }

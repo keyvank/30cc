@@ -471,10 +471,7 @@ parser_node *parse_sizeof(typed_token **tkns_ptr)
                 {
                     tkn = tkn->next;
                     *tkns_ptr = tkn;
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_sizeof));
-                    node->debug = sizeof_debug;
-                    node->apply = sizeof_apply;
+                    parser_node *node = new_node(sizeof_debug, sizeof_apply, sizeof(node_sizeof));
                     node_sizeof *cast = (node_sizeof *)node->data;
                     cast->type = type;
                     return node;
@@ -501,10 +498,7 @@ parser_node *parse_cast(typed_token **tkns_ptr)
                 if (val)
                 {
                     *tkns_ptr = tkn;
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_cast));
-                    node->debug = cast_debug;
-                    node->apply = cast_apply;
+                    parser_node *node = new_node(cast_debug, cast_apply, sizeof(node_cast));
                     node_cast *cast = (node_cast *)node->data;
                     cast->type = tp;
                     cast->val = val;
@@ -664,10 +658,7 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
                     }
                     rhs = parse_expr_prec(&tkn, rhs, look_prec);
                 }
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_binary_op));
-                node->debug = binary_op_debug;
-                node->apply = binary_op_apply;
+                parser_node *node = new_node(binary_op_debug, binary_op_apply, sizeof(node_binary_op));
                 node_binary_op *binop = (node_binary_op *)node->data;
                 binop->left = lhs;
                 binop->right = rhs;
@@ -691,10 +682,7 @@ parser_node *parse_expr_prec(typed_token **tkns_ptr, parser_node *lhs, int min_p
                 if (no)
                 {
 
-                    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                    node->data = (void *)malloc(sizeof(node_cond));
-                    node->debug = cond_debug;
-                    node->apply = cond_apply;
+                    parser_node *node = new_node(cond_debug, cond_apply, sizeof(node_cond));
                     node_cond *binop = (node_cond *)node->data;
                     binop->cond = lhs;
                     binop->true_val = yes;
@@ -738,10 +726,7 @@ parser_node *parse_unary(typed_token **tkns_ptr)
         return NULL;
     }
 
-    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-    node->data = (void *)malloc(sizeof(node_unary_op));
-    node->debug = unary_op_debug;
-    node->apply = unary_op_apply;
+    parser_node *node = new_node(unary_op_debug, unary_op_apply, sizeof(node_unary_op));
     node_unary_op *unary = (node_unary_op *)node->data;
     unary->op = unary_op;
     unary->exp = unary_expr;
@@ -767,10 +752,7 @@ parser_node *parse_postfix(typed_token **tkns_ptr, parser_node *curr)
         return NULL;
     }
 
-    parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-    node->data = (void *)malloc(sizeof(node_postfix));
-    node->debug = postfix_op_debug;
-    node->apply = postfix_op_apply;
+    parser_node *node = new_node(postfix_op_debug, postfix_op_apply, sizeof(node_postfix));
     node_postfix *postfix_op = (node_postfix *)node->data;
     postfix_op->op = postfix_unary_op;
     postfix_op->exp = curr;

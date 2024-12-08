@@ -19,9 +19,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
     {
         typed_token *ret_type_tkn = tkn;
         tkn = tkn->next;
-        node = (parser_node *)malloc(sizeof(parser_node));
-        node->data = (void *)malloc(sizeof(node_type));
-        node->debug = type_debug;
+        node = new_node(type_debug, NULL, sizeof(node_type));
         node_type *par = (node_type *)node->data;
         par->type = new_primitive_type(ret_type_tkn->data);
         par->name = NULL;
@@ -38,9 +36,7 @@ parser_node *parse_type(typed_token **tkns_ptr, int allow_naming)
         {
             return NULL;
         }
-        node = (parser_node *)malloc(sizeof(parser_node));
-        node->data = (void *)malloc(sizeof(node_type));
-        node->debug = type_debug;
+        node = new_node(type_debug, NULL, sizeof(node_type));
         node_type *par = (node_type *)node->data;
         if (tkn->next == NULL)
         {

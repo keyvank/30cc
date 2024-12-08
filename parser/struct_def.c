@@ -67,10 +67,7 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
             {
                 tkn = tkn->next;
                 *tkns_ptr = tkn;
-                parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                node->data = (void *)malloc(sizeof(node_struct_def));
-                node->debug = struct_def_debug;
-                node->apply = struct_def_apply;
+                parser_node *node = new_node(struct_def_debug, struct_def_apply, sizeof(node_struct_def));
                 node_struct_def *sd = (node_struct_def *)node->data;
                 sd->typedef_name = NULL;
                 sd->struct_name = (char *)struct_name_tkn->data;
@@ -105,10 +102,7 @@ parser_node *parse_struct_def(typed_token **tkns_ptr)
                     {
                         tkn = tkn->next;
                         *tkns_ptr = tkn;
-                        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-                        node->data = (void *)malloc(sizeof(node_struct_def));
-                        node->debug = struct_def_debug;
-                        node->apply = struct_def_apply;
+                        parser_node *node = new_node(struct_def_debug, struct_def_apply, sizeof(node_struct_def));
                         node_struct_def *sd = (node_struct_def *)node->data;
 
                         sd->struct_name = NULL;

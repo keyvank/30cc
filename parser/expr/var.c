@@ -33,10 +33,7 @@ parser_node *parse_var(typed_token **tkns_ptr)
         tkn = tkn->next;
         *tkns_ptr = tkn;
 
-        parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-        node->data = (void *)malloc(sizeof(node_var));
-        node->debug = var_debug;
-        node->apply = var_apply;
+        parser_node *node = new_node(var_debug, var_apply, sizeof(node_var));
         node_var *var = (node_var *)node->data;
         var->var_name = varname;
 

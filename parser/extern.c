@@ -37,10 +37,7 @@ parser_node *parse_extern(typed_token **tkns_ptr)
         {
             *tkns_ptr = tkn;
 
-            parser_node *node = (parser_node *)malloc(sizeof(parser_node));
-            node->data = (void *)malloc(sizeof(node_extern));
-            node->debug = extern_debug;
-            node->apply = extern_apply;
+            parser_node *node = new_node(extern_debug, extern_apply, sizeof(node_extern));
             node_extern *ex = (node_extern *)node->data;
             ex->var_decl = decl;
 
