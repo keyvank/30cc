@@ -53,6 +53,42 @@ Program(
             Value:
               Literal(Type: 34, Value: 0)
         Cond:
+          BinaryOp(Op: 66)
+            Left:
+              Variable(i)
+            Right:
+              Literal(Type: 34, Value: 3)
+        Act:
+          unaryOp(Op: 73)
+          expression:
+              Variable(i)
+        Body:
+          CompoundStatement
+            If(
+              Cond:
+                BinaryOp(Op: 65)
+                  Left:
+                    Variable(i)
+                  Right:
+                    Literal(Type: 34, Value: 1)
+              Body:
+                CompoundStatement
+                  Continue
+            FunctionCall:
+              Function:
+                Variable(printf)
+              Args:
+                Literal(Type: 33, Value: i is %d
+)
+                Variable(i)
+      For(
+        Init:
+          VarDecl(i):
+            Type(Name: i):
+              TKN_INT
+            Value:
+              Literal(Type: 34, Value: 0)
+        Cond:
           BinaryOp(Op: 69)
             Left:
               Variable(i)

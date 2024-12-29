@@ -13,6 +13,15 @@ int main()
         continue;
     }
 
+    for (int i=0; i<3; ++i)
+    {
+        if(i == 1)
+        {
+            continue;
+        }
+        printf("i is %d\n", i);
+    }
+
     for (int i = 0; i >= 0; i = i + 1)
     {
         if (i == 0)
