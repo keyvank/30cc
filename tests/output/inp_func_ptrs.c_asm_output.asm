@@ -157,84 +157,86 @@ mov rax, 0
 mov [rbp-136], rax
 ;end define variable i
 ; enter loop
+jmp __tmp_label_2
 __tmp_label_0:
+; postfix op apply
 mov rax, rbp
 sub rax, 136
 mov [rbp-144], rax
 mov rax, [rbp-136]
+mov [rbp-152], rax
+add rax, 1
+mov rbx, [rbp-144]
+mov [rbx], rax
+; postfix op finish
+__tmp_label_2:
+mov rax, rbp
+sub rax, 136
+mov [rbp-160], rax
+mov rax, [rbp-136]
 mov rbx, 2
 cmp rax, rbx
-jl __tmp_label_2
+jl __tmp_label_3
 mov rax, 0
-jmp __tmp_label_3
-__tmp_label_2:
-mov rax, 1
+jmp __tmp_label_4
 __tmp_label_3:
-mov [rbp-160], rax
-mov rax, [rbp-160]
+mov rax, 1
+__tmp_label_4:
+mov [rbp-176], rax
+mov rax, [rbp-176]
 cmp rax, 0
 je __tmp_label_1
 mov rax, 10
-mov [rbp-176], rax
+mov [rbp-192], rax
 mov rax, 20
-mov [rbp-184], rax
+mov [rbp-200], rax
 mov rax, rbp
 sub rax, 8
-mov [rbp-192], rax
+mov [rbp-208], rax
 mov rax, rbp
 sub rax, 136
-mov [rbp-200], rax
+mov [rbp-216], rax
 mov rax, [rbp-136]
 mov rbx, 8
 mul rbx
 mov rbx, [rbp-8]
 add rbx, rax
-mov [rbp-208], rbx
+mov [rbp-224], rbx
 mov rax, [rbx]
-mov [rbp-216], rax
-mov rax, [rbp-216]
-mov [rbp-224], rax
-mov rdi, [rbp-176]
-mov rsi, [rbp-184]
-mov rdx, [rbp-224]
+mov [rbp-232], rax
+mov rax, [rbp-232]
+mov [rbp-240], rax
+mov rdi, [rbp-192]
+mov rsi, [rbp-200]
+mov rdx, [rbp-240]
 mov rax, rbp
 sub rax, 8
-mov [rbp-232], rax
+mov [rbp-248], rax
 call handle
-mov [rbp-240], rax
+mov [rbp-256], rax
 ;define variable res
-mov rax, [rbp-240]
-mov [rbp-168], rax
+mov rax, [rbp-256]
+mov [rbp-184], rax
 ;end define variable res
 mov rax, __temp_str_3
-mov [rbp-248], rax
-mov rax, rbp
-sub rax, 136
-mov [rbp-256], rax
-mov rax, [rbp-136]
 mov [rbp-264], rax
 mov rax, rbp
-sub rax, 168
+sub rax, 136
 mov [rbp-272], rax
-mov rax, [rbp-168]
+mov rax, [rbp-136]
 mov [rbp-280], rax
-mov rdi, [rbp-248]
-mov rsi, [rbp-264]
-mov rdx, [rbp-280]
+mov rax, rbp
+sub rax, 184
+mov [rbp-288], rax
+mov rax, [rbp-184]
+mov [rbp-296], rax
+mov rdi, [rbp-264]
+mov rsi, [rbp-280]
+mov rdx, [rbp-296]
 mov rax, rbp
 sub rax, 8
-mov [rbp-288], rax
+mov [rbp-304], rax
 call printf
-; postfix op apply
-mov rax, rbp
-sub rax, 136
-mov [rbp-168], rax
-mov rax, [rbp-136]
-mov [rbp-176], rax
-add rax, 1
-mov rbx, [rbp-168]
-mov [rbx], rax
-; postfix op finish
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop

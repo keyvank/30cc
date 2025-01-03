@@ -19,65 +19,67 @@ mov rax, 0
 mov [rbp-24], rax
 ;end define variable i
 ; enter loop
+jmp __tmp_label_2
 __tmp_label_0:
 mov rax, rbp
 sub rax, 24
 mov [rbp-32], rax
+mov rax, [rbp-24]
+mov rbx, 1
+add rax, rbx
+mov rbx, [rbp-32]
+mov [rbx], rax
+mov [rbp-40], rax
+__tmp_label_2:
+mov rax, rbp
+sub rax, 24
+mov [rbp-48], rax
 mov rax, rbp
 sub rax, 8
-mov [rbp-40], rax
+mov [rbp-56], rax
 mov rax, [rbp-24]
 mov rbx, [rbp-8]
 cmp rax, rbx
-jl __tmp_label_2
+jl __tmp_label_3
 mov rax, 0
-jmp __tmp_label_3
-__tmp_label_2:
-mov rax, 1
+jmp __tmp_label_4
 __tmp_label_3:
-mov [rbp-56], rax
-mov rax, [rbp-56]
+mov rax, 1
+__tmp_label_4:
+mov [rbp-72], rax
+mov rax, [rbp-72]
 cmp rax, 0
 je __tmp_label_1
 mov rax, __temp_str_0
-mov [rbp-64], rax
-mov rax, rbp
-sub rax, 24
-mov [rbp-72], rax
-mov rax, [rbp-24]
 mov [rbp-80], rax
 mov rax, rbp
-sub rax, 16
+sub rax, 24
 mov [rbp-88], rax
+mov rax, [rbp-24]
+mov [rbp-96], rax
+mov rax, rbp
+sub rax, 16
+mov [rbp-104], rax
 mov rax, rbp
 sub rax, 24
-mov [rbp-96], rax
+mov [rbp-112], rax
 mov rax, [rbp-24]
 mov rbx, 8
 mul rbx
 mov rbx, [rbp-16]
 add rbx, rax
-mov [rbp-104], rbx
+mov [rbp-120], rbx
 mov rax, [rbx]
-mov [rbp-112], rax
-mov rax, [rbp-112]
-mov [rbp-120], rax
-mov rdi, [rbp-64]
-mov rsi, [rbp-80]
-mov rdx, [rbp-120]
+mov [rbp-128], rax
+mov rax, [rbp-128]
+mov [rbp-136], rax
+mov rdi, [rbp-80]
+mov rsi, [rbp-96]
+mov rdx, [rbp-136]
 mov rax, rbp
 sub rax, 8
-mov [rbp-128], rax
+mov [rbp-144], rax
 call printf
-mov rax, rbp
-sub rax, 24
-mov [rbp-64], rax
-mov rax, [rbp-24]
-mov rbx, 1
-add rax, rbx
-mov rbx, [rbp-64]
-mov [rbx], rax
-mov [rbp-72], rax
 jmp __tmp_label_0
 __tmp_label_1:
 ; exit loop
@@ -106,126 +108,130 @@ mov rax, 0
 mov [rbp-72], rax
 ;end define variable i
 ; enter loop
-__tmp_label_4:
+jmp __tmp_label_7
+__tmp_label_5:
 mov rax, rbp
 sub rax, 72
 mov [rbp-80], rax
-mov rax, [rbp-72]
-mov rbx, 10
-cmp rax, rbx
-jl __tmp_label_6
-mov rax, 0
-jmp __tmp_label_7
-__tmp_label_6:
-mov rax, 1
-__tmp_label_7:
-mov [rbp-96], rax
-mov rax, [rbp-96]
-cmp rax, 0
-je __tmp_label_5
 mov rax, rbp
-sub rax, 24
+sub rax, 72
+mov [rbp-88], rax
+mov rax, [rbp-72]
+mov rbx, 1
+add rax, rbx
+mov [rbp-96], rax
+mov rax, [rbp-72]
+mov rbx, [rbp-96]
+mov rax, [rbp-80]
+mov [rax], rbx
+mov rax, rbx
 mov [rbp-104], rax
+__tmp_label_7:
 mov rax, rbp
 sub rax, 72
 mov [rbp-112], rax
+mov rax, [rbp-72]
+mov rbx, 10
+cmp rax, rbx
+jl __tmp_label_8
+mov rax, 0
+jmp __tmp_label_9
+__tmp_label_8:
+mov rax, 1
+__tmp_label_9:
+mov [rbp-128], rax
+mov rax, [rbp-128]
+cmp rax, 0
+je __tmp_label_6
+mov rax, rbp
+sub rax, 24
+mov [rbp-136], rax
+mov rax, rbp
+sub rax, 72
+mov [rbp-144], rax
 mov rax, [rbp-72]
 mov rbx, 8
 mul rbx
 mov rbx, [rbp-24]
 add rbx, rax
-mov [rbp-120], rbx
+mov [rbp-152], rbx
 mov rax, [rbx]
-mov [rbp-128], rax
-mov rax, rbp
-sub rax, 72
-mov [rbp-136], rax
-mov rax, 2
-mov rbx, [rbp-72]
-mul rbx
-mov [rbp-144], rax
-mov rax, [rbp-128]
-mov rbx, [rbp-144]
-mov rax, [rbp-120]
-mov [rax], rbx
-mov rax, rbx
-mov [rbp-152], rax
-mov rax, rbp
-sub rax, 72
 mov [rbp-160], rax
 mov rax, rbp
 sub rax, 72
 mov [rbp-168], rax
-mov rax, [rbp-72]
-mov rbx, 1
-add rax, rbx
+mov rax, 2
+mov rbx, [rbp-72]
+mul rbx
 mov [rbp-176], rax
-mov rax, [rbp-72]
-mov rbx, [rbp-176]
 mov rax, [rbp-160]
+mov rbx, [rbp-176]
+mov rax, [rbp-152]
 mov [rax], rbx
 mov rax, rbx
 mov [rbp-184], rax
-jmp __tmp_label_4
-__tmp_label_5:
+jmp __tmp_label_5
+__tmp_label_6:
 ; exit loop
 ;define variable i
 mov rax, 0
 mov [rbp-72], rax
 ;end define variable i
 ; enter loop
-__tmp_label_8:
+jmp __tmp_label_12
+__tmp_label_10:
 mov rax, rbp
 sub rax, 72
 mov [rbp-80], rax
 mov rax, [rbp-72]
-mov rbx, 10
-cmp rax, rbx
-jl __tmp_label_10
-mov rax, 0
-jmp __tmp_label_11
-__tmp_label_10:
-mov rax, 1
-__tmp_label_11:
-mov [rbp-96], rax
-mov rax, [rbp-96]
-cmp rax, 0
-je __tmp_label_9
-mov rax, __temp_str_1
-mov [rbp-104], rax
-mov rax, rbp
-sub rax, 24
-mov [rbp-112], rax
+mov rbx, 1
+add rax, rbx
+mov rbx, [rbp-80]
+mov [rbx], rax
+mov [rbp-88], rax
+__tmp_label_12:
 mov rax, rbp
 sub rax, 72
+mov [rbp-96], rax
+mov rax, [rbp-72]
+mov rbx, 10
+cmp rax, rbx
+jl __tmp_label_13
+mov rax, 0
+jmp __tmp_label_14
+__tmp_label_13:
+mov rax, 1
+__tmp_label_14:
+mov [rbp-112], rax
+mov rax, [rbp-112]
+cmp rax, 0
+je __tmp_label_11
+mov rax, __temp_str_1
 mov [rbp-120], rax
+mov rax, rbp
+sub rax, 24
+mov [rbp-128], rax
+mov rax, rbp
+sub rax, 72
+mov [rbp-136], rax
 mov rax, [rbp-72]
 mov rbx, 8
 mul rbx
 mov rbx, [rbp-24]
 add rbx, rax
-mov [rbp-128], rbx
+mov [rbp-144], rbx
 mov rax, [rbx]
-mov [rbp-136], rax
-mov rax, [rbp-136]
-mov [rbp-144], rax
-mov rdi, [rbp-104]
-mov rsi, [rbp-144]
+mov [rbp-152], rax
+mov rax, [rbp-152]
+mov [rbp-160], rax
+mov rdi, [rbp-120]
+mov rsi, [rbp-160]
 mov rax, rbp
 sub rax, 8
-mov [rbp-152], rax
-call printf
-mov rax, rbp
-sub rax, 72
-mov [rbp-160], rax
-mov rax, [rbp-72]
-mov rbx, 1
-add rax, rbx
-mov rbx, [rbp-160]
-mov [rbx], rax
 mov [rbp-168], rax
-jmp __tmp_label_8
-__tmp_label_9:
+call printf
+jmp __tmp_label_10
+__tmp_label_11:
 ; exit loop
 mov rax, 1024
 mov rbx, 8
